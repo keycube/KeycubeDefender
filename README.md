@@ -1,4 +1,4 @@
-Defend CubeTown from the spaceship invasion! Use the keycube to spell doom uppon the invaders! Literaly!
+Defend CubeTown from the spaceship invasion! Use the keycube to spell doom upon the invaders! Literally!
 
 Hello there!
 
