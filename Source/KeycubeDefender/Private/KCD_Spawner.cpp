@@ -22,7 +22,7 @@ void AKCD_Spawner::BeginPlay()
 
 	FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, &AKCD_Spawner::SpawnShip, 1);
 	
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle,  TimerDelegate, 5.0f, true);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle,  TimerDelegate, 2.0f, true);
 }
 
 void AKCD_Spawner::SpawnShip(int ShipTier)
@@ -46,12 +46,12 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 	}
 	
 	//TODO : Set the position of the lane
-	 AKCD_Ship* Ship;
-	 Ship = GetWorld()->SpawnActorDeferred<AKCD_Ship>(Ships[ShipTier], this->GetTransform());
+	AKCD_Ship* Ship;
+	Ship = GetWorld()->SpawnActorDeferred<AKCD_Ship>(Ships[ShipTier], this->GetTransform());
 	
-	 Ship->SetWord(ShipWord);
+	Ship->SetWord(ShipWord);
 	
-	 UGameplayStatics::FinishSpawningActor(Ship, this->GetTransform());
+	UGameplayStatics::FinishSpawningActor(Ship, this->GetTransform());
 	
 }
 

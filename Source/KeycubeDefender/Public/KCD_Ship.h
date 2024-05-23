@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "KCD_Letters.h"
 #include "KCD_Words.h"
 #include "Components/BoxComponent.h"
 #include "Components/TextRenderComponent.h"
@@ -17,8 +18,6 @@ class KEYCUBEDEFENDER_API AKCD_Ship : public AActor
 
 	UPROPERTY(EditAnywhere, Category="Mesh")
 	UStaticMeshComponent* Mesh;
-	UPROPERTY(EditAnywhere, Category="Words")
-	UTextRenderComponent* WordVisual;
 	UPROPERTY(EditAnywhere, Category="Collision")
 	UBoxComponent* Collision;
 	UPROPERTY(EditAnywhere, Category="Collision")
@@ -32,8 +31,14 @@ public:
 	int Tier;
 	UPROPERTY(EditAnywhere ,Category="Variables")
 	TArray<FString> LettersLeft;
+	UPROPERTY(EditAnywhere ,Category="Variables")
+	TArray<AKCD_Letters*> LettersInstances;
+	UPROPERTY(EditAnywhere ,Category="Variables")
+	TSubclassOf<AKCD_Letters> LetterBP;
 	UPROPERTY(EditAnywhere, Category="Variables")
 	int Reward;
+	UPROPERTY(EditAnywhere, Category="Variables")
+	TArray<UChildActorComponent*> ChildActors;
 	
 
 protected:
@@ -49,6 +54,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Words", meta = (ExposeOnSpawn=true))
 	FKCD_Words CurrentWord;
 
+private:
+	UPROPERTY(EditAnywhere, Category="Words")
+	float WordSize = 0.0;
+
+	UPROPERTY(EditAnywhere, Category="Words")
+	float Lettersize = 15.0;
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -67,6 +79,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Targeted();
+
+	UFUNCTION(BlueprintCallable)
+	void SpawnLetters();
 
 	UFUNCTION(BlueprintCallable)
 	void Untargeted();
