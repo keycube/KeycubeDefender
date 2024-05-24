@@ -4,6 +4,8 @@
 #include "KCD_Cube.h"
 
 #include "AsyncTreeDifferences.h"
+#include "KCD_PlayerController.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AKCD_Cube::AKCD_Cube()
@@ -20,6 +22,11 @@ void AKCD_Cube::BeginPlay()
 {
 	Super::BeginPlay();
 
+	AKCD_PlayerController* PlayerController = Cast<AKCD_PlayerController>(UGameplayStatics::GetPlayerController(
+		this, 0));
+
+	PlayerController->KeyPressDelegate.AddDynamic(this, &AKCD_Cube::KeyPress);
+	PlayerController->KeyReleaseDelegate.AddDynamic(this, &AKCD_Cube::KeyRelease);
 	FillKeyMap();
 }
 

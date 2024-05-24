@@ -18,6 +18,7 @@ class KEYCUBEDEFENDER_API AKCD_PlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+public:
 	UPROPERTY(BlueprintAssignable, Category="Key press delegate")
 	FOnKeyPressDelegate KeyPressDelegate;
 	UPROPERTY(BlueprintAssignable, Category="Key release delegate")
