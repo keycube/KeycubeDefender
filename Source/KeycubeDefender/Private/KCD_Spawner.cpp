@@ -52,7 +52,8 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 	Ship->SetWord(ShipWord);
 	
 	UGameplayStatics::FinishSpawningActor(Ship, this->GetTransform());
-	
+
+	ShipsAlive.Add(Ship);
 }
 
 void AKCD_Spawner::NextWave()

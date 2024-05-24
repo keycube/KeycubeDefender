@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "KCD_Keys.h"
+#include "KCD_Ship.h"
 #include "GameFramework/Actor.h"
 #include "KCD_Cube.generated.h"
 
@@ -26,6 +27,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category=Keys)
 	TMap<FKey, AKCD_Keys*> Keys;
 
+	UPROPERTY(EditAnywhere, Category=Variable)
+	AKCD_Ship* CurrentTarget;
+
 private:
 	UFUNCTION()
 	void FillKeyMap();
@@ -36,8 +40,17 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void KeyRelease(FKey key);
 
+	UFUNCTION(BlueprintCallable)
+	void HighlightKeys(TArray<FKey> keysToHighlight);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+	void NewTarget(AKCD_Ship* ship);
+
+	UFUNCTION(BlueprintCallable)
+	AKCD_Ship* GetCurrentTarget();
 
 };

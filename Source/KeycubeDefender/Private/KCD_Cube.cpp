@@ -73,10 +73,33 @@ void AKCD_Cube::KeyRelease(FKey key)
 	KeyPressed->KeyReleased_Keys();
 }
 
+void AKCD_Cube::HighlightKeys(TArray<FKey> keysToHighlight)
+{
+	for (auto key : keysToHighlight)
+	{
+		
+	}
+}
+
 // Called every frame
 void AKCD_Cube::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AKCD_Cube::NewTarget(AKCD_Ship* ship)
+{
+	if(ship == nullptr)
+		return;
+	
+	CurrentTarget = ship;
+
+	CurrentTarget->Targeted();
+}
+
+AKCD_Ship* AKCD_Cube::GetCurrentTarget()
+{
+	return CurrentTarget;
 }
 
