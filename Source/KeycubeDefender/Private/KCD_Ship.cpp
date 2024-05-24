@@ -56,6 +56,7 @@ void AKCD_Ship::UpdateWordVisual()
 
 void AKCD_Ship::Targeted()
 {
+	LettersInstances[1]->Highlight();
 }
 
 void AKCD_Ship::SpawnLetters()
@@ -95,10 +96,24 @@ void AKCD_Ship::SpawnLetters()
 
 void AKCD_Ship::Untargeted()
 {
+	LettersInstances[0]->Unhighlight();
 }
 
 bool AKCD_Ship::Hit(FString Letter)
 {
+	if(LettersLeft[0] == Letter)
+	{
+		AKCD_Letters* LetterToDestroy = LettersInstances[0];
+		LettersInstances[1]->Highlight();
+		LettersInstances.Remove(LetterToDestroy);
+		LetterToDestroy->Destroy();
+		LettersLeft.Remove(LettersLeft[0]);
+
+		if(LettersLeft.Num() <= 0)
+			ShipDestroyed();
+		
+	}
+
 	return false;
 }
 

@@ -23,6 +23,11 @@ public:
 	UPaperSpriteComponent* Sprite;
 	UPROPERTY(EditAnywhere, Category="Variable")
 	FString CurrentLetter = "A";
+
+	UPROPERTY(EditAnywhere, Category="Variable")
+	FLinearColor HighlightColor;
+	UPROPERTY(EditAnywhere, Category="Variable")
+	FLinearColor BaseColor;
 	
 protected:
 	// Called when the game starts
@@ -40,5 +45,11 @@ protected:
 public:	
 	UFUNCTION(BlueprintCallable)
 	void SetLetter(FString letter);
+
+	UFUNCTION(BlueprintCallable)
+	void Highlight();
+
+	UFUNCTION(BlueprintCallable)
+	void Unhighlight();
 		
 };

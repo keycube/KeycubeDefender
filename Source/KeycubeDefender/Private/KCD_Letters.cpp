@@ -48,3 +48,13 @@ void AKCD_Letters::SetLetter(FString letter)
 	SetSprite();
 }
 
+void AKCD_Letters::Highlight()
+{
+	Sprite->SetSpriteColor(HighlightColor);
+}
+
+void AKCD_Letters::Unhighlight()
+{
+	Sprite->SetSpriteColor(BaseColor);
+}
+
