@@ -23,7 +23,7 @@ void AKCD_Keys::BeginPlay()
 {
 	Super::BeginPlay();
 
-	KeyText->SetText(AssociatedKey.GetDisplayName());
+	KeyText->SetText(AssociatedKey.GetDisplayName(false));
 
 	DynamicMat = KeyMesh->CreateDynamicMaterialInstance(0, BaseMaterial);
 	
