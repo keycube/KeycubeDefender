@@ -4,6 +4,7 @@
 #include "KCD_Cube.h"
 
 #include "AsyncTreeDifferences.h"
+#include "KCD_GameMode.h"
 #include "KCD_PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -11,7 +12,7 @@
 AKCD_Cube::AKCD_Cube()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	CubeMesh = CreateDefaultSubobject<UStaticMeshComponent>("CubeMesh");
 	RootComponent = CubeMesh;
@@ -27,6 +28,13 @@ void AKCD_Cube::BeginPlay()
 
 	PlayerController->KeyPressDelegate.AddDynamic(this, &AKCD_Cube::KeyPress);
 	PlayerController->KeyReleaseDelegate.AddDynamic(this, &AKCD_Cube::KeyRelease);
+
+	GameModeInstance = Cast<AKCD_GameMode>(UGameplayStatics::GetGameMode(this));
+
+	if(!GameModeInstance->IsValidLowLevel())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Game mode is invalid"));
+	}
 	FillKeyMap();
 }
 
@@ -58,6 +66,7 @@ void AKCD_Cube::FillKeyMap()
 
 void AKCD_Cube::KeyPress(FKey key)
 {
+	AKCD_Spawner* SpawnerInstance = GameModeInstance->GetShipSpawner();
 	if(!Keys.Contains(key))
 	{
 		return;
@@ -66,6 +75,30 @@ void AKCD_Cube::KeyPress(FKey key)
 	AKCD_Keys* KeyPressed = Keys.FindRef(key);
 
 	KeyPressed->KeyPressed_Keys();
+	
+	if(!CurrentTarget->IsValidLowLevel())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CurrentTarget is invalid"));
+		if(!SpawnerInstance->IsValidLowLevel())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Spawner is invalid"));
+			return;
+		} 
+		
+		
+		 if(!NewTarget(SpawnerInstance->GetClosestShip(key.GetFName())))
+		 {
+		 	return;
+		 }
+		 	
+	}
+
+	
+	if(!CurrentTarget->Hit(key.GetFName()))
+	{
+		//TODO : MAKE WRONG LETTER TYPED LOGIC
+	}
+
 }
 
 void AKCD_Cube::KeyRelease(FKey key)
@@ -80,6 +113,12 @@ void AKCD_Cube::KeyRelease(FKey key)
 	KeyPressed->KeyReleased_Keys();
 }
 
+void AKCD_Cube::LooseCurrentTarget(AKCD_Ship* ship)
+{
+	ship->OnShipDestroyedDelegate.RemoveAll(this);
+	CurrentTarget = nullptr;
+}
+
 void AKCD_Cube::HighlightKeys(TArray<FKey> keysToHighlight)
 {
 	for (auto key : keysToHighlight)
@@ -88,21 +127,18 @@ void AKCD_Cube::HighlightKeys(TArray<FKey> keysToHighlight)
 	}
 }
 
-// Called every frame
-void AKCD_Cube::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-void AKCD_Cube::NewTarget(AKCD_Ship* ship)
+bool AKCD_Cube::NewTarget(AKCD_Ship* ship)
 {
 	if(ship == nullptr)
-		return;
+		return false;
+
+	ship->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_Cube::LooseCurrentTarget);
 	
 	CurrentTarget = ship;
 
+	UE_LOG(LogTemp, Warning, TEXT("Targetting ship"));
 	CurrentTarget->Targeted();
+	return true;
 }
 
 AKCD_Ship* AKCD_Cube::GetCurrentTarget()

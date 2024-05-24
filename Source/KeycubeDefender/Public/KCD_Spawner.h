@@ -15,8 +15,6 @@ class KEYCUBEDEFENDER_API AKCD_Spawner : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AKCD_Spawner();
-
-	
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
 	TArray<AKCD_Ship*> ShipsAlive;
@@ -53,4 +51,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable)
+	AKCD_Ship* GetClosestShip(FName letter);
+
+	
 };

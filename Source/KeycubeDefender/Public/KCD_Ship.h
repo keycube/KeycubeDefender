@@ -11,6 +11,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "KCD_Ship.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnShipDestroyed, AKCD_Ship*, DestroyedShip);
 UCLASS()
 class KEYCUBEDEFENDER_API AKCD_Ship : public AActor
 {
@@ -29,8 +30,8 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Variables")
 	int Tier;
-	UPROPERTY(EditAnywhere ,Category="Variables")
-	TArray<FString> LettersLeft;
+	// UPROPERTY(EditAnywhere ,Category="Variables")
+	// TArray<FString> LettersLeft;
 	UPROPERTY(EditAnywhere ,Category="Variables")
 	TArray<AKCD_Letters*> LettersInstances;
 	UPROPERTY(EditAnywhere ,Category="Variables")
@@ -39,6 +40,11 @@ public:
 	int Reward;
 	UPROPERTY(EditAnywhere, Category="Variables")
 	TArray<UChildActorComponent*> ChildActors;
+	UPROPERTY(EditAnywhere, Category="Variables")
+	bool isDestroyed = false;
+	//Event delegate for ship destruction
+	UPROPERTY(BlueprintAssignable, Category="Key press delegate")
+	FOnShipDestroyed OnShipDestroyedDelegate;
 	
 
 protected:
@@ -87,7 +93,7 @@ public:
 	void Untargeted();
 
 	UFUNCTION(BlueprintCallable)
-	bool Hit(FString Letter);
+	bool Hit(FName Letter);
 
 	UFUNCTION(BlueprintCallable)
 	void ShipDestroyed();

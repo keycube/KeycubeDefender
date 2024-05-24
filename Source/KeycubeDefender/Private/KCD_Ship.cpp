@@ -42,8 +42,6 @@ void AKCD_Ship::DestroyBuilding()
 void AKCD_Ship::SetWord(FKCD_Words word)
 {
 	CurrentWord = word;
-
-	LettersLeft = UKismetStringLibrary::GetCharacterArrayFromString(CurrentWord.Word);
 	
 	UpdateWordVisual();
 	SpawnLetters();
@@ -56,7 +54,7 @@ void AKCD_Ship::UpdateWordVisual()
 
 void AKCD_Ship::Targeted()
 {
-	LettersInstances[1]->Highlight();
+	LettersInstances[0]->Highlight();
 }
 
 void AKCD_Ship::SpawnLetters()
@@ -67,10 +65,10 @@ void AKCD_Ship::SpawnLetters()
 		FVector{1.0f, 1.0f, 1.0f}   // Scale
 	};
 
-	WordSize = Lettersize * LettersLeft.Num();
+	WordSize = Lettersize * CurrentWord.Word.Len();
 	
 	int x = 0;
-	for (auto letter : LettersLeft)
+	for (auto letter : UKismetStringLibrary::GetCharacterArrayFromString(CurrentWord.Word))
 	{
 		float yPosition = (WordSize/2) - (Lettersize * (x + 0.5));
 		spawnTransform.SetLocation(FVector{50.0f, yPosition, -30.0f});
@@ -83,7 +81,7 @@ void AKCD_Ship::SpawnLetters()
 		AKCD_Letters* letterObject = Cast<AKCD_Letters>(child->GetChildActor());
 		if(letterObject != nullptr)
 		{
-			letterObject->SetLetter(letter);
+			letterObject->SetLetter(FName(letter));
 		} else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Letter object reference NULL"));
@@ -99,24 +97,31 @@ void AKCD_Ship::Untargeted()
 	LettersInstances[0]->Unhighlight();
 }
 
-bool AKCD_Ship::Hit(FString Letter)
+bool AKCD_Ship::Hit(FName Letter)
 {
-	if(LettersLeft[0] == Letter)
+	if(LettersInstances.IsEmpty())
+		return false;
+	
+	if(LettersInstances[0]->CurrentLetter == Letter && ! isDestroyed)
 	{
-		AKCD_Letters* LetterToDestroy = LettersInstances[0];
-		LettersInstances[1]->Highlight();
-		LettersInstances.Remove(LetterToDestroy);
-		LetterToDestroy->Destroy();
-		LettersLeft.Remove(LettersLeft[0]);
+		LettersInstances[0]->Destroy();
+		LettersInstances.RemoveAt(0);
 
-		if(LettersLeft.Num() <= 0)
+		if(LettersInstances.IsEmpty())
+		{
 			ShipDestroyed();
+			return true;
+		}
 		
+		//LettersInstances[1]->Highlight();
+		return true;
 	}
 
 	return false;
 }
-
+//Effects on the ship during it's destruction
 void AKCD_Ship::ShipDestroyed()
 {
+	isDestroyed = true;
+	OnShipDestroyedDelegate.Broadcast(this);
 }

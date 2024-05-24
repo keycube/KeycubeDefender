@@ -12,7 +12,6 @@ AKCD_Spawner::AKCD_Spawner()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -40,8 +39,6 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 	{
 		int randomInt = FMath::RandRange(0, possibleWords[0].WordList.Num() - 1);
 		ShipWord = possibleWords[0].WordList[randomInt];
-		if(ShipWord.Word != "")
-			UE_LOG(LogTemp, Warning, TEXT("Word found : %s"), *ShipWord.Word);
 		wordFound = true;
 	}
 	
@@ -65,5 +62,26 @@ void AKCD_Spawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+AKCD_Ship* AKCD_Spawner::GetClosestShip(FName letter)
+{
+	if(ShipsAlive.IsEmpty())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Ship list is empty"));
+		return nullptr;
+	}
+	
+	for(AKCD_Ship* shipChecked : ShipsAlive)
+	{
+		if(shipChecked->LettersInstances.Num() <= 0)
+			continue;
+		if(shipChecked->LettersInstances[0]->CurrentLetter == letter)
+		{
+			return shipChecked;
+		}
+	}
+
+	return nullptr;
 }
 

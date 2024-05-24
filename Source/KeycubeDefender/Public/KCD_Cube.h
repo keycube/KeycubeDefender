@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "KCD_GameMode.h"
 #include "KCD_Keys.h"
 #include "KCD_Ship.h"
 #include "GameFramework/Actor.h"
@@ -41,14 +42,18 @@ private:
 	void KeyRelease(FKey key);
 
 	UFUNCTION(BlueprintCallable)
-	void HighlightKeys(TArray<FKey> keysToHighlight);
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	void LooseCurrentTarget(AKCD_Ship* ship);
 
 	UFUNCTION(BlueprintCallable)
-	void NewTarget(AKCD_Ship* ship);
+	void HighlightKeys(TArray<FKey> keysToHighlight);
+
+	UPROPERTY()
+	AKCD_GameMode* GameModeInstance;
+
+public:	
+
+	UFUNCTION(BlueprintCallable)
+	bool NewTarget(AKCD_Ship* ship);
 
 	UFUNCTION(BlueprintCallable)
 	AKCD_Ship* GetCurrentTarget();

@@ -11,7 +11,7 @@ AKCD_Letters::AKCD_Letters()
 	PrimaryActorTick.bCanEverTick = false;
 
 	Sprite = CreateDefaultSubobject<UPaperSpriteComponent>("LetterSprite");
-	Sprite->SetupAttachment(RootComponent);
+	RootComponent = Sprite;
 }
 
 
@@ -24,16 +24,13 @@ void AKCD_Letters::BeginPlay()
 
 void AKCD_Letters::SetSprite()
 {
-	UE_LOG(LogTemp, Warning, TEXT("In the SetSprite"));
-	
 	Sprite->SetSprite(GetSpriteFromTable());
-	
 }
 
 UPaperSprite* AKCD_Letters::GetSpriteFromTable()
 {
 	
-	FKCD_LetterAssociation* LetterAssociation = SpritesTable->FindRow<FKCD_LetterAssociation>(FName(CurrentLetter), "");
+	FKCD_LetterAssociation* LetterAssociation = SpritesTable->FindRow<FKCD_LetterAssociation>(CurrentLetter, "");
 	if(LetterAssociation->LetterSprite != nullptr)
 	{
 		return LetterAssociation->LetterSprite;
@@ -41,7 +38,7 @@ UPaperSprite* AKCD_Letters::GetSpriteFromTable()
 	return nullptr;
 }
 
-void AKCD_Letters::SetLetter(FString letter)
+void AKCD_Letters::SetLetter(FName letter)
 {
 	CurrentLetter = letter;
 

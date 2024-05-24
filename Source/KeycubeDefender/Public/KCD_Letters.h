@@ -22,7 +22,7 @@ public:
 	UPROPERTY(EditAnywhere, Category="Sprite")
 	UPaperSpriteComponent* Sprite;
 	UPROPERTY(EditAnywhere, Category="Variable")
-	FString CurrentLetter = "A";
+	FName CurrentLetter = "A";
 
 	UPROPERTY(EditAnywhere, Category="Variable")
 	FLinearColor HighlightColor;
@@ -44,7 +44,7 @@ protected:
 
 public:	
 	UFUNCTION(BlueprintCallable)
-	void SetLetter(FString letter);
+	void SetLetter(FName letter);
 
 	UFUNCTION(BlueprintCallable)
 	void Highlight();
