@@ -2,7 +2,7 @@
 
 
 #include "KCD_Spawner.h"
-
+#include "KCD_LaneHolder.h"
 #include "KCD_WordDictionnary.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
@@ -28,6 +28,15 @@ void AKCD_Spawner::BeginPlay()
 	//Temporary way to spawn the ship using a looping timer
 	FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, &AKCD_Spawner::SpawnShip, 1);
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle,  TimerDelegate, 2.0f, true);
+
+	//Get the current game mode and cast it to the required game mode
+	GameModeInstance = Cast<AKCD_GameMode>(UGameplayStatics::GetGameMode(this));
+
+	if(!GameModeInstance->IsValidLowLevel())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Game mode is invalid"));
+	}
+	
 }
 
 void AKCD_Spawner::SpawnShip(int ShipTier)
@@ -68,6 +77,13 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 	//TODO : Set the position of the lane
 	//Use a deferred spawn so we can set the ship's word before spawning it
 	AKCD_Ship* Ship;
+	AKCD_LaneHolder* LaneHolder = GameModeInstance->GetLaneHolder();
+
+	if(LaneHolder != nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Got the lane holder!"));
+	}
+	
 	Ship = GetWorld()->SpawnActorDeferred<AKCD_Ship>(Ships[ShipTier], this->GetTransform());
 
 	//Setting the ship's variables

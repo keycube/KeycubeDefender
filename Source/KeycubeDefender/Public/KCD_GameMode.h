@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "KCD_Spawner.h"
 #include "GameFramework/GameModeBase.h"
 #include "KCD_GameMode.generated.h"
+
+class AKCD_Spawner;
+class AKCD_LaneHolder;
 
 /**
  * 
@@ -21,4 +23,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	AKCD_Spawner* GetShipSpawner();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Spawner)
+	AKCD_LaneHolder* LaneHolder;
+
+	UFUNCTION(BlueprintCallable)
+	AKCD_LaneHolder* GetLaneHolder();
 };

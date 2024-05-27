@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "KCD_GameMode.h"
 #include "KCD_Ship.h"
 #include "GameFramework/Actor.h"
 #include "KCD_Spawner.generated.h"
@@ -69,6 +70,9 @@ private:
 
 	UFUNCTION()
 	void RemoveShip(AKCD_Ship* Ship);
+
+	UPROPERTY()
+	AKCD_GameMode* GameModeInstance;
 	
 public:	
 	// Called every frame

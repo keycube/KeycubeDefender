@@ -6,6 +6,7 @@
 #include "AsyncTreeDifferences.h"
 #include "KCD_GameMode.h"
 #include "KCD_PlayerController.h"
+#include "KCD_Spawner.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
