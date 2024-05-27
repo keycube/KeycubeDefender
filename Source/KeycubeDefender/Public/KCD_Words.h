@@ -7,7 +7,7 @@
 #include "KCD_Words.generated.h"
 
 /**
- * 
+ * Tructure containing  a word and wether or not it is curently being used
  */
 USTRUCT(BlueprintType)
 struct FKCD_Words : public FTableRowBase

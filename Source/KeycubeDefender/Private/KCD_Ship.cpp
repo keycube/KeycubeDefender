@@ -12,6 +12,7 @@ AKCD_Ship::AKCD_Ship()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	//Add the components of the ship
 	Collision = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
 	RootComponent = Collision;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("ShipMesh");
@@ -24,7 +25,9 @@ void AKCD_Ship::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UpdateWordVisual();
+	//TODO : Check with the wave system if the ship's speed should be modified elsewhere
+	//Set the ship's speed
+	ProjectileMovement->InitialSpeed = Speed;
 }
 
 // Called every frame
@@ -43,13 +46,7 @@ void AKCD_Ship::SetWord(FKCD_Words word)
 {
 	CurrentWord = word;
 	
-	UpdateWordVisual();
 	SpawnLetters();
-}
-
-void AKCD_Ship::UpdateWordVisual()
-{
-	//TODO : PLUG THE LETTERS LIST
 }
 
 void AKCD_Ship::Targeted()
@@ -59,25 +56,32 @@ void AKCD_Ship::Targeted()
 
 void AKCD_Ship::SpawnLetters()
 {
+	//Base transform of the letters, used to spawn the letter in local position
 	FTransform spawnTransform{
 		FRotator{0.0f, -90.0f, 0.0f},                 // Rotation
 		FVector{25.0f, -20.0f, 0.0f},  // Translation
 		FVector{1.0f, 1.0f, 1.0f}   // Scale
 	};
-
+	//Total size of the word
+	float WordSize = 0.0;
 	WordSize = Lettersize * CurrentWord.Word.Len();
-	
+
+	//We spawn a KCD_Letter BP for each letters in the word 
 	int x = 0;
 	for (auto letter : UKismetStringLibrary::GetCharacterArrayFromString(CurrentWord.Word))
 	{
+		//Position uses half the size of the word and offset that position
+		//with the leght of theprevious letters
 		float yPosition = (WordSize/2) - (Lettersize * (x + 0.5));
 		spawnTransform.SetLocation(FVector{50.0f, yPosition, -30.0f});
-	
+
+		//Add the letter as a child component of the ship
 		UChildActorComponent* child = NewObject<UChildActorComponent>(this);
 		child->SetupAttachment(Collision);
 		child->RegisterComponent();
 		child->SetChildActorClass(LetterBP);
 		child->SetRelativeTransform(spawnTransform);
+		//Get a reference to the child's class and set it's letter
 		AKCD_Letters* letterObject = Cast<AKCD_Letters>(child->GetChildActor());
 		if(letterObject != nullptr)
 		{
@@ -99,9 +103,14 @@ void AKCD_Ship::Untargeted()
 
 bool AKCD_Ship::Hit(FName Letter)
 {
+	//We check if there still is letters in the list.
+	//Mostly a failsafe since the ship should no longer be
+	//targeted when this list is empty
 	if(LettersInstances.IsEmpty())
 		return false;
-	
+
+	//If the letter checked is the first one in the letters remaining,
+	//We destroy the letter
 	if(LettersInstances[0]->CurrentLetter == Letter && ! isDestroyed)
 	{
 		LettersInstances[0]->Destroy();
@@ -113,13 +122,13 @@ bool AKCD_Ship::Hit(FName Letter)
 			return true;
 		}
 		
-		//LettersInstances[1]->Highlight();
+		LettersInstances[0]->Highlight();
 		return true;
 	}
 
 	return false;
 }
-//Effects on the ship during it's destruction
+
 void AKCD_Ship::ShipDestroyed()
 {
 	isDestroyed = true;

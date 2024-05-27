@@ -19,15 +19,17 @@ class KEYCUBEDEFENDER_API AKCD_PlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	//Delegates called when a key is pressed and when it's released
 	UPROPERTY(BlueprintAssignable, Category="Key press delegate")
 	FOnKeyPressDelegate KeyPressDelegate;
 	UPROPERTY(BlueprintAssignable, Category="Key release delegate")
 	FOnKeyReleaseDelegate KeyReleaseDelegate;
 
 protected:
+	//broadcasts what input is being pressed
 	UFUNCTION(BlueprintCallable)
 	void HandleKeyPressedDelegate(FKey key);
-
+	//broadcasts what input is being released
 	UFUNCTION(BlueprintCallable)
 	void HandleKeyReleasedDelegate(FKey key);
 };

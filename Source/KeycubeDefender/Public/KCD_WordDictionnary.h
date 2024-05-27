@@ -7,7 +7,7 @@
 #include "KCD_WordDictionnary.generated.h"
 
 /**
- * 
+ * Structure containing lists of word structs and the tier they belong to
  */
 USTRUCT(BlueprintType)
 struct FKCD_WordDictionnary : public FTableRowBase

@@ -16,9 +16,10 @@ class KEYCUBEDEFENDER_API AKCD_GameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	//Reference to the ship spawner
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Spawner)
 	AKCD_Spawner* ShipSpawner;
-
+	//Returns the ship spawner
 	UFUNCTION(BlueprintCallable)
 	AKCD_Spawner* GetShipSpawner();
 };

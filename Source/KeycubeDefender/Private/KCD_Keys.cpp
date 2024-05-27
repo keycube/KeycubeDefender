@@ -39,8 +39,6 @@ void AKCD_Keys::Tick(float DeltaTime)
 
 void AKCD_Keys::KeyPressed_Keys()
 {
-	//TODO : Add actual key logic (or handle it in a separate thing, might be better...)
-	
 	DynamicMat->SetVectorParameterValue("Color", PressedColor);
 }
 

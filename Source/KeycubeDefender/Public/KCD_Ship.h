@@ -17,6 +17,7 @@ class KEYCUBEDEFENDER_API AKCD_Ship : public AActor
 {
 	GENERATED_BODY()
 
+	//component of the ship object
 	UPROPERTY(EditAnywhere, Category="Mesh")
 	UStaticMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere, Category="Collision")
@@ -28,20 +29,23 @@ public:
 	// Sets default values for this actor's properties
 	AKCD_Ship();
 
+	//Var for the state of the ship
 	UPROPERTY(EditAnywhere, Category="Variables")
 	int Tier;
-	// UPROPERTY(EditAnywhere ,Category="Variables")
-	// TArray<FString> LettersLeft;
-	UPROPERTY(EditAnywhere ,Category="Variables")
-	TArray<AKCD_Letters*> LettersInstances;
-	UPROPERTY(EditAnywhere ,Category="Variables")
-	TSubclassOf<AKCD_Letters> LetterBP;
-	UPROPERTY(EditAnywhere, Category="Variables")
-	int Reward;
 	UPROPERTY(EditAnywhere, Category="Variables")
 	TArray<UChildActorComponent*> ChildActors;
 	UPROPERTY(EditAnywhere, Category="Variables")
 	bool isDestroyed = false;
+	UPROPERTY(EditAnywhere, Category="Variables")
+	int Reward;
+
+	//Var for the letters to spawn
+	UPROPERTY(EditAnywhere ,Category="Variables")
+	TArray<AKCD_Letters*> LettersInstances;
+	UPROPERTY(EditAnywhere ,Category="Variables")
+	TSubclassOf<AKCD_Letters> LetterBP;
+
+	
 	//Event delegate for ship destruction
 	UPROPERTY(BlueprintAssignable, Category="Key press delegate")
 	FOnShipDestroyed OnShipDestroyedDelegate;
@@ -52,18 +56,16 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category="Variables")
-	float Speed;
+	float Speed = 10;
 	//TODO : ADD LANES
 	// UPROPERTY(EditAnywhere, Category="Variables")
 	// KCD_Lane* Lane;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Words", meta = (ExposeOnSpawn=true))
 	FKCD_Words CurrentWord;
 
 private:
-	UPROPERTY(EditAnywhere, Category="Words")
-	float WordSize = 0.0;
-
+	//Theses var are used to make the word centered on the ship
 	UPROPERTY(EditAnywhere, Category="Words")
 	float Lettersize = 15.0;
 	
@@ -74,27 +76,33 @@ public:
 	// UFUNCTION(BlueprintCallable)
 	// void SetLane(KCD_Lane lane);
 
+	//Destroy the building in the lane (or in another lane if
+	//the current one is destroyed)
 	UFUNCTION(BlueprintCallable)
 	void DestroyBuilding();
 
+	//Set the word associated with the ship
 	UFUNCTION(BlueprintCallable)
 	void SetWord(FKCD_Words word);
 
-	UFUNCTION(BlueprintCallable)
-	void UpdateWordVisual();
-
+	//Effect when the ship is targeted
 	UFUNCTION(BlueprintCallable)
 	void Targeted();
 
+	//Spawn the letters for the associated word
 	UFUNCTION(BlueprintCallable)
 	void SpawnLetters();
 
+	//Effect when the ship is untargeted
 	UFUNCTION(BlueprintCallable)
 	void Untargeted();
 
+	//Tries to hit the ship with the letter. Returns if the hit was successful
 	UFUNCTION(BlueprintCallable)
 	bool Hit(FName Letter);
 
+	//Effect when the ship has no more letters
+	// broadcasts the OnSHipDestroyedDelegate
 	UFUNCTION(BlueprintCallable)
 	void ShipDestroyed();
 

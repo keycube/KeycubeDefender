@@ -8,7 +8,7 @@
 #include "KCD_LetterAssociation.generated.h"
 
 /**
- * 
+ * Structure containing an association of letters to the sprite of the letter
  */
 USTRUCT(BlueprintType)
 struct FKCD_LetterAssociation : public FTableRowBase

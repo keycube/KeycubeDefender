@@ -17,13 +17,13 @@ public:
 	// Sets default values for this component's properties
 	AKCD_Letters();
 
-
-	
+	//Variable for the visual of the object
 	UPROPERTY(EditAnywhere, Category="Sprite")
 	UPaperSpriteComponent* Sprite;
 	UPROPERTY(EditAnywhere, Category="Variable")
 	FName CurrentLetter = "A";
 
+	//Color of the feedback when the letter is next in the target's letters to hit
 	UPROPERTY(EditAnywhere, Category="Variable")
 	FLinearColor HighlightColor;
 	UPROPERTY(EditAnywhere, Category="Variable")
@@ -33,22 +33,28 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	//Data table containing associations between letters and sprites
 	UPROPERTY(EditAnywhere, Category="Variable")
 	UDataTable* SpritesTable;
 
+	//Sets the sprite of the letter
 	UFUNCTION(BlueprintCallable)
 	void SetSprite();
 
+	//Uses the SpritesTable to find the current letter association
 	UFUNCTION(BlueprintCallable)
 	UPaperSprite* GetSpriteFromTable();
 
-public:	
+public:
+	//Sets the letter
 	UFUNCTION(BlueprintCallable)
 	void SetLetter(FName letter);
 
+	//Visual feedback to make the letter easier to see
 	UFUNCTION(BlueprintCallable)
 	void Highlight();
 
+	//Resets the letter to it's default color
 	UFUNCTION(BlueprintCallable)
 	void Unhighlight();
 		
