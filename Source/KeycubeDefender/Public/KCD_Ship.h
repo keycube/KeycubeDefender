@@ -49,7 +49,11 @@ public:
 	//Event delegate for ship destruction
 	UPROPERTY(BlueprintAssignable, Category="Key press delegate")
 	FOnShipDestroyed OnShipDestroyedDelegate;
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Words", meta = (ExposeOnSpawn=true))
+	FString CurrentWord;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Words")
+	int WordIndex = -1;
 
 protected:
 	// Called when the game starts or when spawned
@@ -60,14 +64,13 @@ protected:
 	//TODO : ADD LANES
 	// UPROPERTY(EditAnywhere, Category="Variables")
 	// KCD_Lane* Lane;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Words", meta = (ExposeOnSpawn=true))
-	FKCD_Words CurrentWord;
 
 private:
 	//Theses var are used to make the word centered on the ship
 	UPROPERTY(EditAnywhere, Category="Words")
 	float Lettersize = 15.0;
+
+	FTimerHandle TimerHandle;
 	
 public:	
 	// Called every frame
@@ -83,7 +86,7 @@ public:
 
 	//Set the word associated with the ship
 	UFUNCTION(BlueprintCallable)
-	void SetWord(FKCD_Words word);
+	void SetWord(FString word);
 
 	//Effect when the ship is targeted
 	UFUNCTION(BlueprintCallable)

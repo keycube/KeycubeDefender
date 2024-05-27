@@ -26,5 +26,5 @@ public:
 	int Tier;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FKCD_Words> WordList;
+	TArray<FString> WordList;
 };

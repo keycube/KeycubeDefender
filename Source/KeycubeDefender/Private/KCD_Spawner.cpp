@@ -6,12 +6,17 @@
 #include "KCD_WordDictionnary.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetStringLibrary.h"
 
 // Sets default values
 AKCD_Spawner::AKCD_Spawner()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
+
+	WordIndexUsed.Add(FEncapsule{});
+	WordIndexUsed.Add(FEncapsule{});
+	WordIndexUsed.Add(FEncapsule{});
 }
 
 // Called when the game starts or when spawned
@@ -39,29 +44,56 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 
 	//TODO : Check if the word is available and make a break condition so we don't have an infinite loop
 	//Get a random word in the list of possible ones
-	//We loop as long as we don't have an available word
-	FKCD_Words ShipWord;
-	while(!wordFound)
+	//We loop so we can find an available word
+	int ShipWordIndex = -1;
+	for(int x = 0; x <= 20; x++)
 	{
-		int randomInt = FMath::RandRange(0, possibleWords[0].WordList.Num() - 1);
-		ShipWord = possibleWords[0].WordList[randomInt];
+		ShipWordIndex = FMath::RandRange(0, possibleWords[0].WordList.Num() - 1);
+		if(WordIndexUsed[ShipTier].index.Contains(ShipWordIndex))
+			continue;
+		
 		wordFound = true;
+		WordIndexUsed[ShipTier].index.Add(ShipWordIndex);
+		UE_LOG(LogTemp, Warning, TEXT("ADDING Ship tier : %s"), *FString::FromInt(ShipTier));
+		UE_LOG(LogTemp, Warning, TEXT("ADDING Ship word index : %s"), *FString::FromInt(ShipWordIndex));
+		break;
+	}
+
+	if(!wordFound)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Word not found"));
+		return;
 	}
 	
 	//TODO : Set the position of the lane
 	//Use a deferred spawn so we can set the ship's word before spawning it
 	AKCD_Ship* Ship;
 	Ship = GetWorld()->SpawnActorDeferred<AKCD_Ship>(Ships[ShipTier], this->GetTransform());
-	
-	Ship->SetWord(ShipWord);
+
+	//Setting the ship's variables
+	Ship->Tier = ShipTier;
+	Ship->SetWord(possibleWords[0].WordList[ShipWordIndex]);
+	Ship->WordIndex = ShipWordIndex;
 	
 	UGameplayStatics::FinishSpawningActor(Ship, this->GetTransform());
 
 	ShipsAlive.Add(Ship);
+
+	Ship->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_Spawner::RemoveShip);
 }
 
 void AKCD_Spawner::NextWave()
 {
+}
+
+void AKCD_Spawner::RemoveShip(AKCD_Ship* Ship)
+{
+	ShipsAlive.Remove(Ship);
+	Ship->OnShipDestroyedDelegate.RemoveAll(this);
+	WordIndexUsed[Ship->Tier].index.Remove(Ship->WordIndex);
+
+	UE_LOG(LogTemp, Warning, TEXT("REMOVING Ship tier : %s"), *FString::FromInt(Ship->Tier));
+	UE_LOG(LogTemp, Warning, TEXT("REMOVING Ship word index : %s"), *FString::FromInt(Ship->WordIndex));
 }
 
 // Called every frame

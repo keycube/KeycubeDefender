@@ -42,7 +42,7 @@ void AKCD_Ship::DestroyBuilding()
 	
 }
 
-void AKCD_Ship::SetWord(FKCD_Words word)
+void AKCD_Ship::SetWord(FString word)
 {
 	CurrentWord = word;
 	
@@ -64,11 +64,11 @@ void AKCD_Ship::SpawnLetters()
 	};
 	//Total size of the word
 	float WordSize = 0.0;
-	WordSize = Lettersize * CurrentWord.Word.Len();
+	WordSize = Lettersize * CurrentWord.Len();
 
 	//We spawn a KCD_Letter BP for each letters in the word 
 	int x = 0;
-	for (auto letter : UKismetStringLibrary::GetCharacterArrayFromString(CurrentWord.Word))
+	for (auto letter : UKismetStringLibrary::GetCharacterArrayFromString(CurrentWord))
 	{
 		//Position uses half the size of the word and offset that position
 		//with the leght of theprevious letters
@@ -133,4 +133,9 @@ void AKCD_Ship::ShipDestroyed()
 {
 	isDestroyed = true;
 	OnShipDestroyedDelegate.Broadcast(this);
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]()
+	{
+		this->Destroy();
+	},  1, false);
 }

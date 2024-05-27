@@ -7,6 +7,18 @@
 #include "GameFramework/Actor.h"
 #include "KCD_Spawner.generated.h"
 
+USTRUCT()
+struct FEncapsule
+{
+	GENERATED_BODY()
+	TArray<int> index;
+
+	int operator[] (int32 i)
+	{
+		return index[i];
+	}
+};
+
 UCLASS()
 class KEYCUBEDEFENDER_API AKCD_Spawner : public AActor
 {
@@ -31,6 +43,8 @@ protected:
 	//Data table containing the available words
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
 	UDataTable* WordBank;
+
+	TArray<FEncapsule> WordIndexUsed;
 	
 	// //TODO : MAKE WAVE DATA
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
@@ -52,6 +66,9 @@ protected:
 
 private:
 	FTimerHandle TimerHandle;
+
+	UFUNCTION()
+	void RemoveShip(AKCD_Ship* Ship);
 	
 public:	
 	// Called every frame
