@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "KCD_Words.h"
 #include "KCD_WordDictionnary.generated.h"
 
 /**

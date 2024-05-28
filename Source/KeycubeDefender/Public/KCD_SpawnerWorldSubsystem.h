@@ -5,13 +5,15 @@
 #include "CoreMinimal.h"
 #include "KCD_GameMode.h"
 #include "KCD_Lane.h"
+#include "KCD_LaneHolder.h"
 #include "KCD_Ship.h"
 #include "KCD_WaveData.h"
-#include "GameFramework/Actor.h"
-#include "KCD_Spawner.generated.h"
+#include "KCD_WordDictionnary.h"
+#include "Subsystems/WorldSubsystem.h"
+#include "KCD_SpawnerWorldSubsystem.generated.h"
 
 USTRUCT()
-struct FWave
+struct FWaveToo
 {
 	GENERATED_BODY()
 	
@@ -22,7 +24,7 @@ struct FWave
 };
 
 USTRUCT()
-struct FEncapsule
+struct FEncapsuleToo
 {
 	GENERATED_BODY()
 	TArray<int> index;
@@ -33,14 +35,15 @@ struct FEncapsule
 	}
 };
 
+/**
+ * 
+ */
 UCLASS()
-class KEYCUBEDEFENDER_API AKCD_Spawner : public AActor
+class KEYCUBEDEFENDER_API UKCD_SpawnerWorldSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
-	
+
 public:	
-	// Sets default values for this actor's properties
-	AKCD_Spawner();
 
 	//List to keep track of the ships alive. Also useful to know when a wave is over
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
@@ -48,7 +51,7 @@ public:
 
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
 	//Ships BP used as base to instantiate new ones
 	UPROPERTY(EditDefaultsOnly)
@@ -58,7 +61,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
 	UDataTable* WordBank;
 
-	TArray<FEncapsule> WordIndexUsed;
+	TArray<FEncapsuleToo> WordIndexUsed;
 	
 	// //TODO : MAKE WAVE DATA
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
@@ -99,16 +102,13 @@ private:
 	UPROPERTY()
 	int CurrentWaveIndex = 0;
 	UPROPERTY()
-	FWave CurrentWaveData;
+	FWaveToo CurrentWaveData;
 	
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+public:
+	
 	//Returns the closest ship available (not already in the destroy state)
 	//who's next letter to be hit is the one provided
 	UFUNCTION(BlueprintCallable)
 	AKCD_Ship* GetClosestShip(FName letter);
 
-	
 };

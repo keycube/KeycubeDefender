@@ -20,6 +20,15 @@ AKCD_Ship::AKCD_Ship()
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>("ShipMovement");
 }
 
+void AKCD_Ship::Initialize(int NewTier, FString NewWord, int NewWordIndex, float SpeedModifier)
+{
+	//Settings of values used for the ship's spawn and behavior
+	Tier = NewTier;
+	SetWord(NewWord);
+	WordIndex = NewWordIndex;
+	SetShipSpeed(SpeedModifier);
+}
+
 // Called when the game starts or when spawned
 void AKCD_Ship::BeginPlay()
 {
@@ -27,7 +36,7 @@ void AKCD_Ship::BeginPlay()
 
 	//TODO : Check with the wave system if the ship's speed should be modified elsewhere
 	//Set the ship's speed
-	ProjectileMovement->InitialSpeed = Speed;
+	ProjectileMovement->InitialSpeed = BaseSpeed;
 }
 
 // Called every frame
@@ -138,4 +147,9 @@ void AKCD_Ship::ShipDestroyed()
 	{
 		this->Destroy();
 	},  1, false);
+}
+
+void AKCD_Ship::SetShipSpeed(float Modifier)
+{
+	ProjectileMovement->InitialSpeed = BaseSpeed * Modifier;
 }

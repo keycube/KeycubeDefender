@@ -29,6 +29,10 @@ public:
 	// Sets default values for this actor's properties
 	AKCD_Ship();
 
+	// Allows the setting of required parameters as a single function
+	UFUNCTION(BlueprintCallable)
+	void Initialize(int NewTier, FString NewWord, int NewWordIndex, float SpeedModifier);
+
 	//Var for the state of the ship
 	UPROPERTY(EditAnywhere, Category="Variables")
 	int Tier;
@@ -60,7 +64,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category="Variables")
-	float Speed = 10;
+	float BaseSpeed = 10;
 	//TODO : ADD LANES
 	// UPROPERTY(EditAnywhere, Category="Variables")
 	// KCD_Lane* Lane;
@@ -68,7 +72,7 @@ protected:
 private:
 	//Theses var are used to make the word centered on the ship
 	UPROPERTY(EditAnywhere, Category="Words")
-	float Lettersize = 15.0;
+	float Lettersize = 30.0;
 
 	FTimerHandle TimerHandle;
 	
@@ -108,5 +112,9 @@ public:
 	// broadcasts the OnSHipDestroyedDelegate
 	UFUNCTION(BlueprintCallable)
 	void ShipDestroyed();
+
+	//Set the ship's speed using the wave modifier
+	UFUNCTION(BlueprintCallable)
+	void SetShipSpeed(float Modifier);
 
 };

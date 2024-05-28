@@ -1,46 +1,19 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "KCD_Spawner.h"
-#include "KCD_LaneHolder.h"
-#include "KCD_WordDictionnary.h"
-#include "Engine/World.h"
+#include "KCD_SpawnerWorldSubsystem.h"
+
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetStringLibrary.h"
 
-// Sets default values
-AKCD_Spawner::AKCD_Spawner()
+void UKCD_SpawnerWorldSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	Super::Initialize(Collection);
 
-	WordIndexUsed.Add(FEncapsule{});
-	WordIndexUsed.Add(FEncapsule{});
-	WordIndexUsed.Add(FEncapsule{});
+	UE_LOG(LogTemp, Warning, TEXT("Spawn world subsystem up"));
 }
 
-// Called when the game starts or when spawned
-void AKCD_Spawner::BeginPlay()
-{
-	Super::BeginPlay();
-	
-	if(WaveData == nullptr)
-	{
-		UE_LOG(LogTemp, Error, TEXT("WAVE DATA NOT FOUND"));
-		exit(666);
-	}
 
-	//Get the current game mode and cast it to the required game mode
-	GameModeInstance = Cast<AKCD_GameMode>(UGameplayStatics::GetGameMode(this));
-
-	if(!GameModeInstance->IsValidLowLevel())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Game mode is invalid"));
-	}
-	
-}
-
-void AKCD_Spawner::SpawnShip(int ShipTier)
+void UKCD_SpawnerWorldSubsystem::SpawnShip(int ShipTier)
 {
 	//Get all the possible words for the ship's tier
 	FString ShipTierString = FString::FromInt(ShipTier);
@@ -79,7 +52,7 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 	}
 
 	FTransform spawnTransform{
-		this->GetTransform().GetRotation(),                 // Rotation
+		FRotator{0, 0, 0},                 // Rotation
 		LaneTransform(lane),  // Translation
 		FVector{1.0f, 1.0f, 1.0f}   // Scale
 	};
@@ -93,10 +66,10 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 
 	ShipsAlive.Add(Ship);
 
-	Ship->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_Spawner::RemoveShip);
+	Ship->OnShipDestroyedDelegate.AddDynamic(this, &UKCD_SpawnerWorldSubsystem::RemoveShip);
 }
 
-void AKCD_Spawner::NextWave()
+void UKCD_SpawnerWorldSubsystem::NextWave()
 {
 	CurrentWaveIndex++;
 
@@ -112,7 +85,7 @@ void AKCD_Spawner::NextWave()
 	PlayWaveSequence();
 }
 
-void AKCD_Spawner::PlayWaveSequence()
+void UKCD_SpawnerWorldSubsystem::PlayWaveSequence()
 {
 	int numbOfShips = CurrentWaveData.NumShipTier[0] + CurrentWaveData.NumShipTier[1] + CurrentWaveData.NumShipTier[2] ;
 	TArray availableTiers = {0, 1, 2};
@@ -138,7 +111,7 @@ void AKCD_Spawner::PlayWaveSequence()
 	
 }
 
-void AKCD_Spawner::ReadCurrentWaveData(FKCD_WaveData& Wave)
+void UKCD_SpawnerWorldSubsystem::ReadCurrentWaveData(FKCD_WaveData& Wave)
 {
 	if(Wave.NumberOfT0 <= 0)
 	{
@@ -152,31 +125,25 @@ void AKCD_Spawner::ReadCurrentWaveData(FKCD_WaveData& Wave)
 	CurrentWaveData.SpeedModifier = Wave.SpeedModifier;
 }
 
-void AKCD_Spawner::RemoveShip(AKCD_Ship* Ship)
+void UKCD_SpawnerWorldSubsystem::RemoveShip(AKCD_Ship* Ship)
 {
 	ShipsAlive.Remove(Ship);
 	Ship->OnShipDestroyedDelegate.RemoveAll(this);
 	WordIndexUsed[Ship->Tier].index.Remove(Ship->WordIndex);
 }
 
-FVector AKCD_Spawner::LaneTransform(AKCD_Lane* Lane)
+FVector UKCD_SpawnerWorldSubsystem::LaneTransform(AKCD_Lane* Lane)
 {
 	return Lane->GetTransform().GetLocation();
 }
 
-AKCD_Lane* AKCD_Spawner::FetchRandomLane()
+AKCD_Lane* UKCD_SpawnerWorldSubsystem::FetchRandomLane()
 {
 	AKCD_LaneHolder* LaneHolder = GameModeInstance->GetLaneHolder();
 	return LaneHolder->Lanes[FMath::RandRange(0, LaneHolder->Lanes.Num() - 1)];
 }
 
-// Called every frame
-void AKCD_Spawner::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-AKCD_Ship* AKCD_Spawner::GetClosestShip(FName letter)
+AKCD_Ship* UKCD_SpawnerWorldSubsystem::GetClosestShip(FName letter)
 {
 	//Verify if there is a ship alive
 	if(ShipsAlive.IsEmpty())
