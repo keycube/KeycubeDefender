@@ -23,8 +23,6 @@ class KEYCUBEDEFENDER_API AKCD_LaneHolder : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AKCD_LaneHolder();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
-	int NumberOfLanes = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
 	TArray<AKCD_Lane*> Lanes;
@@ -35,7 +33,7 @@ protected:
 
 private:
 	UFUNCTION()
-	void SetNumbersOfLanes();
+	void FillLanes();
 
 public:	
 	// Called every frame

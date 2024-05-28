@@ -63,8 +63,6 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 		
 		wordFound = true;
 		WordIndexUsed[ShipTier].index.Add(ShipWordIndex);
-		UE_LOG(LogTemp, Warning, TEXT("ADDING Ship tier : %s"), *FString::FromInt(ShipTier));
-		UE_LOG(LogTemp, Warning, TEXT("ADDING Ship word index : %s"), *FString::FromInt(ShipWordIndex));
 		break;
 	}
 
@@ -74,24 +72,29 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 		return;
 	}
 	
-	//TODO : Set the position of the lane
 	//Use a deferred spawn so we can set the ship's word before spawning it
 	AKCD_Ship* Ship;
-	AKCD_LaneHolder* LaneHolder = GameModeInstance->GetLaneHolder();
 
-	if(LaneHolder != nullptr)
+	auto lane = FetchRandomLane();
+	if(lane == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Got the lane holder!"));
+		UE_LOG(LogTemp, Warning, TEXT("Couldn't get a valid lane"));
 	}
+
+	FTransform spawnTransform{
+		this->GetTransform().GetRotation(),                 // Rotation
+		LaneTransform(lane),  // Translation
+		FVector{1.0f, 1.0f, 1.0f}   // Scale
+	};
 	
-	Ship = GetWorld()->SpawnActorDeferred<AKCD_Ship>(Ships[ShipTier], this->GetTransform());
+	Ship = GetWorld()->SpawnActorDeferred<AKCD_Ship>(Ships[ShipTier], spawnTransform);
 
 	//Setting the ship's variables
 	Ship->Tier = ShipTier;
 	Ship->SetWord(possibleWords[0].WordList[ShipWordIndex]);
 	Ship->WordIndex = ShipWordIndex;
 	
-	UGameplayStatics::FinishSpawningActor(Ship, this->GetTransform());
+	UGameplayStatics::FinishSpawningActor(Ship, spawnTransform);
 
 	ShipsAlive.Add(Ship);
 
@@ -107,16 +110,23 @@ void AKCD_Spawner::RemoveShip(AKCD_Ship* Ship)
 	ShipsAlive.Remove(Ship);
 	Ship->OnShipDestroyedDelegate.RemoveAll(this);
 	WordIndexUsed[Ship->Tier].index.Remove(Ship->WordIndex);
+}
 
-	UE_LOG(LogTemp, Warning, TEXT("REMOVING Ship tier : %s"), *FString::FromInt(Ship->Tier));
-	UE_LOG(LogTemp, Warning, TEXT("REMOVING Ship word index : %s"), *FString::FromInt(Ship->WordIndex));
+FVector AKCD_Spawner::LaneTransform(AKCD_Lane* Lane)
+{
+	return Lane->GetTransform().GetLocation();
+}
+
+AKCD_Lane* AKCD_Spawner::FetchRandomLane()
+{
+	AKCD_LaneHolder* LaneHolder = GameModeInstance->GetLaneHolder();
+	return LaneHolder->Lanes[FMath::RandRange(0, LaneHolder->Lanes.Num() - 1)];
 }
 
 // Called every frame
 void AKCD_Spawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 AKCD_Ship* AKCD_Spawner::GetClosestShip(FName letter)

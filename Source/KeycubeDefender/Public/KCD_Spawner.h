@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "KCD_GameMode.h"
+#include "KCD_Lane.h"
 #include "KCD_Ship.h"
 #include "GameFramework/Actor.h"
 #include "KCD_Spawner.generated.h"
@@ -70,6 +71,12 @@ private:
 
 	UFUNCTION()
 	void RemoveShip(AKCD_Ship* Ship);
+
+	UFUNCTION()
+	FVector LaneTransform(AKCD_Lane* Lane);
+
+	UFUNCTION()
+	AKCD_Lane* FetchRandomLane();
 
 	UPROPERTY()
 	AKCD_GameMode* GameModeInstance;

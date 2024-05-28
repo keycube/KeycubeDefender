@@ -22,7 +22,7 @@ void AKCD_LaneHolder::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetNumbersOfLanes();
+	FillLanes();
 	
 }
 
@@ -33,7 +33,7 @@ void AKCD_LaneHolder::Tick(float DeltaTime)
 
 }
 
-void AKCD_LaneHolder::SetNumbersOfLanes()
+void AKCD_LaneHolder::FillLanes()
 {
 	TArray<USceneComponent*> ChildComponents;
 	SceneComponent->GetChildrenComponents(true, ChildComponents);
@@ -41,12 +41,11 @@ void AKCD_LaneHolder::SetNumbersOfLanes()
 	for (auto ChildComponent : ChildComponents)
 	{
 		if(auto ChildActor = Cast<UChildActorComponent>(ChildComponent))
-		if(Cast<AKCD_Lane>(ChildActor->GetChildActor()))
+		if(auto LaneActor = Cast<AKCD_Lane>(ChildActor->GetChildActor()))
 		{
-			NumberOfLanes++;
+			Lanes.Add(LaneActor);
 		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Numbers of lanes found : %s"), *FString::FromInt(NumberOfLanes));
 }
 
