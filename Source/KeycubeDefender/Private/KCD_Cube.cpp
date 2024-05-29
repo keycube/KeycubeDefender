@@ -75,6 +75,8 @@ void AKCD_Cube::KeyPress(FKey key)
 {
 	//TODO : Do this only once (not in the begin play since it isn't instanced yet)
 	AKCD_Spawner* SpawnerInstance = GameModeInstance->GetShipSpawner();
+
+	
 	if(!Keys.Contains(key))
 	{
 		return;
@@ -103,9 +105,14 @@ void AKCD_Cube::KeyPress(FKey key)
 	//Try to hit the current target
 	if(!CurrentTarget->Hit(key.GetFName()))
 	{
-		//TODO : MAKE WRONG LETTER TYPED LOGIC
+		UpdateMultiplicator(false);
+	} else
+	{
+		UpdateMultiplicator(true);
+		Score += 1 * ScoreMultiplicator;
 	}
-
+	
+	OnScoreUpdateDelegate.Broadcast();
 }
 
 void AKCD_Cube::KeyRelease(FKey key)
@@ -126,11 +133,34 @@ void AKCD_Cube::LooseCurrentTarget(AKCD_Ship* ship)
 	CurrentTarget = nullptr;
 }
 
+void AKCD_Cube::ShipDestroyed(AKCD_Ship* ship)
+{
+	Score += ship->Reward * ScoreMultiplicator;
+	OnScoreUpdateDelegate.Broadcast();
+}
+
 void AKCD_Cube::HighlightKeys(TArray<FKey> keysToHighlight)
 {
 	for (auto key : keysToHighlight)
 	{
 		
+	}
+}
+
+void AKCD_Cube::UpdateMultiplicator(bool Success)
+{
+	if(Success)
+	{
+		MultiplicatorGauge++;
+		if(MultiplicatorGauge % (10 * ScoreMultiplicator) == 0)
+		{
+			MultiplicatorGauge = 0;
+			ScoreMultiplicator += 1;
+		}
+	} else
+	{
+		MultiplicatorGauge = 0;
+		ScoreMultiplicator = 1;
 	}
 }
 

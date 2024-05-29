@@ -9,8 +9,9 @@
 #include "GameFramework/Actor.h"
 #include "KCD_Cube.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnScoreUpdate);
 UCLASS()
-class KEYCUBEDEFENDER_API AKCD_Cube : public AActor
+class KEYCUBEDEFENDER_API AKCD_Cube : public APawn
 {
 	GENERATED_BODY()
 
@@ -54,6 +55,9 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void LooseCurrentTarget(AKCD_Ship* ship);
 
+	UFUNCTION(BlueprintCallable)
+	void ShipDestroyed(AKCD_Ship* ship);
+
 	//Mark the letters who would result in a good hit
 	UFUNCTION(BlueprintCallable)
 	void HighlightKeys(TArray<FKey> keysToHighlight);
@@ -61,6 +65,10 @@ private:
 	//Reference to the GameMode
 	UPROPERTY()
 	AKCD_GameMode* GameModeInstance;
+
+	//Advance or reset the score multiplicator 
+	UFUNCTION()
+	void UpdateMultiplicator(bool Success);
 
 public:	
 	//Set a new target
@@ -70,5 +78,17 @@ public:
 	//Returns the current target
 	UFUNCTION(BlueprintCallable)
 	AKCD_Ship* GetCurrentTarget();
+
+	//Event delegate for ship destruction
+	UPROPERTY(BlueprintAssignable)
+	FOnScoreUpdate OnScoreUpdateDelegate;
+
+	//Score variables
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
+	int Score = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
+	int MultiplicatorGauge = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
+	int ScoreMultiplicator = 1;
 
 };

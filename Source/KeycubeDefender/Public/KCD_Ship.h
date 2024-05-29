@@ -51,7 +51,7 @@ public:
 
 	
 	//Event delegate for ship destruction
-	UPROPERTY(BlueprintAssignable, Category="Key press delegate")
+	UPROPERTY(BlueprintAssignable)
 	FOnShipDestroyed OnShipDestroyedDelegate;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Words", meta = (ExposeOnSpawn=true))
 	FString CurrentWord;
@@ -73,7 +73,7 @@ private:
 	//Theses var are used to make the word centered on the ship
 	UPROPERTY(EditAnywhere, Category="Words")
 	float Lettersize = 30.0;
-
+	
 	FTimerHandle TimerHandle;
 	
 public:	
