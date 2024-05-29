@@ -86,7 +86,6 @@ void AKCD_Cube::KeyPress(FKey key)
 	//If the target is invalid, we try to get a new one
 	if(!CurrentTarget->IsValidLowLevel())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("CurrentTarget is invalid"));
 		if(!SpawnerInstance->IsValidLowLevel())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Spawner is invalid"));

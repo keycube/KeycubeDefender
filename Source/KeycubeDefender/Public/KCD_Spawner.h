@@ -19,6 +19,7 @@ struct FWave
 
 	float SpeedModifier;
 	float SpawnTime;
+	TArray<int> availableTiers;
 };
 
 USTRUCT()
@@ -60,7 +61,6 @@ protected:
 
 	TArray<FEncapsule> WordIndexUsed;
 	
-	// //TODO : MAKE WAVE DATA
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
 	UDataTable* WaveData;
 
@@ -79,10 +79,11 @@ protected:
 	// Reads the data table and fills an FWave 
 	// struct with the data of the current wave
 	UFUNCTION(BlueprintCallable)
-	void ReadCurrentWaveData(FKCD_WaveData& Wave);
+	void ReadCurrentWaveData(int waveIndex);
 
 private:
-	FTimerHandle TimerHandle;
+	FTimerHandle SpawnTimerHandle;
+	FTimerHandle NewWaveTimerHandle;
 
 	UFUNCTION()
 	void RemoveShip(AKCD_Ship* Ship);
