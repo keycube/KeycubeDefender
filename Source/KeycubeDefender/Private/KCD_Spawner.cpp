@@ -223,6 +223,8 @@ AKCD_Ship* AKCD_Spawner::GetClosestShip(FName letter)
 	if (ShipsAlive.IsEmpty())
 		return nullptr;
 
+	TArray<AKCD_Ship*> matchingShips;
+
 	//We go trough the list of ship to find one who's current
 	//letter to destroy is the one we try to shoot
 	for (AKCD_Ship* shipChecked : ShipsAlive)
@@ -231,10 +233,28 @@ AKCD_Ship* AKCD_Spawner::GetClosestShip(FName letter)
 			continue;
 		if (shipChecked->LettersInstances[0]->CurrentLetter == letter)
 		{
-			return shipChecked;
+			matchingShips.Add(shipChecked);
 		}
 	}
 
-	//No ship is found
-	return nullptr;
+	if(matchingShips.IsEmpty())
+	{
+		//No ship is found
+		return nullptr;
+	}
+
+	
+	AKCD_Ship* ClosestShip = matchingShips[0];
+
+	//We look at the z position of the ships to get the closest to the city
+	//in case more than one has the right letter
+	for (AKCD_Ship* shipChecked : matchingShips)
+	{
+		if(shipChecked->GetTransform().GetLocation().Z < ClosestShip->GetTransform().GetLocation().Z)
+			ClosestShip = shipChecked;
+	}
+
+	
+	return ClosestShip;
+	
 }
