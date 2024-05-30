@@ -40,6 +40,19 @@ void AKCD_Cube::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Game mode is invalid"));
 	}
+
+	FTimerHandle TimerHandleGamemodeRefs;
+
+	// Fetch the references set in the gamemode after a delay
+	//to allow it to finish fetching them
+	GetWorld()->GetTimerManager().SetTimer(TimerHandleGamemodeRefs, [&]()
+	{
+		SpawnerInstance = GameModeInstance->GetShipSpawner();
+		if(SpawnerInstance == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("SpawnerInstance is invalid"));
+		}
+	},  0.1, false);
 	
 	FillKeyMap();
 }
@@ -73,9 +86,6 @@ void AKCD_Cube::FillKeyMap()
 
 void AKCD_Cube::KeyPress(FKey key)
 {
-	//TODO : Do this only once (not in the begin play since it isn't instanced yet)
-	AKCD_Spawner* SpawnerInstance = GameModeInstance->GetShipSpawner();
-
 	
 	if(!Keys.Contains(key))
 	{
@@ -88,18 +98,11 @@ void AKCD_Cube::KeyPress(FKey key)
 	//If the target is invalid, we try to get a new one
 	if(!CurrentTarget->IsValidLowLevel())
 	{
-		if(!SpawnerInstance->IsValidLowLevel())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Spawner is invalid"));
-			return;
-		} 
-		
 		//If we can't get a new target, we stop
 		if(!NewTarget(SpawnerInstance->GetClosestShip(key.GetFName())))
 		{
 			return;
 		}
-		 	
 	}
 
 	//Try to hit the current target

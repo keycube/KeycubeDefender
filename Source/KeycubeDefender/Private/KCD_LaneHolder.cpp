@@ -3,6 +3,8 @@
 
 #include "KCD_LaneHolder.h"
 
+#include "KCD_Ship.h"
+
 // Sets default values
 AKCD_LaneHolder::AKCD_LaneHolder()
 {
@@ -23,6 +25,9 @@ void AKCD_LaneHolder::BeginPlay()
 	Super::BeginPlay();
 
 	FillLanes();
+
+	// Bind function OnActorBeginOverlap with your class function OnOverlap
+	this->OnActorBeginOverlap.AddDynamic(this, &AKCD_LaneHolder::OnOverlap);
 	
 }
 
@@ -47,5 +52,11 @@ void AKCD_LaneHolder::FillLanes()
 		}
 	}
 
+}
+
+void AKCD_LaneHolder::OnOverlap(AActor* MyActor, AActor* OtherActor)
+{
+	if(Cast<AKCD_Ship>(OtherActor))
+		OnShipCrashedDelegate.Broadcast();
 }
 

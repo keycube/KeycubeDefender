@@ -34,10 +34,24 @@ void AKCD_Spawner::BeginPlay()
 	//Get the current game mode and cast it to the required game mode
 	GameModeInstance = Cast<AKCD_GameMode>(UGameplayStatics::GetGameMode(this));
 
-	if (!GameModeInstance->IsValidLowLevel())
+	FTimerHandle TimerHandleGamemodeRefs;
+
+	// Fetch the references set in the gamemode after a delay
+	//to allow it to finish fetching them
+	GetWorld()->GetTimerManager().SetTimer(TimerHandleGamemodeRefs, [&]()
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Game mode is invalid"));
-	}
+		LaneHolder = GameModeInstance->GetLaneHolder();
+		if(LaneHolder == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("LaneHolder is invalid"));
+		} else
+		{
+			LaneHolder->OnShipCrashedDelegate.AddDynamic(this, &AKCD_Spawner::ShipCrashed);
+		}
+	},  0.1, false);
+	
+
+
 
 	NextWave();
 }
@@ -89,7 +103,7 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 	Ship = GetWorld()->SpawnActorDeferred<AKCD_Ship>(Ships[ShipTier], spawnTransform);
 
 	//Setting the ship's variables
-	Ship->Initialize(ShipTier, possibleWords[0].WordList[ShipWordIndex], ShipWordIndex, 1.0);
+	Ship->Initialize(ShipTier, possibleWords[0].WordList[ShipWordIndex], ShipWordIndex, CurrentWaveData.SpeedModifier);
 
 	UGameplayStatics::FinishSpawningActor(Ship, spawnTransform);
 
@@ -189,12 +203,12 @@ FVector AKCD_Spawner::LaneTransform(AKCD_Lane* Lane)
 
 AKCD_Lane* AKCD_Spawner::FetchRandomLane()
 {
-	AKCD_LaneHolder* LaneHolder = GameModeInstance->GetLaneHolder();
-	if (LaneHolder == nullptr)
-	{
-		return nullptr;
-	}
 	return LaneHolder->Lanes[FMath::RandRange(0, LaneHolder->Lanes.Num() - 1)];
+}
+
+void AKCD_Spawner::ShipCrashed()
+{
+	UE_LOG(LogTemp, Warning, TEXT("REEEEEE"));
 }
 
 // Called every frame

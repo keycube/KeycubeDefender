@@ -33,17 +33,12 @@ void AKCD_Ship::Initialize(int NewTier, FString NewWord, int NewWordIndex, float
 void AKCD_Ship::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//TODO : Check with the wave system if the ship's speed should be modified elsewhere
-	//Set the ship's speed
-	ProjectileMovement->InitialSpeed = BaseSpeed;
 }
 
 // Called every frame
 void AKCD_Ship::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AKCD_Ship::DestroyBuilding()

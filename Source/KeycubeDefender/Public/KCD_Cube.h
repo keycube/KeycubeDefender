@@ -66,9 +66,14 @@ private:
 	UPROPERTY()
 	AKCD_GameMode* GameModeInstance;
 
+	UPROPERTY()
+	AKCD_Spawner* SpawnerInstance;
+	
 	//Advance or reset the score multiplicator 
 	UFUNCTION()
 	void UpdateMultiplicator(bool Success);
+
+	
 
 public:	
 	//Set a new target

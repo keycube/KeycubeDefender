@@ -94,6 +94,9 @@ private:
 	UFUNCTION()
 	AKCD_Lane* FetchRandomLane();
 
+	UFUNCTION()
+	void ShipCrashed();
+	
 	UPROPERTY()
 	AKCD_GameMode* GameModeInstance;
 
@@ -101,6 +104,11 @@ private:
 	int CurrentWaveIndex = 0;
 	UPROPERTY()
 	FWave CurrentWaveData;
+
+	UPROPERTY()
+	AKCD_LaneHolder* LaneHolder;
+
+	
 	
 public:	
 	// Called every frame

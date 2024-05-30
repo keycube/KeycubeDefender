@@ -8,6 +8,7 @@
 #include "GameFramework/Actor.h"
 #include "KCD_LaneHolder.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShipCrashed);
 UCLASS()
 class KEYCUBEDEFENDER_API AKCD_LaneHolder : public AActor
 {
@@ -34,9 +35,14 @@ protected:
 private:
 	UFUNCTION()
 	void FillLanes();
+	UFUNCTION()
+	void OnOverlap(AActor* MyActor, AActor* OtherActor);
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	//Event delegate for ship hitting the city
+	UPROPERTY(BlueprintAssignable)
+	FOnShipCrashed OnShipCrashedDelegate;
 };
