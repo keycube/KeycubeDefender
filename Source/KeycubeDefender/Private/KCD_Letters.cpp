@@ -53,5 +53,12 @@ void AKCD_Letters::Highlight()
 void AKCD_Letters::Unhighlight()
 {
 	Sprite->SetSpriteColor(BaseColor);
+	IsLetterHidden = false;
+}
+
+void AKCD_Letters::Hide()
+{
+	Sprite->SetSpriteColor(FLinearColor(255,255,255, 0.2));
+	IsLetterHidden = true;
 }
 

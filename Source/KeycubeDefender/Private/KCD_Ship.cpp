@@ -67,8 +67,7 @@ void AKCD_Ship::SpawnLetters()
 		FVector{1.0f, 1.0f, 1.0f}   // Scale
 	};
 	//Total size of the word
-	float WordSize = 0.0;
-	WordSize = Lettersize * CurrentWord.Len();
+	const float WordSize = Lettersize * CurrentWord.Len();
 
 	//We spawn a KCD_Letter BP for each letters in the word 
 	int x = 0;
@@ -102,7 +101,12 @@ void AKCD_Ship::SpawnLetters()
 
 void AKCD_Ship::Untargeted()
 {
-	LettersInstances[0]->Unhighlight();
+	for (auto letter : LettersInstances)
+	{
+		letter->Unhighlight();
+	}
+
+	//LettersInstances[0]->Unhighlight();
 }
 
 bool AKCD_Ship::Hit(FName Letter)

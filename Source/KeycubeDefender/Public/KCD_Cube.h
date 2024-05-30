@@ -35,21 +35,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category=Variable)
 	AKCD_Ship* CurrentTarget;
 
-private:
-	//Fill the map of association between the inputs and the
-	//keys on the cube
-	UFUNCTION()
-	void FillKeyMap();
+	//Reference to the GameMode
+	UPROPERTY()
+	AKCD_GameMode* GameModeInstance;
 
-	//Function called when a key is pressed
-	//Gives visual feedback of the key pressed, and tries to hit a target
-	UFUNCTION(BlueprintCallable)
-	void KeyPress(FKey key);
-
-	//Function called when a key is released
-	//removes the visual feedback of the key pressed
-	UFUNCTION(BlueprintCallable)
-	void KeyRelease(FKey key);
+	UPROPERTY()
+	AKCD_Spawner* SpawnerInstance;
 
 	//Removes the current target and unsubscribes from the delegate
 	UFUNCTION(BlueprintCallable)
@@ -61,17 +52,27 @@ private:
 	//Mark the letters who would result in a good hit
 	UFUNCTION(BlueprintCallable)
 	void HighlightKeys(TArray<FKey> keysToHighlight);
-
-	//Reference to the GameMode
-	UPROPERTY()
-	AKCD_GameMode* GameModeInstance;
-
-	UPROPERTY()
-	AKCD_Spawner* SpawnerInstance;
 	
 	//Advance or reset the score multiplicator 
 	UFUNCTION()
 	void UpdateMultiplicator(bool Success);
+
+private:
+	//Fill the map of association between the inputs and the
+	//keys on the cube
+	UFUNCTION()
+	void FillKeyMap();
+
+	//Function called when a key is pressed
+	//Gives visual feedback of the key pressed, and tries to hit a target
+	UFUNCTION(BlueprintCallable)
+	virtual void KeyPress(FKey key);
+
+	//Function called when a key is released
+	//removes the visual feedback of the key pressed
+	UFUNCTION(BlueprintCallable)
+	void KeyRelease(FKey key);
+
 
 	
 

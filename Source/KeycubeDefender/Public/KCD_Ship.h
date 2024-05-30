@@ -106,7 +106,7 @@ public:
 
 	//Tries to hit the ship with the letter. Returns if the hit was successful
 	UFUNCTION(BlueprintCallable)
-	bool Hit(FName Letter);
+	virtual bool Hit(FName Letter);
 
 	//Effect when the ship has no more letters
 	// broadcasts the OnSHipDestroyedDelegate
