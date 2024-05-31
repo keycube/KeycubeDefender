@@ -16,10 +16,15 @@ class KEYCUBEDEFENDER_API AKCD_Cube_Multitarget : public AKCD_Cube
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combo")
+	int ComboCounter = 0;
+	
 	
 private:
 	UPROPERTY()
 	TArray<AKCD_Ship*> CurrentTargets;
+	
 	
 	virtual void KeyPress(FKey key) override;
 
@@ -28,5 +33,7 @@ private:
 
 	UFUNCTION()
 	void RemoveTarget(AKCD_Ship* Ship);
+	
+	virtual void ShipDestroyed(AKCD_Ship* Ship) override;
 
 };

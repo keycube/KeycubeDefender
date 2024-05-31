@@ -36,7 +36,7 @@ void AKCD_Cube_Multitarget::KeyPress(FKey key)
 		{
 			isHitSuccess = true;
 			UpdateMultiplicator(true);
-			Score += 1 * ScoreMultiplicator;
+			Score += 1 * (ScoreMultiplicator * ( 1 + ComboCounter));
 		}
 	}
 
@@ -64,7 +64,7 @@ void AKCD_Cube_Multitarget::NewTargets(const TArray<AKCD_Ship*>& ShipList)
 	{
 		if(!CurrentTargets.Contains(NewShip))
 		{
-			NewShip->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_Cube_Multitarget::RemoveTarget);
+			NewShip->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_Cube_Multitarget::ShipDestroyed);
 			CurrentTargets.Add(NewShip);
 		}
 	}
@@ -74,4 +74,22 @@ void AKCD_Cube_Multitarget::RemoveTarget(AKCD_Ship* Ship)
 {
 	CurrentTargets.Remove(Ship);
 	Ship->OnShipDestroyedDelegate.RemoveAll(this);
+
+	if(CurrentTargets.IsEmpty())
+	{
+		ComboCounter = 0;
+	}
+}
+
+void AKCD_Cube_Multitarget::ShipDestroyed(AKCD_Ship* Ship)
+{
+	Score += Ship->Reward * (ScoreMultiplicator * ( 1 + ComboCounter));
+	RemoveTarget(Ship);
+	
+	if(!CurrentTargets.IsEmpty())
+	{
+		ComboCounter++;
+	}
+
+	OnScoreUpdateDelegate.Broadcast();
 }

@@ -47,7 +47,7 @@ protected:
 	void LooseCurrentTarget(AKCD_Ship* ship);
 
 	UFUNCTION(BlueprintCallable)
-	void ShipDestroyed(AKCD_Ship* ship);
+	virtual void ShipDestroyed(AKCD_Ship* ship);
 
 	//Mark the letters who would result in a good hit
 	UFUNCTION(BlueprintCallable)

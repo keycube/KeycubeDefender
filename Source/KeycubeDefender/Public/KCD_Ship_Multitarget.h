@@ -17,4 +17,5 @@ class KEYCUBEDEFENDER_API AKCD_Ship_Multitarget : public AKCD_Ship
 public:
 	
 	virtual bool Hit(FName Letter) override;
+	
 };
