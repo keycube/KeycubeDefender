@@ -78,7 +78,7 @@ void AKCD_Ship::SpawnLetters()
 	//Base transform of the letters, used to spawn the letter in local position
 	FTransform BackgroundTransform{
 		FRotator{0.0f, -90.0f, 0.0f},                 // Rotation
-		FVector{-0.5f, 0, -1},  // Translation
+		FVector{-0.5f, 0, 0.5},  // Translation
 		FVector{(2.0f * CurrentWord.Len()) + 1.0f, 2.0f, 2.5f}   // Scale
 	};
 
