@@ -117,7 +117,7 @@ public:
 	//Returns the closest ship available (not already in the destroy state)
 	//who's next letter to be hit is the one provided
 	UFUNCTION(BlueprintCallable)
-	AKCD_Ship* GetClosestShip(FName letter);
+	TArray<AKCD_Ship*> GetClosestShips(FName Letter);
 
 	
 };

@@ -33,21 +33,17 @@ protected:
 	TMap<FKey, AKCD_Keys*> Keys;
 	//Target who will receive our current input
 	UPROPERTY(EditAnywhere, Category=Variable)
-	AKCD_Ship* CurrentTarget;
+	TArray<AKCD_Ship*> CurrentTargets;
 
 	//Reference to the GameMode
 	UPROPERTY()
 	AKCD_GameMode* GameModeInstance;
-
+	//Reference to the spawner
 	UPROPERTY()
 	AKCD_Spawner* SpawnerInstance;
 
-	//Removes the current target and unsubscribes from the delegate
 	UFUNCTION(BlueprintCallable)
-	void LooseCurrentTarget(AKCD_Ship* ship);
-
-	UFUNCTION(BlueprintCallable)
-	virtual void ShipDestroyed(AKCD_Ship* ship);
+	void ShipDestroyed(AKCD_Ship* ship);
 
 	//Mark the letters who would result in a good hit
 	UFUNCTION(BlueprintCallable)
@@ -66,24 +62,26 @@ private:
 	//Function called when a key is pressed
 	//Gives visual feedback of the key pressed, and tries to hit a target
 	UFUNCTION(BlueprintCallable)
-	virtual void KeyPress(FKey key);
+	void KeyPress(FKey key);
 
 	//Function called when a key is released
 	//removes the visual feedback of the key pressed
 	UFUNCTION(BlueprintCallable)
 	void KeyRelease(FKey key);
 
-
+	//Add the new possible targets
+	UFUNCTION(BlueprintCallable)
+	void NewTargets(const TArray<AKCD_Ship*>& ShipList);
+	//Removes the specified ship from the targets
+	UFUNCTION()
+	void RemoveTarget(AKCD_Ship* Ship);
 	
 
 public:	
-	//Set a new target
-	UFUNCTION(BlueprintCallable)
-	bool NewTarget(AKCD_Ship* ship);
 
 	//Returns the current target
 	UFUNCTION(BlueprintCallable)
-	AKCD_Ship* GetCurrentTarget();
+	TArray<AKCD_Ship*> GetCurrentTargets();
 
 	//Event delegate for ship destruction
 	UPROPERTY(BlueprintAssignable)
@@ -96,5 +94,9 @@ public:
 	int MultiplicatorGauge = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
 	int ScoreMultiplicator = 1;
+
+	//Numbers of ships destroy without having an empty target list
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
+	int ComboCounter = 0;
 
 };

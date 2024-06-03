@@ -96,24 +96,44 @@ void AKCD_Cube::KeyPress(FKey key)
 
 	KeyPressed->KeyPressed_Keys();
 	//If the target is invalid, we try to get a new one
-	if(!CurrentTarget->IsValidLowLevel())
+	NewTargets(Cast<AKCD_Spawner>(SpawnerInstance)->GetClosestShips(key.GetFName()));
+
+	if(CurrentTargets.IsEmpty())
+		return;
+
+	TArray<AKCD_Ship*> TargetsToRemove;
+	//New list to avoid error when removing target during iteration
+	TArray<AKCD_Ship*> TargetsToCheck = CurrentTargets;
+
+	bool isHitSuccess = false;
+	//Try to hit the current targets
+	for (auto Ship : TargetsToCheck)
 	{
-		//If we can't get a new target, we stop
-		if(!NewTarget(SpawnerInstance->GetClosestShip(key.GetFName())))
+		if(!Ship->Hit(key.GetFName()))
 		{
-			return;
+			TargetsToRemove.Add(Ship);
+		} else
+		{
+			isHitSuccess = true;
+			UpdateMultiplicator(true);
+			Score += 1 * (ScoreMultiplicator * ( 1 + ComboCounter));
 		}
 	}
 
-	//Try to hit the current target
-	if(!CurrentTarget->Hit(key.GetFName()))
+	if(!TargetsToRemove.IsEmpty())
+	{
+		for (auto ToRemove : TargetsToRemove)
+		{
+			ToRemove->Untargeted();
+			RemoveTarget(ToRemove);
+		}
+	}
+	
+	if(!isHitSuccess)
 	{
 		UpdateMultiplicator(false);
-	} else
-	{
-		UpdateMultiplicator(true);
-		Score += 1 * ScoreMultiplicator;
-	}
+		CurrentTargets.Empty();
+	} 
 	
 	OnScoreUpdateDelegate.Broadcast();
 }
@@ -130,15 +150,26 @@ void AKCD_Cube::KeyRelease(FKey key)
 	KeyPressed->KeyReleased_Keys();
 }
 
-void AKCD_Cube::LooseCurrentTarget(AKCD_Ship* ship)
+void AKCD_Cube::RemoveTarget(AKCD_Ship* Ship)
 {
-	ship->OnShipDestroyedDelegate.RemoveAll(this);
-	CurrentTarget = nullptr;
+	CurrentTargets.Remove(Ship);
+	Ship->OnShipDestroyedDelegate.RemoveAll(this);
+	if(CurrentTargets.IsEmpty())
+	{
+		ComboCounter = 0;
+	}
 }
 
-void AKCD_Cube::ShipDestroyed(AKCD_Ship* ship)
+void AKCD_Cube::ShipDestroyed(AKCD_Ship* Ship)
 {
-	Score += ship->Reward * ScoreMultiplicator;
+	Score += Ship->Reward * (ScoreMultiplicator * ( 1 + ComboCounter));
+	RemoveTarget(Ship);
+	
+	if(!CurrentTargets.IsEmpty())
+	{
+		ComboCounter++;
+	}
+
 	OnScoreUpdateDelegate.Broadcast();
 }
 
@@ -167,23 +198,20 @@ void AKCD_Cube::UpdateMultiplicator(bool Success)
 	}
 }
 
-bool AKCD_Cube::NewTarget(AKCD_Ship* ship)
+void AKCD_Cube::NewTargets(const TArray<AKCD_Ship*>& ShipList)
 {
-	if(ship == nullptr)
-		return false;
-
-	//Subscribe to the ShipDestroyed delegate
-	ship->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_Cube::LooseCurrentTarget);
-	
-	CurrentTarget = ship;
-
-	//Give visual feedback of the current target
-	CurrentTarget->Targeted();
-	return true;
+	for (auto NewShip : ShipList)
+	{
+		if(!CurrentTargets.Contains(NewShip))
+		{
+			NewShip->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_Cube::ShipDestroyed);
+			CurrentTargets.Add(NewShip);
+		}
+	}
 }
 
-AKCD_Ship* AKCD_Cube::GetCurrentTarget()
+TArray<AKCD_Ship*> AKCD_Cube::GetCurrentTargets()
 {
-	return CurrentTarget;
+	return CurrentTargets;
 }
 
