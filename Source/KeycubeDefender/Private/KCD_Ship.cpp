@@ -18,6 +18,9 @@ AKCD_Ship::AKCD_Ship()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("ShipMesh");
 	Mesh->SetupAttachment(RootComponent);
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>("ShipMovement");
+
+	LettersBackground = CreateDefaultSubobject<UPaperSpriteComponent>("LettersBackground");
+	LettersBackground->SetupAttachment(RootComponent);
 }
 
 void AKCD_Ship::Initialize(int NewTier, FString NewWord, int NewWordIndex, float SpeedModifier)
@@ -68,6 +71,18 @@ void AKCD_Ship::SpawnLetters()
 	};
 	//Total size of the word
 	const float WordSize = Lettersize * CurrentWord.Len();
+
+	LettersBackground->SetRelativeLocation(FVector{25.0f, 0, 0.0f});
+	LettersBackground->SetRelativeScale3D(FVector{0.001 * WordSize, 1.0f, 0.1f});
+
+	//Base transform of the letters, used to spawn the letter in local position
+	FTransform BackgroundTransform{
+		FRotator{0.0f, -90.0f, 0.0f},                 // Rotation
+		FVector{50.0f, 0, -30.0f},  // Translation
+		FVector{0.001 * WordSize, 1.0f, 0.04f}   // Scale
+	};
+
+	LettersBackground->SetRelativeTransform(BackgroundTransform);
 
 	//We spawn a KCD_Letter BP for each letters in the word 
 	int x = 0;
