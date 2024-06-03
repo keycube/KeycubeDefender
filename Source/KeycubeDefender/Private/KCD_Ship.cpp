@@ -19,8 +19,11 @@ AKCD_Ship::AKCD_Ship()
 	Mesh->SetupAttachment(RootComponent);
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>("ShipMovement");
 
+	LettersHolder = CreateDefaultSubobject<USceneComponent>("LetterHolder");
+	LettersHolder->SetupAttachment(RootComponent);
+	
 	LettersBackground = CreateDefaultSubobject<UPaperSpriteComponent>("LettersBackground");
-	LettersBackground->SetupAttachment(RootComponent);
+	LettersBackground->SetupAttachment(LettersHolder);
 }
 
 void AKCD_Ship::Initialize(int NewTier, FString NewWord, int NewWordIndex, float SpeedModifier)
@@ -72,14 +75,11 @@ void AKCD_Ship::SpawnLetters()
 	//Total size of the word
 	const float WordSize = Lettersize * CurrentWord.Len();
 
-	LettersBackground->SetRelativeLocation(FVector{25.0f, 0, 0.0f});
-	LettersBackground->SetRelativeScale3D(FVector{0.001 * WordSize, 1.0f, 0.1f});
-
 	//Base transform of the letters, used to spawn the letter in local position
 	FTransform BackgroundTransform{
 		FRotator{0.0f, -90.0f, 0.0f},                 // Rotation
-		FVector{50.0f, 0, -30.0f},  // Translation
-		FVector{0.001 * WordSize, 1.0f, 0.04f}   // Scale
+		FVector{-0.5f, 0, -1},  // Translation
+		FVector{(2.0f * CurrentWord.Len()) + 1.0f, 2.0f, 2.5f}   // Scale
 	};
 
 	LettersBackground->SetRelativeTransform(BackgroundTransform);
@@ -91,11 +91,11 @@ void AKCD_Ship::SpawnLetters()
 		//Position uses half the size of the word and offset that position
 		//with the leght of theprevious letters
 		float yPosition = (WordSize/2) - (Lettersize * (x + 0.5));
-		spawnTransform.SetLocation(FVector{50.0f, yPosition, -30.0f});
+		spawnTransform.SetLocation(FVector{0.0f, yPosition, 0.0f});
 
 		//Add the letter as a child component of the ship
 		UChildActorComponent* child = NewObject<UChildActorComponent>(this);
-		child->SetupAttachment(Collision);
+		child->SetupAttachment(LettersHolder);
 		child->RegisterComponent();
 		child->SetChildActorClass(LetterBP);
 		child->SetRelativeTransform(spawnTransform);

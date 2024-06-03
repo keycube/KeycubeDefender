@@ -24,8 +24,11 @@ class KEYCUBEDEFENDER_API AKCD_Ship : public AActor
 	UBoxComponent* Collision;
 	UPROPERTY(EditAnywhere, Category="Collision")
 	UProjectileMovementComponent* ProjectileMovement;
-	UPROPERTY(EditAnywhere, Category="Sprite")
+	UPROPERTY(EditAnywhere, Category="Word")
 	UPaperSpriteComponent* LettersBackground;
+
+	UPROPERTY(EditAnywhere, Category="Word")
+	USceneComponent* LettersHolder;
 	
 public:	
 	// Sets default values for this actor's properties
