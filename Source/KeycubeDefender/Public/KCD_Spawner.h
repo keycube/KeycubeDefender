@@ -107,8 +107,6 @@ private:
 
 	UPROPERTY()
 	AKCD_LaneHolder* LaneHolder;
-
-	
 	
 public:	
 	// Called every frame

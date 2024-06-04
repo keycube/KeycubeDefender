@@ -6,6 +6,7 @@
 #include "AsyncTreeDifferences.h"
 #include "KCD_LaneHolder.h"
 #include "KCD_WordDictionnary.h"
+#include "Blueprint/UserWidget.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetStringLibrary.h"
