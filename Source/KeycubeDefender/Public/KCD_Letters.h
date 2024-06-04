@@ -28,6 +28,8 @@ public:
 	FLinearColor HighlightColor;
 	UPROPERTY(EditAnywhere, Category="Variable")
 	FLinearColor BaseColor;
+	UPROPERTY(EditAnywhere, Category="Variable")
+	FLinearColor HiddenColor;
 
 	UPROPERTY(EditAnywhere, Category="Variable")
 	bool IsLetterHidden;
