@@ -79,7 +79,7 @@ void AKCD_Ship::SpawnLetters()
 	FTransform BackgroundTransform{
 		FRotator{0.0f, -90.0f, 0.0f},                 // Rotation
 		FVector{-0.5f, 0, 0.5},  // Translation
-		FVector{(2.0f * CurrentWord.Len()) + 1.0f, 2.0f, 2.5f}   // Scale
+		FVector{(2.0f * CurrentWord.Len()) + 1.5f, 2.5f, 2.5f}   // Scale
 	};
 
 	LettersBackground->SetRelativeTransform(BackgroundTransform);
