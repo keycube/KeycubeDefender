@@ -119,7 +119,7 @@ void AKCD_Spawner::NextWave()
 
 	if (CurrentWaveIndex > WaveData->GetRowNames().Num())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("No more waves"));
+		OnVictoryDelegate.Broadcast();
 		return;
 	}
 

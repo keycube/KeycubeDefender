@@ -34,6 +34,8 @@ struct FEncapsule
 	}
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWaveComplete);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnVictory);
 UCLASS()
 class KEYCUBEDEFENDER_API AKCD_Spawner : public AActor
 {
@@ -111,6 +113,12 @@ private:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnVictory OnVictoryDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnWaveComplete OnWaveCompleteDelegate;
 
 	//Returns the closest ship available (not already in the destroy state)
 	//who's next letter to be hit is the one provided
