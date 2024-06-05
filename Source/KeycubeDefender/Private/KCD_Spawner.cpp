@@ -190,7 +190,7 @@ void AKCD_Spawner::RemoveShip(AKCD_Ship* Ship)
 	if(ShipsAlive.IsEmpty() && CurrentWaveData.availableTiers.IsEmpty())
 	{
 		if(CurrentWaveIndex != WaveData->GetRowNames().Num())
-			OnWaveCompleteDelegate.Broadcast();
+			OnWaveCompleteDelegate.Broadcast(CurrentWaveIndex);
 		
 		GetWorld()->GetTimerManager().SetTimer(NewWaveTimerHandle, [&]()
 		{

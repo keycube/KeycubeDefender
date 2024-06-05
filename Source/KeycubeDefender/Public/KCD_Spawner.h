@@ -34,7 +34,7 @@ struct FEncapsule
 	}
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWaveComplete);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWaveComplete, int, CurrentWave);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnVictory);
 UCLASS()
 class KEYCUBEDEFENDER_API AKCD_Spawner : public AActor
