@@ -122,7 +122,6 @@ void AKCD_Spawner::NextWave()
 		OnVictoryDelegate.Broadcast();
 		return;
 	}
-
 	
 	ReadCurrentWaveData(CurrentWaveIndex);
 
@@ -188,8 +187,11 @@ void AKCD_Spawner::RemoveShip(AKCD_Ship* Ship)
 	WordIndexUsed[Ship->Tier].index.Remove(Ship->WordIndex);
 
 	//When it is the last ship of the wave, we wait a bit then start the new wave
-	if(ShipsAlive.IsEmpty())
+	if(ShipsAlive.IsEmpty() && CurrentWaveData.availableTiers.IsEmpty())
 	{
+		if(CurrentWaveIndex != WaveData->GetRowNames().Num())
+			OnWaveCompleteDelegate.Broadcast();
+		
 		GetWorld()->GetTimerManager().SetTimer(NewWaveTimerHandle, [&]()
 		{
 			NextWave();
