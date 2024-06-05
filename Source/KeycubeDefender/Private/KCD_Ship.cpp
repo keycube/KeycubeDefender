@@ -47,11 +47,6 @@ void AKCD_Ship::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AKCD_Ship::DestroyBuilding()
-{
-	
-}
-
 void AKCD_Ship::SetWord(FString word)
 {
 	CurrentWord = word;
@@ -167,11 +162,8 @@ void AKCD_Ship::ShipDestroyed()
 {
 	isDestroyed = true;
 	OnShipDestroyedDelegate.Broadcast(this);
-
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]()
-	{
-		this->Destroy();
-	},  1, false);
+	
+	this->Destroy();
 }
 
 void AKCD_Ship::SetShipSpeed(float Modifier)

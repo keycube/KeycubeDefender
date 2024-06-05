@@ -88,11 +88,6 @@ public:
 	// UFUNCTION(BlueprintCallable)
 	// void SetLane(KCD_Lane lane);
 
-	//Destroy the building in the lane (or in another lane if
-	//the current one is destroyed)
-	UFUNCTION(BlueprintCallable)
-	void DestroyBuilding();
-
 	//Set the word associated with the ship
 	UFUNCTION(BlueprintCallable)
 	void SetWord(FString word);
