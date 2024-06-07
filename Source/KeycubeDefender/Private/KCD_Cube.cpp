@@ -94,6 +94,8 @@ void AKCD_Cube::KeyPress(FKey key)
 	
 	AKCD_Keys* KeyPressed = Keys.FindRef(key);
 
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), TypeSound, GetTransform().GetLocation());
+
 	KeyPressed->KeyPressed_Keys();
 	//If the target is invalid, we try to get a new one
 	NewTargets(Cast<AKCD_Spawner>(SpawnerInstance)->GetClosestShips(key.GetFName()));

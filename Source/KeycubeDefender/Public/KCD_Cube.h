@@ -75,6 +75,9 @@ private:
 	//Removes the specified ship from the targets
 	UFUNCTION()
 	void RemoveTarget(AKCD_Ship* Ship);
+
+	UPROPERTY(EditAnywhere, Category="Sound")
+	USoundBase* TypeSound;
 	
 
 public:	

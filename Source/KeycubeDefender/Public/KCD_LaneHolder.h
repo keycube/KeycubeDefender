@@ -38,6 +38,9 @@ private:
 	UFUNCTION()
 	void OnOverlap(AActor* MyActor, AActor* OtherActor);
 
+	UPROPERTY(EditAnywhere, Category="Sound")
+	USoundBase* ShipCrashSOund;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

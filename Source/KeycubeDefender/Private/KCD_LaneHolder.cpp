@@ -4,6 +4,7 @@
 #include "KCD_LaneHolder.h"
 
 #include "KCD_Ship.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AKCD_LaneHolder::AKCD_LaneHolder()
@@ -53,5 +54,9 @@ void AKCD_LaneHolder::FillLanes()
 void AKCD_LaneHolder::OnOverlap(AActor* MyActor, AActor* OtherActor)
 {
 	if (Cast<AKCD_Ship>(OtherActor))
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShipCrashSOund, GetTransform().GetLocation());
 		OnShipCrashedDelegate.Broadcast();
+	}
+		
 }

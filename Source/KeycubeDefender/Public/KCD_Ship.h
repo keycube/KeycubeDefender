@@ -78,6 +78,9 @@ private:
 	//Theses var are used to make the word centered on the ship
 	UPROPERTY(EditAnywhere, Category="Words")
 	float Lettersize = 30.0;
+
+	UPROPERTY(EditAnywhere, Category="Sound")
+	USoundBase* ShipDestroyedSound;
 	
 	FTimerHandle TimerHandle;
 	
