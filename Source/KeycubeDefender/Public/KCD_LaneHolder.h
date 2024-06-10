@@ -28,6 +28,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
 	TArray<AKCD_Lane*> Lanes;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
+	TSubclassOf<AKCD_Lane> LaneBlueprint;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
+	int NumbOfLanes;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
+	float MapWidth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
+	float MapHeight;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,9 +50,14 @@ private:
 	UFUNCTION()
 	void OnOverlap(AActor* MyActor, AActor* OtherActor);
 
-	UPROPERTY(EditAnywhere, Category="Sound")
-	USoundBase* ShipCrashSOund;
+	
 
+	UPROPERTY(EditAnywhere, Category="Sound")
+	USoundBase* ShipCrashSound;
+
+	UFUNCTION()
+	void SpawnLanes();
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
