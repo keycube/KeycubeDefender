@@ -2,6 +2,8 @@
 
 
 #include "KCD_Ship.h"
+
+#include "PaperSprite.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/ChildActorComponent.h"
 #include "Kismet/KismetStringLibrary.h"
@@ -163,9 +165,11 @@ void AKCD_Ship::ShipDestroyed()
 	isDestroyed = true;
 	OnShipDestroyedDelegate.Broadcast(this);
 
+	if(ShipExplosionVFX != nullptr)
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ShipExplosionVFX, this->GetTransform().GetLocation());
 	
-	
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShipDestroyedSound, this->GetTransform().GetLocation());
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShipDestroyedSound,
+		this->GetTransform().GetLocation());
 	
 	this->Destroy();
 }

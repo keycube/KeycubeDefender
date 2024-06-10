@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "KCD_Letters.h"
-#include "KCD_Words.h"
 #include "Components/BoxComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 #include "KCD_Ship.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnShipDestroyed, AKCD_Ship*, DestroyedShip);
@@ -81,6 +82,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="Sound")
 	USoundBase* ShipDestroyedSound;
+	
+	UPROPERTY(EditAnywhere, Category="Animation")
+	UNiagaraSystem* ShipExplosionVFX;
 	
 	FTimerHandle TimerHandle;
 	
