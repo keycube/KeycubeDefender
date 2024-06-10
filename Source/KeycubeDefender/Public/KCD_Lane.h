@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "KCD_Ship.h"
+#include "KCD_Spawner.h"
 #include "GameFramework/Actor.h"
 #include "KCD_Lane.generated.h"
 
@@ -26,10 +28,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable)
+	AKCD_Ship* SpawnShip(TSubclassOf<AKCD_Ship> Ship, int WordIndex, FString Word, float SpeedModifier);
 private:
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	friend AKCD_Spawner;
 
 };

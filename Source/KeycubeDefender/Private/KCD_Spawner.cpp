@@ -3,13 +3,10 @@
 
 #include "KCD_Spawner.h"
 
-#include "AsyncTreeDifferences.h"
 #include "KCD_LaneHolder.h"
 #include "KCD_WordDictionnary.h"
-#include "Blueprint/UserWidget.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetStringLibrary.h"
 
 // Sets default values
 AKCD_Spawner::AKCD_Spawner()
@@ -95,18 +92,20 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 		return;
 	}
 
-	FTransform spawnTransform{
-		this->GetTransform().GetRotation(), // Rotation
-		LaneTransform(lane), // Translation
-		FVector{1.0f, 1.0f, 1.0f} // Scale
-	};
+	// FTransform spawnTransform{
+	// 	this->GetTransform().GetRotation(), // Rotation
+	// 	LaneTransform(lane), // Translation
+	// 	FVector{1.0f, 1.0f, 1.0f} // Scale
+	// };
+	//
+	// Ship = GetWorld()->SpawnActorDeferred<AKCD_Ship>(Ships[ShipTier], spawnTransform);
+	//
+	// //Setting the ship's variables
+	// Ship->Initialize(ShipTier, possibleWords[0].WordList[ShipWordIndex], ShipWordIndex, CurrentWaveData.SpeedModifier);
+	//
+	// UGameplayStatics::FinishSpawningActor(Ship, spawnTransform);
 
-	Ship = GetWorld()->SpawnActorDeferred<AKCD_Ship>(Ships[ShipTier], spawnTransform);
-
-	//Setting the ship's variables
-	Ship->Initialize(ShipTier, possibleWords[0].WordList[ShipWordIndex], ShipWordIndex, CurrentWaveData.SpeedModifier);
-
-	UGameplayStatics::FinishSpawningActor(Ship, spawnTransform);
+	Ship = lane->SpawnShip(Ships[ShipTier], ShipWordIndex, possibleWords[0].WordList[ShipWordIndex], CurrentWaveData.SpeedModifier);
 
 	ShipsAlive.Add(Ship);
 

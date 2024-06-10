@@ -28,10 +28,9 @@ AKCD_Ship::AKCD_Ship()
 	LettersBackground->SetupAttachment(LettersHolder);
 }
 
-void AKCD_Ship::Initialize(int NewTier, FString NewWord, int NewWordIndex, float SpeedModifier)
+void AKCD_Ship::Initialize(FString NewWord, int NewWordIndex, float SpeedModifier)
 {
 	//Settings of values used for the ship's spawn and behavior
-	Tier = NewTier;
 	SetWord(NewWord);
 	WordIndex = NewWordIndex;
 	SetShipSpeed(SpeedModifier);

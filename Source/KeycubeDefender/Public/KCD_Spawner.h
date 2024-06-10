@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "KCD_GameMode.h"
-#include "KCD_Lane.h"
 #include "KCD_Ship.h"
 #include "KCD_WaveData.h"
 #include "GameFramework/Actor.h"
 #include "KCD_Spawner.generated.h"
+
+class AKCD_Lane;
 
 USTRUCT()
 struct FWave

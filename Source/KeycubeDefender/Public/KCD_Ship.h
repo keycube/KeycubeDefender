@@ -37,7 +37,7 @@ public:
 
 	// Allows the setting of required parameters as a single function
 	UFUNCTION(BlueprintCallable)
-	void Initialize(int NewTier, FString NewWord, int NewWordIndex, float SpeedModifier);
+	void Initialize(FString NewWord, int NewWordIndex, float SpeedModifier);
 
 	//Var for the state of the ship
 	UPROPERTY(EditAnywhere, Category="Variables")
