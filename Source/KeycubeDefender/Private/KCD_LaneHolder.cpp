@@ -26,7 +26,7 @@ void AKCD_LaneHolder::BeginPlay()
 
 	SpawnLanes();
 
-	FillLanes();
+	//FillLanes();
 
 	// Bind function OnActorBeginOverlap with your class function OnOverlap
 	this->OnActorBeginOverlap.AddDynamic(this, &AKCD_LaneHolder::OnOverlap);
@@ -34,25 +34,35 @@ void AKCD_LaneHolder::BeginPlay()
 
 void AKCD_LaneHolder::SpawnLanes()
 {
-	int lanesToSpawn = NumbOfLanes;
+	
+	if(NumbOfLanes <= 0)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No lannes to be spawned"));
+		return;
+	}
 
 	FTransform spawnTransform{
 		this->GetTransform().GetRotation().Rotator(), // Rotation
-		this->GetTransform().GetLocation() + FVector{0, 0, MapHeight}, // Translation
+		FVector{0, 0, MapHeight}, // Translation
 		FVector{1.0f, 1.0f, 1.0f} // Scale
 	};
+
+	float LaneDistance = MapWidth / (NumbOfLanes + 1);
 	
-	if(lanesToSpawn % 2 != 0)
+	for (int x = 0; x < NumbOfLanes; x++)
 	{
-		lanesToSpawn--;
-		
-		//Add the letter as a child component of the ship
+		//Add the lane as a child component of the LaneHolder
 		UChildActorComponent* child = NewObject<UChildActorComponent>(this);
 		child->SetupAttachment(RootComponent);
 		child->RegisterComponent();
 		child->SetChildActorClass(LaneBlueprint);
+		spawnTransform.SetLocation(FVector{0, (MapWidth/2) - (LaneDistance * (x + 1)), MapHeight});
 		child->SetRelativeTransform(spawnTransform);
-	}
+	
+		auto LaneActor = Cast<AKCD_Lane>(child->GetChildActor());
+		Lanes.Add(LaneActor);
+	}	
+	
 }
 
 // Called every frame
