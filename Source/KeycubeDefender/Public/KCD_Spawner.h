@@ -54,6 +54,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	//Ships BP used as base to instantiate new ones
 	UPROPERTY(EditDefaultsOnly)
 	TMap<int, TSubclassOf<AKCD_Ship>> Ships;
@@ -110,6 +112,8 @@ private:
 
 	UPROPERTY()
 	AKCD_LaneHolder* LaneHolder;
+
+	
 	
 public:	
 	// Called every frame

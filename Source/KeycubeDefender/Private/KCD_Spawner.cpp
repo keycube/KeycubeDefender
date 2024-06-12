@@ -51,6 +51,18 @@ void AKCD_Spawner::BeginPlay()
 	NextWave();
 }
 
+void AKCD_Spawner::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	UWorld* w= GetWorld() ;
+
+	if(w->IsValidLowLevel())
+	{
+		w->GetTimerManager().ClearAllTimersForObject(this);
+	}
+}
+
 void AKCD_Spawner::SpawnShip(int ShipTier)
 {
 	//Get all the possible words for the ship's tier
@@ -122,10 +134,8 @@ void AKCD_Spawner::NextWave()
 	ReadCurrentWaveData(CurrentWaveIndex);
 
 	//Start a looping timer to spawn ships at an interval
-	GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, [&]()
-	{
-		PlayWaveSequence();
-	}, CurrentWaveData.SpawnTime, true);
+	GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, this, &AKCD_Spawner::PlayWaveSequence,
+		CurrentWaveData.SpawnTime, true);
 }
 
 void AKCD_Spawner::PlayWaveSequence()
@@ -188,10 +198,8 @@ void AKCD_Spawner::RemoveShip(AKCD_Ship* Ship)
 		if(CurrentWaveIndex != WaveData->GetRowNames().Num())
 			OnWaveCompleteDelegate.Broadcast(CurrentWaveIndex);
 		
-		GetWorld()->GetTimerManager().SetTimer(NewWaveTimerHandle, [&]()
-		{
-			NextWave();
-		}, 3, false);
+		GetWorld()->GetTimerManager().SetTimer(NewWaveTimerHandle, this, &AKCD_Spawner::NextWave,
+			3, false);
 	}
 }
 
