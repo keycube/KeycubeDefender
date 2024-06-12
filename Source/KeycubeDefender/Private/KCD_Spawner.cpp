@@ -47,9 +47,6 @@ void AKCD_Spawner::BeginPlay()
 			LaneHolder->OnShipCrashedDelegate.AddDynamic(this, &AKCD_Spawner::ShipCrashed);
 		}
 	},  0.1, false);
-	
-
-
 
 	NextWave();
 }
