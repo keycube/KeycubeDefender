@@ -50,6 +50,8 @@ void AKCD_Cube::BeginPlay()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("SpawnerInstance is invalid"));
 		}
+
+		SpawnerInstance->OnShipSpawnDelegate.AddDynamic(this, &AKCD_Cube::UpdateHighlight);
 	},  0.1, false);
 	
 	FillKeyMap();

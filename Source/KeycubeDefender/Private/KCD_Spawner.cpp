@@ -101,22 +101,11 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 		return;
 	}
 
-	// FTransform spawnTransform{
-	// 	this->GetTransform().GetRotation(), // Rotation
-	// 	LaneTransform(lane), // Translation
-	// 	FVector{1.0f, 1.0f, 1.0f} // Scale
-	// };
-	//
-	// Ship = GetWorld()->SpawnActorDeferred<AKCD_Ship>(Ships[ShipTier], spawnTransform);
-	//
-	// //Setting the ship's variables
-	// Ship->Initialize(ShipTier, possibleWords[0].WordList[ShipWordIndex], ShipWordIndex, CurrentWaveData.SpeedModifier);
-	//
-	// UGameplayStatics::FinishSpawningActor(Ship, spawnTransform);
-
 	Ship = lane->SpawnShip(Ships[ShipTier], ShipWordIndex, possibleWords[0].WordList[ShipWordIndex], CurrentWaveData.SpeedModifier);
 
 	ShipsAlive.Add(Ship);
+
+	OnShipSpawnDelegate.Broadcast();
 
 	Ship->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_Spawner::RemoveShip);
 }
