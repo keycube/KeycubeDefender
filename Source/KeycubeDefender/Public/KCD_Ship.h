@@ -62,6 +62,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Words", meta = (ExposeOnSpawn=true))
 	FString CurrentWord;
 
+	UPROPERTY(EditAnywhere ,Category="Variables")
+	FName CurrentLetter;
+
+	UPROPERTY(EditAnywhere ,Category="Variables")
+	int CurrentLetterIndex = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Words")
 	int WordIndex = -1;
 

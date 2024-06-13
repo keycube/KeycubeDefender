@@ -132,30 +132,25 @@ bool AKCD_Ship::Hit(FName Letter)
 	//highlight the next one or destroy the ship if it was the last
 	if(!isDestroyed)
 	{
-		for (int x = 0; x < LettersInstances.Num(); x++)
+		if (LettersInstances[CurrentLetterIndex]->CurrentLetter == Letter)
 		{
-			if(LettersInstances[x]->IsLetterHidden)
-			{
-				continue;
-			}
+			LettersInstances[CurrentLetterIndex]->Hide();
 
-			if(LettersInstances[x]->CurrentLetter == Letter)
+			if (LettersInstances.Last() == LettersInstances[CurrentLetterIndex])
 			{
-				LettersInstances[x]->Hide();
-				
-				if(LettersInstances.Last() == LettersInstances[x])
-				{
-					ShipDestroyed();
-					return true;
-				}
-		
-				LettersInstances[x + 1]->Highlight();
+				ShipDestroyed();
 				return true;
 			}
-			return false;
-		}
-	}
 
+			CurrentLetterIndex++;
+
+			CurrentLetter = LettersInstances[CurrentLetterIndex]->CurrentLetter;
+			LettersInstances[CurrentLetterIndex]->Highlight();
+			return true;
+		}
+		CurrentLetterIndex = 0;
+	}
+	
 	return false;
 }
 
