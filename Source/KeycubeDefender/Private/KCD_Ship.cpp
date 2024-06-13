@@ -53,6 +53,8 @@ void AKCD_Ship::SetWord(FString word)
 	CurrentWord = word;
 	
 	SpawnLetters();
+
+	CurrentLetter = LettersInstances[CurrentLetterIndex]->CurrentLetter;
 }
 
 void AKCD_Ship::Targeted()
@@ -149,6 +151,7 @@ bool AKCD_Ship::Hit(FName Letter)
 			return true;
 		}
 		CurrentLetterIndex = 0;
+		CurrentLetter = LettersInstances[CurrentLetterIndex]->CurrentLetter;
 	}
 	
 	return false;
