@@ -35,6 +35,8 @@ public:
 	//Input linked to the key
 	UPROPERTY(EditAnywhere, Category = Variables)
 	FKey AssociatedKey;
+	UPROPERTY(EditAnywhere, Category = Variables)
+	bool IsHighlighted = false;
 
 protected:
 	// Called when the game starts or when spawned
@@ -42,6 +44,10 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = Variables)
 	UMaterialInstanceDynamic* DynamicMat;
+
+private:
+	UPROPERTY()
+	bool IsPressed = false;
 
 	
 public:	
@@ -57,5 +63,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void HighlightKey();
+
+	UFUNCTION(BlueprintCallable)
+	void UnhighlightKey();
 
 };

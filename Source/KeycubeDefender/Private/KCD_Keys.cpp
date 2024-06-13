@@ -40,15 +40,37 @@ void AKCD_Keys::Tick(float DeltaTime)
 void AKCD_Keys::KeyPressed_Keys()
 {
 	DynamicMat->SetVectorParameterValue("Color", PressedColor);
+	IsPressed = true;
 }
 
 void AKCD_Keys::KeyReleased_Keys()
 {
-	DynamicMat->SetVectorParameterValue("Color", BaseColor);
+	IsPressed = false;
+	if(!IsHighlighted)
+	{
+		DynamicMat->SetVectorParameterValue("Color", BaseColor);
+	} else
+	{
+		HighlightKey();
+	}
 }
 
 void AKCD_Keys::HighlightKey()
 {
-	DynamicMat->SetVectorParameterValue("Color", HighlighColor);
+	IsHighlighted = true;
+	if(!IsPressed)
+	{
+		DynamicMat->SetVectorParameterValue("Color", HighlighColor);
+	} 
+	
+}
+
+void AKCD_Keys::UnhighlightKey()
+{
+	IsHighlighted = false;
+	if(!IsPressed)
+	{
+		DynamicMat->SetVectorParameterValue("Color", BaseColor);
+	}
 }
 

@@ -135,7 +135,7 @@ void AKCD_Cube::KeyPress(FKey key)
 		UpdateMultiplicator(false);
 		CurrentTargets.Empty();
 	}
-	
+
 	UpdateHighlight();
 	
 	OnScoreUpdateDelegate.Broadcast();
@@ -180,11 +180,9 @@ void AKCD_Cube::UpdateHighlight()
 	TArray<FName> targetableLetters;
 	if(CurrentTargets.IsEmpty())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Target list is empty"));
 		for (auto ship : SpawnerInstance->ShipsAlive)
 		{
 			targetableLetters.AddUnique(ship->CurrentLetter);
-			UE_LOG(LogTemp, Warning, TEXT("Letter added to targetable : %s"), *ship->CurrentLetter.ToString());
 		}
 	}
 	else
@@ -229,14 +227,11 @@ void AKCD_Cube::HighlightKeys(TArray<FKey> keysToHighlight)
 	{
 		if(key.GetFName() == "")
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Invalid key to highlight"));
 			continue;
 		}
 		Keys[key]->HighlightKey();
 
 		HighlitedKeys.AddUnique(key);
-		
-		UE_LOG(LogTemp, Warning, TEXT("highlighted Key : %s"), *key.GetFName().ToString());
 	}
 }
 
@@ -246,16 +241,12 @@ void AKCD_Cube::UnhighlightKeys(TArray<FKey> KeysToUnHighlight)
 	{
 		if(key.GetFName() == "")
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Invalid key to release"));
 			continue;
 		}
-		Keys[key]->KeyReleased_Keys();
+		Keys[key]->UnhighlightKey();
 
 		HighlitedKeys.Remove(key);
-		
-		UE_LOG(LogTemp, Warning, TEXT("Released Key : %s"), *key.GetFName().ToString());
 	}
-	
 }
 
 void AKCD_Cube::UpdateMultiplicator(bool Success)
