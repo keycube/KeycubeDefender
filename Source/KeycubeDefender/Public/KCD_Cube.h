@@ -31,6 +31,12 @@ protected:
 	//keys on the cube
 	UPROPERTY(VisibleAnywhere, Category=Keys)
 	TMap<FKey, AKCD_Keys*> Keys;
+
+	//Map of association between the inputs and the
+	//keys on the cube
+	UPROPERTY(VisibleAnywhere, Category=Keys)
+	TArray<FKey> HighlitedKeys;
+	
 	//Target who will receive our current input
 	UPROPERTY(EditAnywhere, Category=Variable)
 	TArray<AKCD_Ship*> CurrentTargets;
@@ -48,6 +54,10 @@ protected:
 	//Mark the letters who would result in a good hit
 	UFUNCTION(BlueprintCallable)
 	void HighlightKeys(TArray<FKey> keysToHighlight);
+
+	//Mark the letters who would result in a good hit
+	UFUNCTION(BlueprintCallable)
+	void UnhighlightKeys(TArray<FKey> keysToHighlight);
 	
 	//Advance or reset the score multiplicator 
 	UFUNCTION()
@@ -75,9 +85,16 @@ private:
 	//Removes the specified ship from the targets
 	UFUNCTION()
 	void RemoveTarget(AKCD_Ship* Ship);
-
+	//Takes the FName of the letters and translates them to FKeys
+	UFUNCTION()
+	TArray<FKey> TranslateKeys(TArray<FName> KeysToTranslate);
+	//Removes the specified ship from the targets
+	UFUNCTION()
+	void UpdateHighlight();
+	
 	UPROPERTY(EditAnywhere, Category="Sound")
 	USoundBase* TypeSound;
+
 	
 
 public:	

@@ -28,6 +28,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = Variables)
 	FLinearColor BaseColor;
 	UPROPERTY(EditAnywhere, Category = Variables)
+	FLinearColor HighlighColor;
+	UPROPERTY(EditAnywhere, Category = Variables)
 	UMaterialInterface* BaseMaterial;
 
 	//Input linked to the key
@@ -52,5 +54,8 @@ public:
 	//Visual feedback of the key release
 	UFUNCTION(BlueprintCallable)
 	void KeyReleased_Keys();
+
+	UFUNCTION(BlueprintCallable)
+	void HighlightKey();
 
 };

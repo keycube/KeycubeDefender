@@ -47,3 +47,8 @@ void AKCD_Keys::KeyReleased_Keys()
 	DynamicMat->SetVectorParameterValue("Color", BaseColor);
 }
 
+void AKCD_Keys::HighlightKey()
+{
+	DynamicMat->SetVectorParameterValue("Color", HighlighColor);
+}
+
