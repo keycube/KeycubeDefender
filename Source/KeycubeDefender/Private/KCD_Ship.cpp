@@ -119,7 +119,8 @@ void AKCD_Ship::Untargeted()
 		letter->Unhighlight();
 	}
 
-	//LettersInstances[0]->Unhighlight();
+	CurrentLetterIndex = 0;
+	CurrentLetter = LettersInstances[CurrentLetterIndex]->CurrentLetter;
 }
 
 bool AKCD_Ship::Hit(FName Letter)
@@ -150,8 +151,6 @@ bool AKCD_Ship::Hit(FName Letter)
 			LettersInstances[CurrentLetterIndex]->Highlight();
 			return true;
 		}
-		CurrentLetterIndex = 0;
-		CurrentLetter = LettersInstances[CurrentLetterIndex]->CurrentLetter;
 	}
 	
 	return false;

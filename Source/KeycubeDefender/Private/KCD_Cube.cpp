@@ -96,7 +96,7 @@ void AKCD_Cube::KeyPress(FKey key)
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), TypeSound, GetTransform().GetLocation());
 
 	KeyPressed->KeyPressed_Keys();
-	//If the target is invalid, we try to get a new one
+	//We see if new targets are linked to this key
 	NewTargets(Cast<AKCD_Spawner>(SpawnerInstance)->GetClosestShips(key.GetFName()));
 	
 	if(CurrentTargets.IsEmpty())
@@ -125,7 +125,6 @@ void AKCD_Cube::KeyPress(FKey key)
 	{
 		for (auto ToRemove : TargetsToRemove)
 		{
-			ToRemove->Untargeted();
 			RemoveTarget(ToRemove);
 		}
 	}
@@ -133,7 +132,6 @@ void AKCD_Cube::KeyPress(FKey key)
 	if(!isHitSuccess)
 	{
 		UpdateMultiplicator(false);
-		CurrentTargets.Empty();
 	}
 
 	UpdateHighlight();
@@ -155,6 +153,13 @@ void AKCD_Cube::KeyRelease(FKey key)
 
 void AKCD_Cube::RemoveTarget(AKCD_Ship* Ship)
 {
+	if(CurrentTargets.Num() == 1 && !Ship->isDestroyed)
+	{
+		ComboCounter = 0;
+		UE_LOG(LogTemp, Warning, TEXT("Only one target"));
+		return;
+	}
+	Ship->Untargeted();
 	CurrentTargets.Remove(Ship);
 	Ship->OnShipDestroyedDelegate.RemoveAll(this);
 	if(CurrentTargets.IsEmpty())
