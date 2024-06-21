@@ -30,6 +30,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
 	TSubclassOf<AKCD_Lane> LaneBlueprint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
+	UNiagaraSystem* ExplosionVFX;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
 	int NumbOfLanes;
@@ -50,6 +53,8 @@ private:
 	UFUNCTION()
 	void OnOverlap(AActor* MyActor, AActor* OtherActor);
 
+	UFUNCTION()
+	void CityDestroy();
 	
 
 	UPROPERTY(EditAnywhere, Category="Sound")

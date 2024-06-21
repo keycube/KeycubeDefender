@@ -92,6 +92,38 @@ void AKCD_LaneHolder::OnOverlap(AActor* MyActor, AActor* OtherActor)
 	{
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShipCrashSound, GetTransform().GetLocation());
 		OnShipCrashedDelegate.Broadcast();
+		CityDestroy();
 	}
-		
+}
+
+void AKCD_LaneHolder::CityDestroy()
+{
+	FVector TargetLocation = this->GetTransform().GetLocation();
+	TargetLocation.X = TargetLocation.X - 50.0f;
+	
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionVFX, TargetLocation);
+
+	UE_LOG(LogTemp, Warning, TEXT("City explosion location : %s"), *TargetLocation.ToString());
+
+	FTimerHandle TimerHandle;
+	FTimerHandle TimerHandle2;
+	// This with execute a function after the specified Delay
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]()
+	{
+		TargetLocation = this->GetTransform().GetLocation();
+		TargetLocation.X = TargetLocation.X - 50.0f;
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionVFX, FVector(TargetLocation.X, (TargetLocation.Y - 300.0), TargetLocation.Z));
+		UE_LOG(LogTemp, Warning, TEXT("City explosion location : %s"), *FVector(TargetLocation.X, (TargetLocation.Y - 300.0), TargetLocation.Z).ToString());
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionVFX, FVector(TargetLocation.X, (TargetLocation.Y + 300.0), TargetLocation.Z));
+	},  0.2, false);
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [&]()
+{
+		TargetLocation = this->GetTransform().GetLocation();
+		TargetLocation.X = TargetLocation.X - 50.0f;
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionVFX, FVector(TargetLocation.X, (TargetLocation.Y - 600.0), TargetLocation.Z));
+	UE_LOG(LogTemp, Warning, TEXT("City explosion location : %s"), *FVector(TargetLocation.X, (TargetLocation.Y - 300.0), TargetLocation.Z).ToString());
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionVFX, FVector(TargetLocation.X, (TargetLocation.Y + 600.0), TargetLocation.Z));
+},  0.4, false);
+	
 }
