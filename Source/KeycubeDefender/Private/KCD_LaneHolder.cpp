@@ -99,31 +99,31 @@ void AKCD_LaneHolder::OnOverlap(AActor* MyActor, AActor* OtherActor)
 void AKCD_LaneHolder::CityDestroy()
 {
 	FVector TargetLocation = this->GetTransform().GetLocation();
-	TargetLocation.X = TargetLocation.X - 50.0f;
+	TargetLocation.X = TargetLocation.X - 200.0f;
+	TargetLocation.Z = TargetLocation.Z + 100.0f;
+	GetWorld()->SpawnActor<AActor>(ExplosionVFXFlipbook, TargetLocation, this->GetTransform().GetRotation().Rotator());
+
+		//TODO : INVALIDATE THE TIMERS BEFORE QUITTING
+		float NumbOfExplosions = (MapWidth/2)/350;
+
+		UE_LOG(LogTemp, Warning, TEXT("Numbers of explosions loop : %s"),  *FString::SanitizeFloat(NumbOfExplosions));
+
 	
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionVFX, TargetLocation);
+		for(int i = 0; i < NumbOfExplosions; i++)
+		{
+			FTimerHandle NewTimerHandle = FTimerHandle();
+			TimerHandles.Add(NewTimerHandle);
 
-	UE_LOG(LogTemp, Warning, TEXT("City explosion location : %s"), *TargetLocation.ToString());
+			FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, &AKCD_LaneHolder::SpawnExplosion, TargetLocation, i);
+			
+			GetWorld()->GetTimerManager().SetTimer(TimerHandles[i], TimerDelegate, (0.1 * i), false);
+		}
+}
 
-	FTimerHandle TimerHandle;
-	FTimerHandle TimerHandle2;
-	// This with execute a function after the specified Delay
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]()
-	{
-		TargetLocation = this->GetTransform().GetLocation();
-		TargetLocation.X = TargetLocation.X - 50.0f;
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionVFX, FVector(TargetLocation.X, (TargetLocation.Y - 300.0), TargetLocation.Z));
-		UE_LOG(LogTemp, Warning, TEXT("City explosion location : %s"), *FVector(TargetLocation.X, (TargetLocation.Y - 300.0), TargetLocation.Z).ToString());
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionVFX, FVector(TargetLocation.X, (TargetLocation.Y + 300.0), TargetLocation.Z));
-	},  0.2, false);
-
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [&]()
+void AKCD_LaneHolder::SpawnExplosion(FVector Location, int OffsetIndex)
 {
-		TargetLocation = this->GetTransform().GetLocation();
-		TargetLocation.X = TargetLocation.X - 50.0f;
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionVFX, FVector(TargetLocation.X, (TargetLocation.Y - 600.0), TargetLocation.Z));
-	UE_LOG(LogTemp, Warning, TEXT("City explosion location : %s"), *FVector(TargetLocation.X, (TargetLocation.Y - 300.0), TargetLocation.Z).ToString());
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionVFX, FVector(TargetLocation.X, (TargetLocation.Y + 600.0), TargetLocation.Z));
-},  0.4, false);
-	
+	float offset = OffsetIndex * 350;
+	GetWorld()->SpawnActor<AActor>(ExplosionVFXFlipbook, FVector(Location.X, (Location.Y + offset), Location.Z), FRotator(0, 0, 0));
+	GetWorld()->SpawnActor<AActor>(ExplosionVFXFlipbook, FVector(Location.X, (Location.Y - offset), Location.Z), FRotator(0, 0, 0));
+			
 }

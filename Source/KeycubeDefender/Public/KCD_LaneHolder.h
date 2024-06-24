@@ -6,6 +6,7 @@
 #include "KCD_Lane.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
+#include "PaperFlipbookComponent.h"
 #include "KCD_LaneHolder.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShipCrashed);
@@ -33,6 +34,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
 	UNiagaraSystem* ExplosionVFX;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
+	TSubclassOf<AActor> ExplosionVFXFlipbook;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
 	int NumbOfLanes;
@@ -55,10 +59,16 @@ private:
 
 	UFUNCTION()
 	void CityDestroy();
+
+	UFUNCTION()
+	void SpawnExplosion(FVector Location, int OffsetIndex);
 	
 
 	UPROPERTY(EditAnywhere, Category="Sound")
 	USoundBase* ShipCrashSound;
+
+	UPROPERTY()
+	TArray<FTimerHandle> TimerHandles;
 
 	UFUNCTION()
 	void SpawnLanes();
