@@ -27,6 +27,8 @@ public:
 	UPROPERTY(EditAnywhere, Category="Variable")
 	FLinearColor HighlightColor;
 	UPROPERTY(EditAnywhere, Category="Variable")
+	FLinearColor PrimaryTargetColor;
+	UPROPERTY(EditAnywhere, Category="Variable")
 	FLinearColor BaseColor;
 	UPROPERTY(EditAnywhere, Category="Variable")
 	FLinearColor HiddenColor;
@@ -58,6 +60,10 @@ public:
 	//Visual feedback to make the letter easier to see
 	UFUNCTION(BlueprintCallable)
 	void Highlight();
+
+	//Visual feedback to make the letter easier to see
+	UFUNCTION(BlueprintCallable)
+	void PrimaryTargetHighlight();
 
 	//Resets the letter to it's default color
 	UFUNCTION(BlueprintCallable)

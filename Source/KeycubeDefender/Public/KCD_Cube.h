@@ -40,6 +40,9 @@ protected:
 	//Target who will receive our current input
 	UPROPERTY(EditAnywhere, Category=Variable)
 	TArray<AKCD_Ship*> CurrentTargets;
+	//Target who will not be removed if the wrong input in entered
+	UPROPERTY(EditAnywhere, Category=Variable)
+	AKCD_Ship* PrimaryTarget;
 
 	//Reference to the GameMode
 	UPROPERTY()
@@ -91,6 +94,9 @@ private:
 	//Removes the specified ship from the targets
 	UFUNCTION()
 	void UpdateHighlight();
+
+	UFUNCTION()
+	void FindPrimaryTarget();
 	
 	UPROPERTY(EditAnywhere, Category="Sound")
 	USoundBase* TypeSound;

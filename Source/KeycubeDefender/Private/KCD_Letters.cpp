@@ -50,6 +50,11 @@ void AKCD_Letters::Highlight()
 	Sprite->SetSpriteColor(HighlightColor);
 }
 
+void AKCD_Letters::PrimaryTargetHighlight()
+{
+	Sprite->SetSpriteColor(PrimaryTargetColor);
+}
+
 void AKCD_Letters::Unhighlight()
 {
 	Sprite->SetSpriteColor(BaseColor);

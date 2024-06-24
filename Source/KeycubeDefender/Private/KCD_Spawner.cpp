@@ -213,7 +213,7 @@ void AKCD_Spawner::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-TArray<AKCD_Ship*> AKCD_Spawner::GetClosestShips(FName Letter)
+TArray<AKCD_Ship*> AKCD_Spawner::GetValidShips(FName Letter)
 {
 	//Verify if there is a ship alive
 	if (ShipsAlive.IsEmpty())

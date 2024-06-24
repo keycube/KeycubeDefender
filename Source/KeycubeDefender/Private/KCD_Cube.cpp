@@ -96,8 +96,9 @@ void AKCD_Cube::KeyPress(FKey key)
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), TypeSound, GetTransform().GetLocation());
 
 	KeyPressed->KeyPressed_Keys();
+	
 	//We see if new targets are linked to this key
-	NewTargets(Cast<AKCD_Spawner>(SpawnerInstance)->GetClosestShips(key.GetFName()));
+	NewTargets(Cast<AKCD_Spawner>(SpawnerInstance)->GetValidShips(key.GetFName()));
 	
 	if(CurrentTargets.IsEmpty())
 		return;
@@ -153,12 +154,31 @@ void AKCD_Cube::KeyRelease(FKey key)
 
 void AKCD_Cube::RemoveTarget(AKCD_Ship* Ship)
 {
-	if(CurrentTargets.Num() == 1 && !Ship->isDestroyed)
+	if(PrimaryTarget->IsValidLowLevel())
 	{
-		ComboCounter = 0;
-		UE_LOG(LogTemp, Warning, TEXT("Only one target"));
-		return;
+		if(Ship == PrimaryTarget)
+		{
+			if(Ship->isDestroyed)
+			{
+				PrimaryTarget = nullptr;
+				Ship->Untargeted();
+				CurrentTargets.Remove(Ship);
+				Ship->OnShipDestroyedDelegate.RemoveAll(this);
+				if(CurrentTargets.IsEmpty())
+				{
+					ComboCounter = 0;
+				}
+				FindPrimaryTarget();
+				return;
+			} else
+			{
+				return;
+			}
+		}
+
 	}
+
+	
 	Ship->Untargeted();
 	CurrentTargets.Remove(Ship);
 	Ship->OnShipDestroyedDelegate.RemoveAll(this);
@@ -211,6 +231,27 @@ void AKCD_Cube::UpdateHighlight()
 
 	UnhighlightKeys(TranslateKeys(LettersToUntarget));
 	
+}
+
+void AKCD_Cube::FindPrimaryTarget()
+{
+	float closestDistance = 10000;
+	AKCD_Ship* lowestShip = nullptr;
+	
+	if(!PrimaryTarget->IsValidLowLevel() && !CurrentTargets.IsEmpty())
+	{
+		for(auto ship : CurrentTargets)
+		{
+			if(ship->GetTransform().GetLocation().Z < closestDistance)
+			{
+				closestDistance = ship->GetTransform().GetLocation().Z;
+				lowestShip = ship;
+			}
+		}
+
+		PrimaryTarget = lowestShip;
+		PrimaryTarget->IsPrimaryTarget = true;
+	}
 }
 
 void AKCD_Cube::ShipDestroyed(AKCD_Ship* Ship)
@@ -280,6 +321,11 @@ void AKCD_Cube::NewTargets(const TArray<AKCD_Ship*>& ShipList)
 			NewShip->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_Cube::ShipDestroyed);
 			CurrentTargets.Add(NewShip);
 		}
+	}
+
+	if(!PrimaryTarget->IsValidLowLevel())
+	{
+		FindPrimaryTarget();
 	}
 }
 

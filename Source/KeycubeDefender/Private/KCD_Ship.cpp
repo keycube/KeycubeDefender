@@ -148,7 +148,13 @@ bool AKCD_Ship::Hit(FName Letter)
 			}
 
 			CurrentLetter = LettersInstances[CurrentLetterIndex]->CurrentLetter;
-			LettersInstances[CurrentLetterIndex]->Highlight();
+			if(IsPrimaryTarget)
+			{
+				LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
+			} else
+			{
+				LettersInstances[CurrentLetterIndex]->Highlight();
+			}
 			return true;
 		}
 	}

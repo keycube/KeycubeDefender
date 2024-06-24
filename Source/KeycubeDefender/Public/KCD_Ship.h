@@ -47,6 +47,8 @@ public:
 	UPROPERTY(EditAnywhere, Category="Variables")
 	bool isDestroyed = false;
 	UPROPERTY(EditAnywhere, Category="Variables")
+	bool IsPrimaryTarget = false;
+	UPROPERTY(EditAnywhere, Category="Variables")
 	int Reward;
 
 	//Var for the letters to spawn
