@@ -19,6 +19,18 @@ AKCD_LaneHolder::AKCD_LaneHolder()
 	HitBox->SetupAttachment(SceneComponent);
 }
 
+void AKCD_LaneHolder::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	UWorld* w= GetWorld() ;
+
+	if(w->IsValidLowLevel())
+	{
+		w->GetTimerManager().ClearAllTimersForObject(this);
+	}
+}
+
 // Called when the game starts or when spawned
 void AKCD_LaneHolder::BeginPlay()
 {

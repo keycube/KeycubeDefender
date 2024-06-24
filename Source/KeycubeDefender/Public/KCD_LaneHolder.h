@@ -25,6 +25,8 @@ class KEYCUBEDEFENDER_API AKCD_LaneHolder : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AKCD_LaneHolder();
+
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
 	TArray<AKCD_Lane*> Lanes;
