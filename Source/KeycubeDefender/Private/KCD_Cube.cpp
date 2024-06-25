@@ -250,7 +250,7 @@ void AKCD_Cube::FindPrimaryTarget()
 		}
 
 		PrimaryTarget = lowestShip;
-		PrimaryTarget->IsPrimaryTarget = true;
+		PrimaryTarget->SetMainTarget();
 	}
 }
 

@@ -180,3 +180,9 @@ void AKCD_Ship::SetShipSpeed(float Modifier)
 {
 	ProjectileMovement->InitialSpeed = BaseSpeed * Modifier;
 }
+
+void AKCD_Ship::SetMainTarget()
+{
+	IsPrimaryTarget = true;
+	LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
+}

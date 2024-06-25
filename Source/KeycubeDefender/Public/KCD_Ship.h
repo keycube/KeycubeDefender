@@ -99,9 +99,6 @@ private:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	//TODO : ADD LANES
-	// UFUNCTION(BlueprintCallable)
-	// void SetLane(KCD_Lane lane);
 
 	//Set the word associated with the ship
 	UFUNCTION(BlueprintCallable)
@@ -131,5 +128,9 @@ public:
 	//Set the ship's speed using the wave modifier
 	UFUNCTION(BlueprintCallable)
 	void SetShipSpeed(float Modifier);
+
+	//Set the ship's speed using the wave modifier
+	UFUNCTION(BlueprintCallable)
+	void SetMainTarget();
 
 };
