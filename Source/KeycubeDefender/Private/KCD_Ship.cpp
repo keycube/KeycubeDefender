@@ -26,6 +26,12 @@ AKCD_Ship::AKCD_Ship()
 	
 	LettersBackground = CreateDefaultSubobject<UPaperSpriteComponent>("LettersBackground");
 	LettersBackground->SetupAttachment(LettersHolder);
+
+	SubTargetSprite = CreateDefaultSubobject<UPaperSpriteComponent>("SubTargetMarker");
+	SubTargetSprite->SetupAttachment(RootComponent);
+
+	MainTargetSprite = CreateDefaultSubobject<UPaperSpriteComponent>("MainTargetMarker");
+	MainTargetSprite->SetupAttachment(RootComponent);
 }
 
 void AKCD_Ship::Initialize(FString NewWord, int NewWordIndex, float SpeedModifier)
@@ -34,6 +40,9 @@ void AKCD_Ship::Initialize(FString NewWord, int NewWordIndex, float SpeedModifie
 	SetWord(NewWord);
 	WordIndex = NewWordIndex;
 	SetShipSpeed(SpeedModifier);
+
+	SubTargetSprite->SetVisibility(false);
+	MainTargetSprite->SetVisibility(false);
 }
 
 // Called when the game starts or when spawned
@@ -121,6 +130,9 @@ void AKCD_Ship::Untargeted()
 
 	CurrentLetterIndex = 0;
 	CurrentLetter = LettersInstances[CurrentLetterIndex]->CurrentLetter;
+
+	SubTargetSprite->SetVisibility(false);
+	MainTargetSprite->SetVisibility(false);
 }
 
 bool AKCD_Ship::Hit(FName Letter)
@@ -154,6 +166,8 @@ bool AKCD_Ship::Hit(FName Letter)
 			} else
 			{
 				LettersInstances[CurrentLetterIndex]->Highlight();
+				SubTargetSprite->SetVisibility(true);
+				MainTargetSprite->SetVisibility(false);
 			}
 			return true;
 		}
@@ -185,4 +199,7 @@ void AKCD_Ship::SetMainTarget()
 {
 	IsPrimaryTarget = true;
 	LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
+
+	SubTargetSprite->SetVisibility(false);
+	MainTargetSprite->SetVisibility(true);
 }

@@ -27,6 +27,10 @@ class KEYCUBEDEFENDER_API AKCD_Ship : public AActor
 	UProjectileMovementComponent* ProjectileMovement;
 	UPROPERTY(EditAnywhere, Category="Word")
 	UPaperSpriteComponent* LettersBackground;
+	UPROPERTY(EditAnywhere, Category="Word")
+	UPaperSpriteComponent* SubTargetSprite;
+	UPROPERTY(EditAnywhere, Category="Word")
+	UPaperSpriteComponent* MainTargetSprite;
 
 	UPROPERTY(EditAnywhere, Category="Word")
 	USceneComponent* LettersHolder;
@@ -48,6 +52,8 @@ public:
 	bool isDestroyed = false;
 	UPROPERTY(EditAnywhere, Category="Variables")
 	bool IsPrimaryTarget = false;
+	UPROPERTY(EditAnywhere, Category="Variables")
+	bool IsTarget = false;
 	UPROPERTY(EditAnywhere, Category="Variables")
 	int Reward;
 
@@ -79,9 +85,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Variables")
 	float BaseSpeed = 10;
-	//TODO : ADD LANES
-	// UPROPERTY(EditAnywhere, Category="Variables")
-	// KCD_Lane* Lane;
 
 private:
 	//Theses var are used to make the word centered on the ship
