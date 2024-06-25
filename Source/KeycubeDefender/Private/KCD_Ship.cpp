@@ -200,6 +200,8 @@ void AKCD_Ship::SetMainTarget()
 	IsPrimaryTarget = true;
 	LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
 
+	SetActorLocation(GetTransform().GetLocation() + FVector(-5.0, 0.0, 0.0));
+
 	SubTargetSprite->SetVisibility(false);
 	MainTargetSprite->SetVisibility(true);
 }
