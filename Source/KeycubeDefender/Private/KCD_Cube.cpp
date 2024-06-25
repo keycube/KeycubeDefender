@@ -86,6 +86,7 @@ void AKCD_Cube::FillKeyMap()
 
 void AKCD_Cube::KeyPress(FKey key)
 {
+	//Check if the key is present in the accepted key list
 	if(!Keys.Contains(key))
 	{
 		return;
@@ -93,16 +94,19 @@ void AKCD_Cube::KeyPress(FKey key)
 	
 	AKCD_Keys* KeyPressed = Keys.FindRef(key);
 
+	//Feedback
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), TypeSound, GetTransform().GetLocation());
-
 	KeyPressed->KeyPressed_Keys();
 	
 	//We see if new targets are linked to this key
 	NewTargets(Cast<AKCD_Spawner>(SpawnerInstance)->GetValidShips(key.GetFName()));
 	
 	if(CurrentTargets.IsEmpty())
+	{
+		UpdateMultiplicator(false);
 		return;
-
+	}
+	
 	TArray<AKCD_Ship*> TargetsToRemove;
 	//New list to avoid error when removing target during iteration
 	TArray<AKCD_Ship*> TargetsToCheck = CurrentTargets;
@@ -122,6 +126,7 @@ void AKCD_Cube::KeyPress(FKey key)
 		}
 	}
 
+	//We remove from the current targets those who's next letter doesn't match
 	if(!TargetsToRemove.IsEmpty())
 	{
 		for (auto ToRemove : TargetsToRemove)
@@ -154,8 +159,10 @@ void AKCD_Cube::KeyRelease(FKey key)
 
 void AKCD_Cube::RemoveTarget(AKCD_Ship* Ship)
 {
+	//We check if the remove target is the primary target
 	if(PrimaryTarget->IsValidLowLevel())
 	{
+		//If he is, we check if it's destroy and remove it if it is 
 		if(Ship == PrimaryTarget)
 		{
 			if(Ship->isDestroyed)
@@ -170,15 +177,13 @@ void AKCD_Cube::RemoveTarget(AKCD_Ship* Ship)
 				}
 				FindPrimaryTarget();
 				return;
-			} else
-			{
-				return;
-			}
+			} 
+			return;
 		}
 
 	}
 
-	
+	//If it isn't the primary target, we remove it from the current targets
 	Ship->Untargeted();
 	CurrentTargets.Remove(Ship);
 	Ship->OnShipDestroyedDelegate.RemoveAll(this);
@@ -200,8 +205,13 @@ TArray<FKey> AKCD_Cube::TranslateKeys(TArray<FName> KeysToTranslate)
 	return translatedKeys;
 }
 
+//While this function is not optimized, the limited amount of 
+//possible letters and ships to check won't make it inefficient
 void AKCD_Cube::UpdateHighlight()
 {
+	//We fill an array with all possible next letters to press
+	//If we already have targets, we only check them
+	//If we don't have any target, we check all alive ships
 	TArray<FName> targetableLetters;
 	if(CurrentTargets.IsEmpty())
 	{
@@ -220,6 +230,9 @@ void AKCD_Cube::UpdateHighlight()
 
 	HighlightKeys(TranslateKeys(targetableLetters));
 
+	//Same for here, we fill and array while checking if a letter in the 
+	//highlighted keys list is no longer present in the list of letters to target
+	//and feed that list to a function to untarget them
 	TArray<FName> LettersToUntarget;
 	for (auto Letter : HighlitedKeys)
 	{
@@ -240,6 +253,7 @@ void AKCD_Cube::FindPrimaryTarget()
 	
 	if(!PrimaryTarget->IsValidLowLevel() && !CurrentTargets.IsEmpty())
 	{
+		//Check for the lowest ship in the current targets
 		for(auto ship : CurrentTargets)
 		{
 			if(ship->GetTransform().GetLocation().Z < closestDistance)

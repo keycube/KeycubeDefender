@@ -94,14 +94,13 @@ private:
 	//Removes the specified ship from the targets
 	UFUNCTION()
 	void UpdateHighlight();
-
+	//Checks the list of current target and assign the closest
+	//one as the primary target
 	UFUNCTION()
 	void FindPrimaryTarget();
 	
 	UPROPERTY(EditAnywhere, Category="Sound")
 	USoundBase* TypeSound;
-
-	
 
 public:	
 
