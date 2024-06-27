@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "KCD_Ship.h"
-#include "KCD_Spawner.h"
+#include "KCD_WaveManager.h"
 #include "GameFramework/Actor.h"
 #include "KCD_Lane.generated.h"
 
@@ -15,6 +15,7 @@ class KEYCUBEDEFENDER_API AKCD_Lane : public AActor
 
 	UPROPERTY(EditAnywhere, Category="Components")
 	USceneComponent* SceneComponent;
+	
 	
 public:	
 	// Sets default values for this actor's properties
@@ -31,11 +32,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	AKCD_Ship* SpawnShip(TSubclassOf<AKCD_Ship> Ship, int WordIndex, FString Word, float SpeedModifier);
 private:
-
+	
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
-	friend AKCD_Spawner;
+	friend AKCD_WaveManager;
 
 };

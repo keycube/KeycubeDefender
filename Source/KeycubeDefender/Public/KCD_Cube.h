@@ -49,7 +49,7 @@ protected:
 	AKCD_GameMode* GameModeInstance;
 	//Reference to the spawner
 	UPROPERTY()
-	AKCD_Spawner* SpawnerInstance;
+	AKCD_WaveManager* SpawnerInstance;
 
 	UFUNCTION(BlueprintCallable)
 	void ShipDestroyed(AKCD_Ship* ship);

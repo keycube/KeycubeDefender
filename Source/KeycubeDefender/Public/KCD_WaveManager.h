@@ -7,7 +7,7 @@
 #include "KCD_Ship.h"
 #include "KCD_WaveData.h"
 #include "GameFramework/Actor.h"
-#include "KCD_Spawner.generated.h"
+#include "KCD_WaveManager.generated.h"
 
 class AKCD_Lane;
 
@@ -39,13 +39,13 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWaveComplete, int, CurrentWave);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnVictory);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShipSpawn);
 UCLASS()
-class KEYCUBEDEFENDER_API AKCD_Spawner : public AActor
+class KEYCUBEDEFENDER_API AKCD_WaveManager : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AKCD_Spawner();
+	AKCD_WaveManager();
 
 	//List to keep track of the ships alive. Also useful to know when a wave is over
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")

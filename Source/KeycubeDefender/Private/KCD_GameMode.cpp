@@ -3,7 +3,7 @@
 
 #include "KCD_GameMode.h"
 
-AKCD_Spawner* AKCD_GameMode::GetShipSpawner()
+AKCD_WaveManager* AKCD_GameMode::GetShipSpawner()
 {
 	return ShipSpawner;
 }

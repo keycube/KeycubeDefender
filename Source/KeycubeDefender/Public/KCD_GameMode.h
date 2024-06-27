@@ -6,7 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "KCD_GameMode.generated.h"
 
-class AKCD_Spawner;
+class AKCD_WaveManager;
 class AKCD_LaneHolder;
 
 /**
@@ -19,10 +19,10 @@ class KEYCUBEDEFENDER_API AKCD_GameMode : public AGameModeBase
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Spawner)
-	AKCD_Spawner* ShipSpawner;
+	AKCD_WaveManager* ShipSpawner;
 
 	UFUNCTION(BlueprintCallable)
-	AKCD_Spawner* GetShipSpawner();
+	AKCD_WaveManager* GetShipSpawner();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Spawner)
 	AKCD_LaneHolder* LaneHolder;

@@ -4,7 +4,7 @@
 #include "KCD_Cube.h"
 #include "KCD_GameMode.h"
 #include "KCD_PlayerController.h"
-#include "KCD_Spawner.h"
+#include "KCD_WaveManager.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -99,7 +99,7 @@ void AKCD_Cube::KeyPress(FKey key)
 	KeyPressed->KeyPressed_Keys();
 	
 	//We see if new targets are linked to this key
-	NewTargets(Cast<AKCD_Spawner>(SpawnerInstance)->GetValidShips(key.GetFName()));
+	NewTargets(Cast<AKCD_WaveManager>(SpawnerInstance)->GetValidShips(key.GetFName()));
 	
 	if(CurrentTargets.IsEmpty())
 	{

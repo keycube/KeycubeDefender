@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "KCD_Spawner.h"
+#include "KCD_WaveManager.h"
 
 #include "KCD_LaneHolder.h"
 #include "KCD_WordDictionnary.h"
@@ -9,7 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
-AKCD_Spawner::AKCD_Spawner()
+AKCD_WaveManager::AKCD_WaveManager()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
@@ -20,7 +20,7 @@ AKCD_Spawner::AKCD_Spawner()
 }
 
 // Called when the game starts or when spawned
-void AKCD_Spawner::BeginPlay()
+void AKCD_WaveManager::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -44,14 +44,14 @@ void AKCD_Spawner::BeginPlay()
 			UE_LOG(LogTemp, Warning, TEXT("LaneHolder is invalid"));
 		} else
 		{
-			LaneHolder->OnShipCrashedDelegate.AddDynamic(this, &AKCD_Spawner::ShipCrashed);
+			LaneHolder->OnShipCrashedDelegate.AddDynamic(this, &AKCD_WaveManager::ShipCrashed);
 		}
 	},  0.1, false);
 
 	NextWave();
 }
 
-void AKCD_Spawner::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void AKCD_WaveManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 
@@ -63,7 +63,7 @@ void AKCD_Spawner::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	}
 }
 
-void AKCD_Spawner::SpawnShip(int ShipTier)
+void AKCD_WaveManager::SpawnShip(int ShipTier)
 {
 	//Get all the possible words for the ship's tier
 	FString ShipTierString = FString::FromInt(ShipTier);
@@ -107,10 +107,10 @@ void AKCD_Spawner::SpawnShip(int ShipTier)
 
 	OnShipSpawnDelegate.Broadcast();
 
-	Ship->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_Spawner::RemoveShip);
+	Ship->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_WaveManager::RemoveShip);
 }
 
-void AKCD_Spawner::NextWave()
+void AKCD_WaveManager::NextWave()
 {
 	CurrentWaveIndex++;
 
@@ -123,11 +123,11 @@ void AKCD_Spawner::NextWave()
 	ReadCurrentWaveData(CurrentWaveIndex);
 
 	//Start a looping timer to spawn ships at an interval
-	GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, this, &AKCD_Spawner::PlayWaveSequence,
+	GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, this, &AKCD_WaveManager::PlayWaveSequence,
 		CurrentWaveData.SpawnTime, true);
 }
 
-void AKCD_Spawner::PlayWaveSequence()
+void AKCD_WaveManager::PlayWaveSequence()
 {
 	int ShipTier = CurrentWaveData.availableTiers[FMath::RandRange(0, CurrentWaveData.availableTiers.Num() - 1)];
 
@@ -147,7 +147,7 @@ void AKCD_Spawner::PlayWaveSequence()
 	}
 }
 
-void AKCD_Spawner::ReadCurrentWaveData(int WaveIndex)
+void AKCD_WaveManager::ReadCurrentWaveData(int WaveIndex)
 {
 	const FKCD_WaveData* CurrentWave = WaveData->FindRow<FKCD_WaveData>(FName(FString::FromInt(WaveIndex)), "");
 
@@ -175,7 +175,7 @@ void AKCD_Spawner::ReadCurrentWaveData(int WaveIndex)
 	CurrentWaveData.SpeedModifier = CurrentWave->SpeedModifier;
 }
 
-void AKCD_Spawner::RemoveShip(AKCD_Ship* Ship)
+void AKCD_WaveManager::RemoveShip(AKCD_Ship* Ship)
 {
 	ShipsAlive.Remove(Ship);
 	Ship->OnShipDestroyedDelegate.RemoveAll(this);
@@ -187,33 +187,33 @@ void AKCD_Spawner::RemoveShip(AKCD_Ship* Ship)
 		if(CurrentWaveIndex != WaveData->GetRowNames().Num())
 			OnWaveCompleteDelegate.Broadcast(CurrentWaveIndex);
 		
-		GetWorld()->GetTimerManager().SetTimer(NewWaveTimerHandle, this, &AKCD_Spawner::NextWave,
+		GetWorld()->GetTimerManager().SetTimer(NewWaveTimerHandle, this, &AKCD_WaveManager::NextWave,
 			3, false);
 	}
 }
 
-FVector AKCD_Spawner::LaneTransform(AKCD_Lane* Lane)
+FVector AKCD_WaveManager::LaneTransform(AKCD_Lane* Lane)
 {
 	return Lane->GetTransform().GetLocation();
 }
 
-AKCD_Lane* AKCD_Spawner::FetchRandomLane()
+AKCD_Lane* AKCD_WaveManager::FetchRandomLane()
 {
 	return LaneHolder->Lanes[FMath::RandRange(0, LaneHolder->Lanes.Num() - 1)];
 }
 
-void AKCD_Spawner::ShipCrashed()
+void AKCD_WaveManager::ShipCrashed()
 {
 	UE_LOG(LogTemp, Warning, TEXT("REEEEEE"));
 }
 
 // Called every frame
-void AKCD_Spawner::Tick(float DeltaTime)
+void AKCD_WaveManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-TArray<AKCD_Ship*> AKCD_Spawner::GetValidShips(FName Letter)
+TArray<AKCD_Ship*> AKCD_WaveManager::GetValidShips(FName Letter)
 {
 	//Verify if there is a ship alive
 	if (ShipsAlive.IsEmpty())
