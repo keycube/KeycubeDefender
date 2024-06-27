@@ -63,7 +63,7 @@ void AKCD_WaveManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	}
 }
 
-void AKCD_WaveManager::SpawnShip(int ShipTier)
+void AKCD_WaveManager::PrepareShip(int ShipTier)
 {
 	//Get all the possible words for the ship's tier
 	FString ShipTierString = FString::FromInt(ShipTier);
@@ -72,7 +72,7 @@ void AKCD_WaveManager::SpawnShip(int ShipTier)
 	bool wordFound = false;
 
 	//Get a random word in the list of possible ones
-	//We loop so we can find an available word
+	//We loop so we can find an available word if the one chosen isn't
 	int ShipWordIndex = -1;
 	for (int x = 0; x <= 20; x++)
 	{
@@ -131,7 +131,7 @@ void AKCD_WaveManager::PlayWaveSequence()
 {
 	int ShipTier = CurrentWaveData.availableTiers[FMath::RandRange(0, CurrentWaveData.availableTiers.Num() - 1)];
 
-	SpawnShip(ShipTier);
+	PrepareShip(ShipTier);
 
 	--CurrentWaveData.NumShipTier[ShipTier];
 	//Once all the ships for a tier are spawned,
@@ -192,11 +192,6 @@ void AKCD_WaveManager::RemoveShip(AKCD_Ship* Ship)
 	}
 }
 
-FVector AKCD_WaveManager::LaneTransform(AKCD_Lane* Lane)
-{
-	return Lane->GetTransform().GetLocation();
-}
-
 AKCD_Lane* AKCD_WaveManager::FetchRandomLane()
 {
 	return LaneHolder->Lanes[FMath::RandRange(0, LaneHolder->Lanes.Num() - 1)];
@@ -205,12 +200,6 @@ AKCD_Lane* AKCD_WaveManager::FetchRandomLane()
 void AKCD_WaveManager::ShipCrashed()
 {
 	UE_LOG(LogTemp, Warning, TEXT("REEEEEE"));
-}
-
-// Called every frame
-void AKCD_WaveManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 TArray<AKCD_Ship*> AKCD_WaveManager::GetValidShips(FName Letter)

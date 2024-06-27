@@ -72,13 +72,13 @@ protected:
 
 	//Spawns the ship of the specified tier and sets it's letter
 	UFUNCTION(BlueprintCallable)
-	void SpawnShip(int ShipTier);
+	void PrepareShip(int ShipTier);
 
 	//Go onto the next wave
 	UFUNCTION(BlueprintCallable)
 	void NextWave();
 
-	// //Spawns ships according to the data in the WaveData
+	//Spawns ships according to the data in the WaveData
 	UFUNCTION(BlueprintCallable)
 	void PlayWaveSequence();
 
@@ -93,9 +93,6 @@ private:
 
 	UFUNCTION()
 	void RemoveShip(AKCD_Ship* Ship);
-
-	UFUNCTION()
-	FVector LaneTransform(AKCD_Lane* Lane);
 
 	UFUNCTION()
 	AKCD_Lane* FetchRandomLane();
