@@ -7,7 +7,7 @@
 AKCD_Keys::AKCD_Keys()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	KeyMesh = CreateDefaultSubobject<UStaticMeshComponent>("KeyMesh");
 	RootComponent = KeyMesh;
@@ -28,13 +28,6 @@ void AKCD_Keys::BeginPlay()
 	DynamicMat = KeyMesh->CreateDynamicMaterialInstance(0, BaseMaterial);
 	
 	
-}
-
-// Called every frame
-void AKCD_Keys::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }
 
 void AKCD_Keys::KeyPressed_Keys()

@@ -50,10 +50,8 @@ private:
 	bool IsPressed = false;
 
 	
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+public:
+	
 	//Visual feedback of the key press
 	UFUNCTION(BlueprintCallable)
 	void KeyPressed_Keys();

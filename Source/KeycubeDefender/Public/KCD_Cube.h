@@ -91,7 +91,7 @@ private:
 	//Takes the FName of the letters and translates them to FKeys
 	UFUNCTION()
 	TArray<FKey> TranslateKeys(TArray<FName> KeysToTranslate);
-	//Removes the specified ship from the targets
+	//Updates the highlights of the keys
 	UFUNCTION()
 	void UpdateHighlight();
 	//Checks the list of current target and assign the closest
