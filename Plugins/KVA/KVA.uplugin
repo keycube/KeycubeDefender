@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "KVA",
+	"Description": "KVA (Keycube Visual Aid) is a simple to use visual aid plugin for the keycube",
+	"Category": "Other",
+	"CreatedBy": "Alexandre Tremblay",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "KVA",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

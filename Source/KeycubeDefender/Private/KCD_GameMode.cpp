@@ -12,3 +12,8 @@ AKCD_LaneHolder* AKCD_GameMode::GetLaneHolder()
 {
 	return LaneHolder;
 }
+
+AKVA_CubeVisual* AKCD_GameMode::GetCubeVisual()
+{
+	return CubeVisual;
+}

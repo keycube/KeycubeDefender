@@ -1,40 +1,32 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "KVA_Keys.h"
 
-
-#include "KCD_Keys.h"
-
-// Sets default values
-AKCD_Keys::AKCD_Keys()
+AKVA_Keys::AKVA_Keys()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 	KeyMesh = CreateDefaultSubobject<UStaticMeshComponent>("KeyMesh");
 	RootComponent = KeyMesh;
 	KeyText = CreateDefaultSubobject<UTextRenderComponent>("KeyText");
 	KeyText->SetupAttachment(KeyMesh);
-
-	
-
 }
 
-// Called when the game starts or when spawned
-void AKCD_Keys::BeginPlay()
+void AKVA_Keys::BeginPlay()
 {
-	Super::BeginPlay();
+	AActor::BeginPlay();
 
 	KeyText->SetText(AssociatedKey.GetDisplayName(false));
 
 	DynamicMat = KeyMesh->CreateDynamicMaterialInstance(0, BaseMaterial);
 }
 
-void AKCD_Keys::KeyPressed_Keys()
+void AKVA_Keys::KeyPressed_Keys()
 {
 	DynamicMat->SetVectorParameterValue("Color", PressedColor);
 	IsPressed = true;
 }
 
-void AKCD_Keys::KeyReleased_Keys()
+void AKVA_Keys::KeyReleased_Keys()
 {
 	IsPressed = false;
 	if(!IsHighlighted)
@@ -46,7 +38,7 @@ void AKCD_Keys::KeyReleased_Keys()
 	}
 }
 
-void AKCD_Keys::HighlightKey()
+void AKVA_Keys::HighlightKey()
 {
 	IsHighlighted = true;
 	if(!IsPressed)
@@ -55,7 +47,7 @@ void AKCD_Keys::HighlightKey()
 	}
 }
 
-void AKCD_Keys::UnhighlightKey()
+void AKVA_Keys::UnhighlightKey()
 {
 	IsHighlighted = false;
 	if(!IsPressed)

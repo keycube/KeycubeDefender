@@ -14,8 +14,8 @@ AKCD_Cube::AKCD_Cube()
 	PrimaryActorTick.bCanEverTick = false;
 
 	//Instantiate the object component
-	CubeMesh = CreateDefaultSubobject<UStaticMeshComponent>("CubeMesh");
-	RootComponent = CubeMesh;
+	RootObject = CreateDefaultSubobject<USceneComponent>("ObjectRoot");
+	RootComponent = RootObject;
 }
 
 // Called when the game starts or when spawned
@@ -52,51 +52,23 @@ void AKCD_Cube::BeginPlay()
 		}
 
 		SpawnerInstance->OnShipSpawnDelegate.AddDynamic(this, &AKCD_Cube::UpdateHighlight);
+
+		Cube = GameModeInstance->GetCubeVisual();
 	},  0.1, false);
 	
-	FillKeyMap();
-}
-
-void AKCD_Cube::FillKeyMap()
-{
-	//List of all the child components of the object
-	TArray<USceneComponent*> ChildComponents;
-	RootComponent->GetChildrenComponents(true, ChildComponents);
-	
-	// Check all the object's childComponent. If they are of the AKCD_Keys class, we add them
-	// to the map and associate them with the right key
-	for (auto Child : ChildComponents)
-	{
-		if(auto ChildActor = Cast<UChildActorComponent>(Child))
-		{
-			if(auto ChildKey = Cast<AKCD_Keys>(ChildActor->GetChildActor()))
-			{
-				if(!Keys.Find(ChildKey->AssociatedKey))
-				{
-					Keys.Add(ChildKey->AssociatedKey, ChildKey); 
-				} else
-				{
-					UE_LOG(LogTemp, Warning, TEXT("Key : %s Was already present"), *ChildKey->AssociatedKey.GetDisplayName().ToString());
-				}
-				
-			}
-		}
-	}
 }
 
 void AKCD_Cube::KeyPress(FKey key)
 {
 	//Check if the key is present in the accepted key list
-	if(!Keys.Contains(key))
+	if(!Cube->Keys.Contains(key))
 	{
 		return;
 	}
-	
-	AKCD_Keys* KeyPressed = Keys.FindRef(key);
 
 	//Feedback
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), TypeSound, GetTransform().GetLocation());
-	KeyPressed->KeyPressed_Keys();
+	Cube->KeyPressed(key);
 	
 	//We see if new targets are linked to this key
 	NewTargets(Cast<AKCD_WaveManager>(SpawnerInstance)->GetValidShips(key.GetFName()));
@@ -147,14 +119,7 @@ void AKCD_Cube::KeyPress(FKey key)
 
 void AKCD_Cube::KeyRelease(FKey key)
 {
-	if(!Keys.Contains(key))
-	{
-		return;
-	}
-	
-	AKCD_Keys* KeyPressed = Keys.FindRef(key);
-
-	KeyPressed->KeyReleased_Keys();
+	Cube->KeyReleased(key);
 }
 
 void AKCD_Cube::RemoveTarget(AKCD_Ship* Ship)
@@ -228,7 +193,7 @@ void AKCD_Cube::UpdateHighlight()
 		}
 	}
 
-	HighlightKeys(TranslateKeys(targetableLetters));
+	Cube->HighlightKeys(TranslateKeys(targetableLetters));
 
 	//Same for here, we fill and array while checking if a letter in the 
 	//highlighted keys list is no longer present in the list of letters to target
@@ -242,7 +207,7 @@ void AKCD_Cube::UpdateHighlight()
 		}
 	}
 
-	UnhighlightKeys(TranslateKeys(LettersToUntarget));
+	Cube->UnhighlightKeys(TranslateKeys(LettersToUntarget));
 	
 }
 
@@ -279,34 +244,6 @@ void AKCD_Cube::ShipDestroyed(AKCD_Ship* Ship)
 	}
 
 	OnScoreUpdateDelegate.Broadcast();
-}
-
-void AKCD_Cube::HighlightKeys(TArray<FKey> keysToHighlight)
-{
-	for (auto key : keysToHighlight)
-	{
-		if(key.GetFName() == "")
-		{
-			continue;
-		}
-		Keys[key]->HighlightKey();
-
-		HighlitedKeys.AddUnique(key);
-	}
-}
-
-void AKCD_Cube::UnhighlightKeys(TArray<FKey> KeysToUnHighlight)
-{
-	for(auto key : KeysToUnHighlight)
-	{
-		if(key.GetFName() == "")
-		{
-			continue;
-		}
-		Keys[key]->UnhighlightKey();
-
-		HighlitedKeys.Remove(key);
-	}
 }
 
 void AKCD_Cube::UpdateMultiplicator(bool Success)

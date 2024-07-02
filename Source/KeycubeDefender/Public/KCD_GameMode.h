@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "KVA_CubeVisual.h"
 #include "GameFramework/GameModeBase.h"
 #include "KCD_GameMode.generated.h"
 
@@ -29,4 +30,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	AKCD_LaneHolder* GetLaneHolder();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Spawner)
+	AKVA_CubeVisual* CubeVisual;
+
+	UFUNCTION(BlueprintCallable)
+	AKVA_CubeVisual* GetCubeVisual();
 };

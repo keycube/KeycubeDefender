@@ -6,7 +6,7 @@
 #include "KCD_GameMode.h"
 #include "KCD_Keys.h"
 #include "KCD_Ship.h"
-#include "GameFramework/Actor.h"
+#include "KVA_CubeVisual.h"
 #include "KCD_Cube.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnScoreUpdate);
@@ -17,7 +17,7 @@ class KEYCUBEDEFENDER_API AKCD_Cube : public APawn
 
 	//component of the cube object
 	UPROPERTY(VisibleAnywhere, Category=Mesh)
-	UStaticMeshComponent* CubeMesh;
+	USceneComponent* RootObject;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -43,6 +43,9 @@ protected:
 	//Target who will not be removed if the wrong input in entered
 	UPROPERTY(EditAnywhere, Category=Variable)
 	AKCD_Ship* PrimaryTarget;
+	//Keycube Visual aid
+	UPROPERTY(EditAnywhere, Category = Variable)
+	AKVA_CubeVisual* Cube;
 
 	//Reference to the GameMode
 	UPROPERTY()
@@ -53,24 +56,12 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void ShipDestroyed(AKCD_Ship* ship);
-
-	//Mark the letters who would result in a good hit
-	UFUNCTION(BlueprintCallable)
-	void HighlightKeys(TArray<FKey> keysToHighlight);
-
-	//Mark the letters who would result in a good hit
-	UFUNCTION(BlueprintCallable)
-	void UnhighlightKeys(TArray<FKey> keysToHighlight);
 	
 	//Advance or reset the score multiplicator 
 	UFUNCTION()
 	void UpdateMultiplicator(bool Success);
 
 private:
-	//Fill the map of association between the inputs and the
-	//keys on the cube
-	UFUNCTION()
-	void FillKeyMap();
 
 	//Function called when a key is pressed
 	//Gives visual feedback of the key pressed, and tries to hit a target
