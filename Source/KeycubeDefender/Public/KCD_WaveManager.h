@@ -114,8 +114,6 @@ private:
 	
 	
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnVictory OnVictoryDelegate;
