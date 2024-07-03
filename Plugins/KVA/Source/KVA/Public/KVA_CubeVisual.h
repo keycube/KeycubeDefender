@@ -77,6 +77,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void FillKeyMatrix(TArray<UChildActorComponent*> KeyActors, int Row, int Face);
 
+	UFUNCTION(BlueprintCallable)
+	void SaveKeyMatrix();
+
 private:
 	
 	//Fill the map of association between the inputs and the
@@ -87,4 +90,8 @@ private:
 	//Updates the highlights of the keys
 	UFUNCTION()
 	void UpdateHighlight();
+
+	//Load the saved data of the letters matrix
+	UFUNCTION()
+	void LoadKeyMatrix();
 };

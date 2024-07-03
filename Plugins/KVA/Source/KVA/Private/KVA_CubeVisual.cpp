@@ -1,5 +1,8 @@
 ﻿#include "KVA_CubeVisual.h"
 
+#include "KVA_CubeInfo.h"
+#include "Kismet/GameplayStatics.h"
+
 AKVA_CubeVisual::AKVA_CubeVisual()
 {
 }
@@ -9,12 +12,16 @@ void AKVA_CubeVisual::BeginPlay()
 	Super::BeginPlay();
 
 	FillKeyMap();
+
+	LoadKeyMatrix();
 }
 
 void AKVA_CubeVisual::KeyPressed(FKey KeyToPress)
 {
 	AKVA_Keys* KeyPressed = Keys.FindRef(KeyToPress);
 	KeyPressed->KeyPressed_Keys();
+
+	SaveKeyMatrix();
 }
 
 void AKVA_CubeVisual::KeyReleased(FKey KeyToRelease)
@@ -78,6 +85,8 @@ void AKVA_CubeVisual::FillKeyMatrix(TArray<UChildActorComponent*> KeyActors, int
 	}
 }
 
+
+
 void AKVA_CubeVisual::FillKeyMap()
 {
 	//List of all the child components of the object
@@ -108,4 +117,44 @@ void AKVA_CubeVisual::FillKeyMap()
 void AKVA_CubeVisual::UpdateHighlight()
 {
 	return;
+}
+
+void AKVA_CubeVisual::SaveKeyMatrix()
+{
+	UKVA_CubeInfo* CubeInfo = NewObject<UKVA_CubeInfo>(this);
+
+	UE_LOG(LogTemp, Warning, TEXT("Saving key matrix"));
+	
+	for (int x = 0; x < KeysMatrix.Num(); x++)
+	{
+		CubeInfo->SavedKeyMatrix.Add(FKeyFaceLoad{});
+		for (int y = 0; y < KeysMatrix[x].Face.Num(); y++)
+		{
+			CubeInfo->SavedKeyMatrix[x].Face.Add(FKeyRowLoad{});
+			for (int z = 0; z < KeysMatrix[x].Face[y].Keys.Num();z++)
+			{
+				CubeInfo->SavedKeyMatrix[x].Face[y].Keys.Add(KeysMatrix[x].Face[y].Keys[z]->AssociatedKey);
+			}
+		}
+	}
+	
+	UGameplayStatics::SaveGameToSlot(CubeInfo, UKVA_CubeInfo::SlotName, 0);
+}
+
+void AKVA_CubeVisual::LoadKeyMatrix()
+{
+	if (auto LoadedKeyMatrix = Cast<UKVA_CubeInfo>(UGameplayStatics::LoadGameFromSlot(UKVA_CubeInfo::SlotName, 0)))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Key matrix to load foun. Starting load"));
+		for (int x = 0; x < LoadedKeyMatrix->SavedKeyMatrix.Num(); x++)
+		{
+			for (int y = 0; y < LoadedKeyMatrix->SavedKeyMatrix[x].Face.Num(); y++)
+			{
+				for (int z = 0; z < LoadedKeyMatrix->SavedKeyMatrix[x].Face[y].Keys.Num();z++)
+				{
+					KeysMatrix[x].Face[y].Keys[z]->AssociatedKey = LoadedKeyMatrix->SavedKeyMatrix[x].Face[y].Keys[z];
+				}
+			}
+		}
+	}
 }
