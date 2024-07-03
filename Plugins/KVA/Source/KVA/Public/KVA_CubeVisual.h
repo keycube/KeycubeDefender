@@ -3,6 +3,34 @@
 
 #include "KVA_CubeVisual.generated.h"
 
+USTRUCT()
+struct FKeyRow
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	TArray<AKVA_Keys*> Keys;
+
+	AKVA_Keys* operator[] (int32 i)
+	{
+		return Keys[i];
+	}
+};
+
+USTRUCT()
+struct FKeyFace
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	TArray<FKeyRow> Face;
+
+	FKeyRow operator[] (int32 i)
+	{
+		return Face[i];
+	}
+};
+
 UCLASS()
 class KVA_API AKVA_CubeVisual : public AActor
 {
@@ -18,6 +46,11 @@ public:
 	//keys on the cube
 	UPROPERTY(VisibleAnywhere, Category=Keys)
 	TMap<FKey, AKVA_Keys*> Keys;
+
+	//Map of association between the inputs and the
+	//keys on the cube
+	UPROPERTY(EditAnywhere, Category=Keys)
+	TArray<FKeyFace> KeysMatrix;
 
 	//Map of keys with the Highlight state
 	UPROPERTY(VisibleAnywhere, Category=Keys)
@@ -38,6 +71,11 @@ public:
 	//Mark the letters who would result in a good hit
 	UFUNCTION(BlueprintCallable)
 	void UnhighlightKeys(TArray<FKey> keysToHighlight);
+
+	//Fill the map of association between the inputs and the
+	//keys on the cube
+	UFUNCTION(BlueprintCallable)
+	void FillKeyMatrix(TArray<UChildActorComponent*> KeyActors, int Row, int Face);
 
 private:
 	

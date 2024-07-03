@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "KCD_GameMode.h"
-#include "KCD_Keys.h"
 #include "KCD_Ship.h"
 #include "KVA_CubeVisual.h"
 #include "KCD_Cube.generated.h"

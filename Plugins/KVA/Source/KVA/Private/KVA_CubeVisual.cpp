@@ -59,6 +59,25 @@ void AKVA_CubeVisual::UnhighlightKeys(TArray<FKey> KeysToUnHighlight)
 	}
 }
 
+void AKVA_CubeVisual::FillKeyMatrix(TArray<UChildActorComponent*> KeyActors, int Row, int Face)
+{
+	while(!KeysMatrix.IsValidIndex(Face))
+	{
+		KeysMatrix.Add(FKeyFace{});
+	}
+
+	KeysMatrix[Face].Face.Add(FKeyRow{});
+	
+	for (auto Element : KeyActors)
+	{
+		AKVA_Keys* Key = Cast<AKVA_Keys>(Element->GetChildActor());
+		if(Key != nullptr)
+		{
+			KeysMatrix[Face].Face[Row].Keys.Add(Key);
+		}
+	}
+}
+
 void AKVA_CubeVisual::FillKeyMap()
 {
 	//List of all the child components of the object

@@ -27,6 +27,8 @@ USTRUCT()
 struct FEncapsule
 {
 	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere)
 	TArray<int> index;
 
 	int operator[] (int32 i)
@@ -65,6 +67,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
 	UDataTable* WordBank;
 
+	UPROPERTY(EditAnywhere, Category="Variables")
 	TArray<FEncapsule> WordIndexUsed;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
