@@ -51,6 +51,8 @@ void AKVA_CubeVisual::UnhighlightKeys(TArray<FKey> KeysToUnHighlight)
 		{
 			continue;
 		}
+		UE_LOG(LogTemp, Warning, TEXT("Key : %s is being untargeted"), *key.GetFName().ToString());
+		
 		Keys[key]->UnhighlightKey();
 
 		HighlitedKeys.Remove(key);

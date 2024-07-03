@@ -199,7 +199,7 @@ void AKCD_Cube::UpdateHighlight()
 	//highlighted keys list is no longer present in the list of letters to target
 	//and feed that list to a function to untarget them
 	TArray<FName> LettersToUntarget;
-	for (auto Letter : HighlitedKeys)
+	for (auto Letter : Cube->HighlitedKeys)
 	{
 		if(!targetableLetters.Contains(Letter.GetFName()))
 		{

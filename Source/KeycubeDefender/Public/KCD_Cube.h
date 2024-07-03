@@ -26,16 +26,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	//Map of association between the inputs and the
-	//keys on the cube
-	UPROPERTY(VisibleAnywhere, Category=Keys)
-	TMap<FKey, AKCD_Keys*> Keys;
-
-	//Map of association between the inputs and the
-	//keys on the cube
-	UPROPERTY(VisibleAnywhere, Category=Keys)
-	TArray<FKey> HighlitedKeys;
 	
 	//Target who will receive our current input
 	UPROPERTY(EditAnywhere, Category=Variable)
