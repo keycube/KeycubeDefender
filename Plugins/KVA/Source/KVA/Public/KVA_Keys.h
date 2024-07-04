@@ -34,12 +34,13 @@ public:
 	UPROPERTY(EditAnywhere, Category = Variables)
 	bool IsHighlighted = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite ,Category = Variables)
+	UMaterialInstanceDynamic* DynamicMat;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
-	UPROPERTY(EditAnywhere, Category = Variables)
-	UMaterialInstanceDynamic* DynamicMat;
+
 
 private:
 	

@@ -158,7 +158,8 @@ void AKVA_CubeVisual::LoadKeyMatrix()
 			{
 				for (int z = 0; z < LoadedKeyMatrix->SavedKeyMatrix[x].Face[y].Keys.Num();z++)
 				{
-					KeysMatrix[x].Face[y].Keys[z]->AssociatedKey = LoadedKeyMatrix->SavedKeyMatrix[x].Face[y].Keys[z];
+					UE_LOG(LogTemp, Warning, TEXT("Changing key from %s to %s"), *KeysMatrix[x].Face[y].Keys[z]->AssociatedKey.GetDisplayName().ToString(), *LoadedKeyMatrix->SavedKeyMatrix[x].Face[y].Keys[z].GetDisplayName().ToString());
+					KeysMatrix[x].Face[y].Keys[z]->ChangeKey(LoadedKeyMatrix->SavedKeyMatrix[x].Face[y].Keys[z]);
 				}
 			}
 		}
