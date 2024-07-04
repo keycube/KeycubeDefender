@@ -55,3 +55,9 @@ void AKVA_Keys::UnhighlightKey()
 		DynamicMat->SetVectorParameterValue("Color", BaseColor);
 	}
 }
+
+void AKVA_Keys::ChangeKey(FKey NewKey)
+{
+	AssociatedKey = NewKey;
+	KeyText->SetText(NewKey.GetDisplayName(false));
+}

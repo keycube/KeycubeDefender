@@ -77,8 +77,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void FillKeyMatrix(TArray<UChildActorComponent*> KeyActors, int Row, int Face);
 
+	//Saves the current key matrix to be loaded next time
 	UFUNCTION(BlueprintCallable)
 	void SaveKeyMatrix();
+
+	//Calls the change key function of the key actor and refreshes the key map
+	UFUNCTION(BlueprintCallable)
+	void ChangeKey(AKVA_Keys* ChangingKey, FKey NewKey);
 
 private:
 	

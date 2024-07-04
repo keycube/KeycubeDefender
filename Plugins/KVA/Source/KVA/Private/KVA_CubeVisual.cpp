@@ -92,6 +92,8 @@ void AKVA_CubeVisual::FillKeyMap()
 	//List of all the child components of the object
 	TArray<USceneComponent*> ChildComponents;
 	RootComponent->GetChildrenComponents(true, ChildComponents);
+
+	Keys.Empty();
 	
 	// Check all the object's childComponent. If they are of the AKCD_Keys class, we add them
 	// to the map and associate them with the right key
@@ -139,6 +141,12 @@ void AKVA_CubeVisual::SaveKeyMatrix()
 	}
 	
 	UGameplayStatics::SaveGameToSlot(CubeInfo, UKVA_CubeInfo::SlotName, 0);
+}
+
+void AKVA_CubeVisual::ChangeKey(AKVA_Keys* ChangingKey, FKey NewKey)
+{
+	ChangingKey->ChangeKey(NewKey);
+	FillKeyMap();
 }
 
 void AKVA_CubeVisual::LoadKeyMatrix()

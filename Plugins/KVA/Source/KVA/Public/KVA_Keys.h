@@ -60,4 +60,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UnhighlightKey();
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeKey(FKey NewKey);
 };
