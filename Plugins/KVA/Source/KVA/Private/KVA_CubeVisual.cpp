@@ -20,8 +20,6 @@ void AKVA_CubeVisual::KeyPressed(FKey KeyToPress)
 {
 	AKVA_Keys* KeyPressed = Keys.FindRef(KeyToPress);
 	KeyPressed->KeyPressed_Keys();
-
-	SaveKeyMatrix();
 }
 
 void AKVA_CubeVisual::KeyReleased(FKey KeyToRelease)
