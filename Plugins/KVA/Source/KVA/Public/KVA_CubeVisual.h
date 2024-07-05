@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "KVA_Keys.h"
-
+#include <iostream>
+#include <fstream>
 #include "KVA_CubeVisual.generated.h"
 
 USTRUCT()
@@ -99,4 +100,10 @@ private:
 	//Load the saved data of the letters matrix
 	UFUNCTION()
 	void LoadKeyMatrix();
+
+	UFUNCTION(BlueprintCallable)
+	void WriteToFile();
+	
+	UFUNCTION(BlueprintCallable)
+	void ReadFile();
 };

@@ -172,3 +172,41 @@ void AKVA_CubeVisual::LoadKeyMatrix()
 		UE_LOG(LogTemp, Warning, TEXT("Key matrix loaded from save data"));
 	}
 }
+
+void AKVA_CubeVisual::WriteToFile()
+{
+	std::ofstream myfile ("TestInput.txt");
+	if (myfile.is_open())
+	{
+		for(auto key : Keys)
+		{
+			std::string keyString = std::string(TCHAR_TO_UTF8(*key.Key.GetDisplayName(false).ToString()));
+			myfile << keyString + "\n";
+		}
+		
+		myfile.close();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for write"));
+	}
+}
+
+void AKVA_CubeVisual::ReadFile()
+{
+	std::string line;
+	std::ifstream myfile ("TestInput.txt");
+	if (myfile.is_open())
+	{
+		while ( getline (myfile,line) )
+		{
+			FString key = line.c_str();
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *key);
+		}
+		myfile.close();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for read"));
+	}
+}
