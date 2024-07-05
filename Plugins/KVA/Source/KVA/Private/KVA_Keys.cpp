@@ -60,4 +60,5 @@ void AKVA_Keys::ChangeKey(FKey NewKey)
 {
 	AssociatedKey = NewKey;
 	KeyText->SetText(NewKey.GetDisplayName(false));
+	HighlightKey();
 }

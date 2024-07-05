@@ -134,6 +134,7 @@ void AKVA_CubeVisual::SaveKeyMatrix()
 			for (int z = 0; z < KeysMatrix[x].Face[y].Keys.Num();z++)
 			{
 				CubeInfo->SavedKeyMatrix[x].Face[y].Keys.Add(KeysMatrix[x].Face[y].Keys[z]->AssociatedKey);
+				KeysMatrix[x].Face[y].Keys[z]->UnhighlightKey();
 			}
 		}
 	}
@@ -143,6 +144,11 @@ void AKVA_CubeVisual::SaveKeyMatrix()
 
 void AKVA_CubeVisual::ChangeKey(AKVA_Keys* ChangingKey, FKey NewKey)
 {
+	if(Keys.Contains(NewKey))
+	{
+		Keys[NewKey]->ChangeKey(ChangingKey->AssociatedKey);
+	}
+	
 	ChangingKey->ChangeKey(NewKey);
 	FillKeyMap();
 }
@@ -158,10 +164,11 @@ void AKVA_CubeVisual::LoadKeyMatrix()
 			{
 				for (int z = 0; z < LoadedKeyMatrix->SavedKeyMatrix[x].Face[y].Keys.Num();z++)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("Changing key from %s to %s"), *KeysMatrix[x].Face[y].Keys[z]->AssociatedKey.GetDisplayName().ToString(), *LoadedKeyMatrix->SavedKeyMatrix[x].Face[y].Keys[z].GetDisplayName().ToString());
 					KeysMatrix[x].Face[y].Keys[z]->ChangeKey(LoadedKeyMatrix->SavedKeyMatrix[x].Face[y].Keys[z]);
+					KeysMatrix[x].Face[y].Keys[z]->UnhighlightKey();
 				}
 			}
 		}
+		UE_LOG(LogTemp, Warning, TEXT("Key matrix loaded from save data"));
 	}
 }
