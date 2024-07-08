@@ -60,10 +60,44 @@ void AKCD_Ship::Tick(float DeltaTime)
 void AKCD_Ship::SetWord(FString word)
 {
 	CurrentWord = word;
+
+	Stats.WordSize = GetNum(CurrentWord);
 	
 	SpawnLetters();
 
 	CurrentLetter = LettersInstances[CurrentLetterIndex]->CurrentLetter;
+}
+
+int AKCD_Ship::EditDistance()
+{
+	int m = GetNum(CurrentWord);
+	int n = GetNum(TotalTypeWord);
+
+	std::string s = TCHAR_TO_UTF8(*CurrentWord);
+	std::string t = TCHAR_TO_UTF8(*TotalTypeWord);
+	
+	std::vector<int> prev(n + 1, 0), curr(n + 1, 0);
+
+	for (int j = 0; j <= n; j++) {
+		prev[j] = j;
+	}
+
+	for (int i = 1; i <= m; i++) {
+		curr[0] = i;
+		for (int j = 1; j <= n; j++) {
+			if (s[i - 1] == t[j - 1]) {
+				curr[j] = prev[j - 1];
+			}
+			else {
+				int mn
+					= std::min(1 + prev[j], 1 + curr[j - 1]);
+				curr[j] = std::min(mn, 1 + prev[j - 1]);
+			}
+		}
+		prev = curr;
+	}
+
+	return prev[n];
 }
 
 void AKCD_Ship::Targeted()
@@ -142,11 +176,13 @@ bool AKCD_Ship::Hit(FName Letter)
 	//targeted when this list is empty
 	if(LettersInstances.IsEmpty())
 		return false;
-
+	
 	//If the letter requested is the current targetable one, We hide the letter and
 	//highlight the next one or destroy the ship if it was the last
 	if(!isDestroyed)
 	{
+		TotalTypeWord += Letter.ToString().ToLower();
+		
 		if (LettersInstances[CurrentLetterIndex]->CurrentLetter == Letter)
 		{
 			LettersInstances[CurrentLetterIndex]->Hide();
@@ -172,6 +208,9 @@ bool AKCD_Ship::Hit(FName Letter)
 			return true;
 		}
 	}
+
+	if(IsTarget)
+		Stats.Mistakes++;
 	
 	return false;
 }
@@ -186,6 +225,16 @@ void AKCD_Ship::ShipDestroyed()
 	
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShipDestroyedSound,
 		this->GetTransform().GetLocation());
+
+	const double timeToComplete = GetWorld()->GetRealTimeSeconds() - StartTime;
+
+	Stats.TimeTaken = timeToComplete;
+	
+	//TODO : Send Stats to file
+
+	UE_LOG(LogTemp, Warning, TEXT("Word distance : %i"), EditDistance());
+	UE_LOG(LogTemp, Warning, TEXT("Wanted word : %s"), *CurrentWord);
+	UE_LOG(LogTemp, Warning, TEXT("Looked at word : %s"), *TotalTypeWord);
 	
 	this->Destroy();
 }
@@ -200,8 +249,13 @@ void AKCD_Ship::SetMainTarget()
 	IsPrimaryTarget = true;
 	LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
 
+	StartTime = GetWorld()->GetRealTimeSeconds();
+
 	SetActorLocation(GetTransform().GetLocation() + FVector(-5.0, 0.0, 0.0));
 
 	SubTargetSprite->SetVisibility(false);
 	MainTargetSprite->SetVisibility(true);
+
+	if(CurrentLetterIndex != 0)
+		Stats.WasAltTarget = true;
 }

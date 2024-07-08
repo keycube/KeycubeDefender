@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "KCD_Letters.h"
+#include "KCD_TypingStats.h"
 #include "Components/BoxComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "GameFramework/Actor.h"
@@ -56,12 +57,18 @@ public:
 	bool IsTarget = false;
 	UPROPERTY(EditAnywhere, Category="Variables")
 	int Reward;
+	UPROPERTY(BlueprintReadOnly, Category="Variables")
+	FKCD_TypingStats Stats;
+	
 
 	//Var for the letters to spawn
 	UPROPERTY(EditAnywhere ,Category="Variables")
 	TArray<AKCD_Letters*> LettersInstances;
 	UPROPERTY(EditAnywhere ,Category="Variables")
 	TSubclassOf<AKCD_Letters> LetterBP;
+
+	UPROPERTY(BlueprintReadOnly, Category="Variables")
+	double StartTime;
 
 	
 	//Event delegate for ship destruction
@@ -90,6 +97,9 @@ private:
 	//Theses var are used to make the word centered on the ship
 	UPROPERTY(EditAnywhere, Category="Words")
 	float Lettersize = 30.0;
+	
+	UPROPERTY(EditAnywhere, Category="Words")
+	FString TotalTypeWord;
 
 	UPROPERTY(EditAnywhere, Category="Sound")
 	USoundBase* ShipDestroyedSound;
@@ -106,6 +116,10 @@ public:
 	//Set the word associated with the ship
 	UFUNCTION(BlueprintCallable)
 	void SetWord(FString word);
+
+	//Set the word associated with the ship
+	UFUNCTION(BlueprintCallable)
+	int EditDistance();
 
 	//Effect when the ship is targeted
 	UFUNCTION(BlueprintCallable)
