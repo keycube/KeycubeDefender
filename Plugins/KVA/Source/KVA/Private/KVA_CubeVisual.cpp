@@ -3,6 +3,7 @@
 #include <filesystem>
 
 #include "KVA_CubeInfo.h"
+#include "KVA_KeyTranslation.h"
 #include "Kismet/GameplayStatics.h"
 
 AKVA_CubeVisual::AKVA_CubeVisual()
@@ -12,7 +13,7 @@ AKVA_CubeVisual::AKVA_CubeVisual()
 void AKVA_CubeVisual::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	FillKeyMap();
 
 	LoadKeyMatrix();
@@ -202,7 +203,8 @@ void AKVA_CubeVisual::WriteToFile()
 			{
 				for (int z = 0; z < KeysMatrix[x].Face[y].Keys.Num();z++)
 				{
-					std::string keyString = std::string(TCHAR_TO_UTF8(*KeysMatrix[x].Face[y].Keys[z]->AssociatedKey.GetDisplayName(false).ToString()));
+					std::string keyString = std::string(TCHAR_TO_UTF8(*KeysMatrix[x].Face[y].Keys[z]
+						->AssociatedKey.GetFName().ToString()));
 					myfile << keyString + "\n";
 					KeysMatrix[x].Face[y].Keys[z]->UnhighlightKey();
 				}
@@ -224,14 +226,45 @@ void AKVA_CubeVisual::ReadFile()
 	FString RelativePath = FPaths::ProjectContentDir();
 	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
 		+ std::string("TestInput.txt")));
+
+	FKVA_KeyTranslation* KeyAssociation;
+	
+	int x = 0;
+	int y = 0;
+	int z = 0;
 	
 	std::ifstream myfile (path);
 	if (myfile.is_open())
 	{
 		while ( getline (myfile,line) )
 		{
+			
 			FString key = line.c_str();
 			UE_LOG(LogTemp, Warning, TEXT("%s"), *key);
+
+			KeyAssociation = KeyTranslationTable->FindRow<FKVA_KeyTranslation>(FName(key), "");
+
+			if(KeyAssociation->Key.IsValid())
+			{
+				KeysMatrix[x].Face[y].Keys[z]->ChangeKey(KeyAssociation->Key);
+				KeysMatrix[x].Face[y].Keys[z]->UnhighlightKey();
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Key invalid"));
+			}
+
+			z++;
+			if(z >= 4)
+			{
+				y++;
+				if(y >= 4)
+				{
+					x++;
+					y = 0;
+				}
+				z = 0;
+			}
 		}
 		myfile.close();
 	}

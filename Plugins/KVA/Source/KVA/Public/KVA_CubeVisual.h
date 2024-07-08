@@ -56,6 +56,9 @@ public:
 	//Map of keys with the Highlight state
 	UPROPERTY(VisibleAnywhere, Category=Keys)
 	TArray<FKey> HighlitedKeys;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
+	UDataTable* KeyTranslationTable;
 	
 	//Mark the letter as pressed
 	UFUNCTION(BlueprintCallable)
