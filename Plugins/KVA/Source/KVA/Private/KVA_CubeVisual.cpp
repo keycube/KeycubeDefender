@@ -124,29 +124,36 @@ void AKVA_CubeVisual::UpdateHighlight()
 
 void AKVA_CubeVisual::SaveKeyMatrix()
 {
+	//Set the relative path where the file is saved and the name of the file
+	FString RelativePath = FPaths::ProjectContentDir();
+	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
+		+ std::string("InputLayout.txt")));
 
-	WriteToFile();
-
-	
-	// UKVA_CubeInfo* CubeInfo = NewObject<UKVA_CubeInfo>(this);
-	//
-	// UE_LOG(LogTemp, Warning, TEXT("Saving key matrix"));
-	//
-	// for (int x = 0; x < KeysMatrix.Num(); x++)
-	// {
-	// 	CubeInfo->SavedKeyMatrix.Add(FKeyFaceLoad{});
-	// 	for (int y = 0; y < KeysMatrix[x].Face.Num(); y++)
-	// 	{
-	// 		CubeInfo->SavedKeyMatrix[x].Face.Add(FKeyRowLoad{});
-	// 		for (int z = 0; z < KeysMatrix[x].Face[y].Keys.Num();z++)
-	// 		{
-	// 			CubeInfo->SavedKeyMatrix[x].Face[y].Keys.Add(KeysMatrix[x].Face[y].Keys[z]->AssociatedKey);
-	// 			KeysMatrix[x].Face[y].Keys[z]->UnhighlightKey();
-	// 		}
-	// 	}
-	// }
-	//
-	// UGameplayStatics::SaveGameToSlot(CubeInfo, UKVA_CubeInfo::SlotName, 0);
+	//Open the file and check if it is opened
+	std::ofstream myfile (path);
+	if (myfile.is_open())
+	{
+		//We loop trough all the keys is the key matrix and save them to the file
+		for (int x = 0; x < KeysMatrix.Num(); x++)
+		{
+			for (int y = 0; y < KeysMatrix[x].Face.Num(); y++)
+			{
+				for (int z = 0; z < KeysMatrix[x].Face[y].Keys.Num();z++)
+				{
+					std::string keyString = std::string(TCHAR_TO_UTF8(*KeysMatrix[x].Face[y].Keys[z]
+						->AssociatedKey.GetFName().ToString()));
+					myfile << keyString + "\n";
+					KeysMatrix[x].Face[y].Keys[z]->UnhighlightKey();
+				}
+			}
+		}
+		//Close the file
+		myfile.close();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for write"));
+	}
 }
 
 void AKVA_CubeVisual::ChangeKey(AKVA_Keys* ChangingKey, FKey NewKey)
@@ -162,88 +169,39 @@ void AKVA_CubeVisual::ChangeKey(AKVA_Keys* ChangingKey, FKey NewKey)
 
 void AKVA_CubeVisual::LoadKeyMatrix()
 {
-	ReadFile();
-
-
-
-	
-	// if (auto LoadedKeyMatrix = Cast<UKVA_CubeInfo>(UGameplayStatics::LoadGameFromSlot(UKVA_CubeInfo::SlotName, 0)))
-	// {
-	// 	UE_LOG(LogTemp, Warning, TEXT("Key matrix to load foun. Starting load"));
-	// 	for (int x = 0; x < LoadedKeyMatrix->SavedKeyMatrix.Num(); x++)
-	// 	{
-	// 		for (int y = 0; y < LoadedKeyMatrix->SavedKeyMatrix[x].Face.Num(); y++)
-	// 		{
-	// 			for (int z = 0; z < LoadedKeyMatrix->SavedKeyMatrix[x].Face[y].Keys.Num();z++)
-	// 			{
-	// 				KeysMatrix[x].Face[y].Keys[z]->ChangeKey(LoadedKeyMatrix->SavedKeyMatrix[x].Face[y].Keys[z]);
-	// 				KeysMatrix[x].Face[y].Keys[z]->UnhighlightKey();
-	// 			}
-	// 		}
-	// 	}
-	// 	UE_LOG(LogTemp, Warning, TEXT("Key matrix loaded from save data"));
-	// }
-}
-
-void AKVA_CubeVisual::WriteToFile()
-{
-	FString RelativePath = FPaths::ProjectContentDir();
-
-	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
-		+ std::string("TestInput.txt")));
-	
-	std::ofstream myfile (path);
-	if (myfile.is_open())
-	{
-		std::filesystem::path cwd = std::filesystem::current_path();
-		
-		for (int x = 0; x < KeysMatrix.Num(); x++)
-		{
-			for (int y = 0; y < KeysMatrix[x].Face.Num(); y++)
-			{
-				for (int z = 0; z < KeysMatrix[x].Face[y].Keys.Num();z++)
-				{
-					std::string keyString = std::string(TCHAR_TO_UTF8(*KeysMatrix[x].Face[y].Keys[z]
-						->AssociatedKey.GetFName().ToString()));
-					myfile << keyString + "\n";
-					KeysMatrix[x].Face[y].Keys[z]->UnhighlightKey();
-				}
-			}
-		}
-		
-		myfile.close();
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for write"));
-	}
-}
-
-void AKVA_CubeVisual::ReadFile()
-{
+	//Line we will read from the file
 	std::string line;
 
+	//Set the relative path where the file should be to read
 	FString RelativePath = FPaths::ProjectContentDir();
 	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
-		+ std::string("TestInput.txt")));
+		+ std::string("InputLayout.txt")));
 
+	//Dictionary of letters/key names to their FKey counterpart
 	FKVA_KeyTranslation* KeyAssociation;
-	
+
+	//face
 	int x = 0;
+	//Line
 	int y = 0;
+	//Column
 	int z = 0;
-	
+
+	//Try to open the file we want to read from.
 	std::ifstream myfile (path);
 	if (myfile.is_open())
 	{
+		//Read all the lines of the file
 		while ( getline (myfile,line) )
 		{
-			
+			//transform the std::string into an FString
 			FString key = line.c_str();
 			UE_LOG(LogTemp, Warning, TEXT("%s"), *key);
 
+			//Find the associated key
 			KeyAssociation = KeyTranslationTable->FindRow<FKVA_KeyTranslation>(FName(key), "");
 
+			//Apply the key if it is valid
 			if(KeyAssociation->Key.IsValid())
 			{
 				KeysMatrix[x].Face[y].Keys[z]->ChangeKey(KeyAssociation->Key);
@@ -254,6 +212,7 @@ void AKVA_CubeVisual::ReadFile()
 				UE_LOG(LogTemp, Warning, TEXT("Key invalid"));
 			}
 
+			//Advance in the key matrix
 			z++;
 			if(z >= 4)
 			{

@@ -82,6 +82,7 @@ public:
 	void FillKeyMatrix(TArray<UChildActorComponent*> KeyActors, int Row, int Face);
 
 	//Saves the current key matrix to be loaded next time
+	// to a text file
 	UFUNCTION(BlueprintCallable)
 	void SaveKeyMatrix();
 
@@ -100,13 +101,7 @@ private:
 	UFUNCTION()
 	void UpdateHighlight();
 
-	//Load the saved data of the letters matrix
+	//Load the key layout of the letters matrix from a file
 	UFUNCTION()
 	void LoadKeyMatrix();
-
-	UFUNCTION(BlueprintCallable)
-	void WriteToFile();
-	
-	UFUNCTION(BlueprintCallable)
-	void ReadFile();
 };
