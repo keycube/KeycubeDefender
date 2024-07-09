@@ -229,7 +229,6 @@ bool AKCD_Ship::Hit(FName Letter)
 	if(IsPrimaryTarget)
 		Stats.Mistakes++;
 	
-	
 	return false;
 }
 
@@ -256,6 +255,10 @@ void AKCD_Ship::ShipDestroyed()
 	// UE_LOG(LogTemp, Warning, TEXT("Looked at word : %s"), *TotalTypeWord);
 	// UE_LOG(LogTemp, Warning, TEXT("Word distance at completion : %i"), EditDistance());
 
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *FString::SanitizeFloat(((GetNum(CurrentWord) - 1 )/Stats.TimeTaken * 60 * 0.2)));
+	
+	Stats.Score = ((GetNum(CurrentWord) - 1 )/Stats.TimeTaken) * 60 * 0.2;
+	
 	AKCD_GameMode* gamemode = Cast<AKCD_GameMode>(UGameplayStatics::GetGameMode(this));
 	
 	gamemode->GetShipSpawner()->AddStats(Stats);

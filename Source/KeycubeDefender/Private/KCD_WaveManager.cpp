@@ -266,7 +266,7 @@ void AKCD_WaveManager::WriteStats(FString RowName, FKCD_TypingStats Stat)
 	{
 		//Create an FString with all results
 		FString ResultFString;
-		ResultFString = FString::SanitizeFloat(Stat.Score) + "," +
+		ResultFString = "," + FString::SanitizeFloat(Stat.Score) + "," +
 			FString::SanitizeFloat(Stat.TimeTaken) + "," +
 				FString::SanitizeFloat(Stat.Mistakes) + "," +
 					FString::SanitizeFloat(Stat.WordSize) + "," +
@@ -278,9 +278,11 @@ void AKCD_WaveManager::WriteStats(FString RowName, FKCD_TypingStats Stat)
 		//RowName
 		myfile << std::string((TCHAR_TO_UTF8(*(RowName + "\n"))));
 		//Titles
-		myfile << "Score,Time Taken,Mistakes,Word Size, Word Distance\n";
+		myfile << ",Score,Time Taken,Mistakes,Word Size, Word Distance\n";
 		//Data
 		myfile << ResultString + "\n";
+		//Skip lines for readability
+		myfile << "\n\n";
 		
 		//Close the file
 		myfile.close();

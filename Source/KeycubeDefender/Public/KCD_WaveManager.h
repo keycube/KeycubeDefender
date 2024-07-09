@@ -113,7 +113,7 @@ private:
 	UPROPERTY()
 	AKCD_GameMode* GameModeInstance;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere)
 	int CurrentWaveIndex = 0;
 	UPROPERTY()
 	FWave CurrentWaveData;

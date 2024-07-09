@@ -25,7 +25,7 @@ public:
 	}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	double Score;
+	float Score;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double TimeTaken;
