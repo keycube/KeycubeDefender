@@ -255,25 +255,40 @@ void AKCD_WaveManager::AverageStats()
 
 void AKCD_WaveManager::WriteStats(FString RowName, FKCD_TypingStats Stat)
 {
-	FString LogString = RowName + " Score : " + FString::FromInt(Stat.Score);
-	
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *LogString)
+	//Set the relative path where the file is saved and the name of the file
+	FString RelativePath = FPaths::ProjectContentDir();
+	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
+		+ std::string("Result.csv")));
 
-	LogString = RowName + " Time taken : " + FString::FromInt(Stat.TimeTaken);
-	
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *LogString)
+	//Open the file in append mode and check if it is opened
+	std::ofstream myfile (path, std::ios::app);
+	if (myfile.is_open())
+	{
+		//Create an FString with all results
+		FString ResultFString;
+		ResultFString = FString::SanitizeFloat(Stat.Score) + "," +
+			FString::SanitizeFloat(Stat.TimeTaken) + "," +
+				FString::SanitizeFloat(Stat.Mistakes) + "," +
+					FString::SanitizeFloat(Stat.WordSize) + "," +
+						FString::SanitizeFloat(Stat.WordDistance) + ",";
 
-	LogString = RowName + " Mistakes : " + FString::FromInt(Stat.Mistakes);
-	
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *LogString)
+		//Convert the FString into a std::string
+		std::string ResultString = std::string(TCHAR_TO_UTF8(*ResultFString));
 
-	LogString = RowName + " Word Size : " + FString::FromInt(Stat.WordSize);
-	
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *LogString)
-
-	LogString = RowName + " Word Distance : " + FString::FromInt(Stat.WordDistance);
-	
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *LogString)
+		//RowName
+		myfile << std::string((TCHAR_TO_UTF8(*(RowName + "\n"))));
+		//Titles
+		myfile << "Score,Time Taken,Mistakes,Word Size, Word Distance\n";
+		//Data
+		myfile << ResultString + "\n";
+		
+		//Close the file
+		myfile.close();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for write"));
+	}
 }
 
 TArray<AKCD_Ship*> AKCD_WaveManager::GetValidShips(FName Letter)
@@ -295,9 +310,8 @@ TArray<AKCD_Ship*> AKCD_WaveManager::GetValidShips(FName Letter)
 			matchingShips.Add(shipChecked);
 		}
 	}
-
-	return matchingShips;
 	
+	return matchingShips;
 }
 
 void AKCD_WaveManager::AddStats(FKCD_TypingStats StatsToAdd)
