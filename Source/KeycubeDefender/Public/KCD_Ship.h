@@ -68,7 +68,7 @@ public:
 	TSubclassOf<AKCD_Letters> LetterBP;
 
 	UPROPERTY(BlueprintReadOnly, Category="Variables")
-	double StartTime;
+	double StartTime = 0;
 
 	
 	//Event delegate for ship destruction

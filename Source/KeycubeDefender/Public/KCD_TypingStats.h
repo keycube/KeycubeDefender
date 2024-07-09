@@ -20,24 +20,24 @@ public:
 		WordSize(0),
 		Mistakes(0),
 		WordDistance(0),
-		WasAltTarget(false)
+		WasAltTarget(true)
 	{
 	}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int Score;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int WordSize;
+	double Score;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double TimeTaken;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int Mistakes;
+	double WordSize;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int WordDistance;
+	double Mistakes;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	double WordDistance;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool WasAltTarget;

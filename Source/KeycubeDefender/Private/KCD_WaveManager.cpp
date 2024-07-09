@@ -199,7 +199,81 @@ AKCD_Lane* AKCD_WaveManager::FetchRandomLane()
 
 void AKCD_WaveManager::ShipCrashed()
 {
-	UE_LOG(LogTemp, Warning, TEXT("REEEEEE"));
+	AverageStats();
+}
+
+void AKCD_WaveManager::AverageStats()
+{
+	FKCD_TypingStats AverageStat;
+
+	//Makes an average of all main target stats
+	for (auto TypeStat : MainTypingStats)
+	{
+		AverageStat.Mistakes += TypeStat.Mistakes;
+		AverageStat.Score += TypeStat.Score;
+		AverageStat.TimeTaken += TypeStat.TimeTaken;
+		AverageStat.WordDistance += TypeStat.WordDistance;
+		AverageStat.WordSize += TypeStat.WordSize;
+	}
+
+	int size = MainTypingStats.Num();
+	
+	AverageStat.Mistakes = AverageStat.Mistakes / size;
+	AverageStat.Score = AverageStat.Score / size;
+	AverageStat.TimeTaken = AverageStat.TimeTaken / size;
+	AverageStat.WordDistance = AverageStat.WordDistance / size;
+	AverageStat.WordSize = AverageStat.WordSize / size;
+	AverageStat.WasAltTarget = false;
+
+	WriteStats("Main target", AverageStat);
+
+	//Reset the var
+	AverageStat = FKCD_TypingStats();
+
+	//Makes an average of all alt target stats
+	for (auto TypeStat : AltTypingStats)
+	{
+		AverageStat.Mistakes += TypeStat.Mistakes;
+		AverageStat.Score += TypeStat.Score;
+		AverageStat.TimeTaken += TypeStat.TimeTaken;
+		AverageStat.WordDistance += TypeStat.WordDistance;
+		AverageStat.WordSize += TypeStat.WordSize;
+	}
+
+	size = AltTypingStats.Num();
+	
+	AverageStat.Mistakes = AverageStat.Mistakes / size;
+	AverageStat.Score = AverageStat.Score / size;
+	AverageStat.TimeTaken = AverageStat.TimeTaken / size;
+	AverageStat.WordDistance = AverageStat.WordDistance / size;
+	AverageStat.WordSize = AverageStat.WordSize / size;
+	AverageStat.WasAltTarget = false;
+
+
+	WriteStats("Alt target", AverageStat);
+}
+
+void AKCD_WaveManager::WriteStats(FString RowName, FKCD_TypingStats Stat)
+{
+	FString LogString = RowName + " Score : " + FString::FromInt(Stat.Score);
+	
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *LogString)
+
+	LogString = RowName + " Time taken : " + FString::FromInt(Stat.TimeTaken);
+	
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *LogString)
+
+	LogString = RowName + " Mistakes : " + FString::FromInt(Stat.Mistakes);
+	
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *LogString)
+
+	LogString = RowName + " Word Size : " + FString::FromInt(Stat.WordSize);
+	
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *LogString)
+
+	LogString = RowName + " Word Distance : " + FString::FromInt(Stat.WordDistance);
+	
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *LogString)
 }
 
 TArray<AKCD_Ship*> AKCD_WaveManager::GetValidShips(FName Letter)
@@ -224,4 +298,12 @@ TArray<AKCD_Ship*> AKCD_WaveManager::GetValidShips(FName Letter)
 
 	return matchingShips;
 	
+}
+
+void AKCD_WaveManager::AddStats(FKCD_TypingStats StatsToAdd)
+{
+	if(!StatsToAdd.WasAltTarget)
+		MainTypingStats.Add(StatsToAdd);
+	else
+		AltTypingStats.Add(StatsToAdd);
 }

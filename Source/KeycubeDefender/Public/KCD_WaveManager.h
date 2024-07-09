@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "KCD_GameMode.h"
 #include "KCD_Ship.h"
+#include "KCD_TypingStats.h"
 #include "KCD_WaveData.h"
 #include "GameFramework/Actor.h"
 #include "KCD_WaveManager.generated.h"
@@ -102,6 +103,12 @@ private:
 
 	UFUNCTION()
 	void ShipCrashed();
+
+	UFUNCTION()
+	void AverageStats();
+	
+	UFUNCTION()
+	void WriteStats(FString RowName, FKCD_TypingStats Stat);
 	
 	UPROPERTY()
 	AKCD_GameMode* GameModeInstance;
@@ -113,6 +120,11 @@ private:
 
 	UPROPERTY()
 	AKCD_LaneHolder* LaneHolder;
+
+	UPROPERTY()
+	TArray<FKCD_TypingStats> MainTypingStats;
+	UPROPERTY()
+	TArray<FKCD_TypingStats> AltTypingStats;
 
 	
 	
@@ -131,6 +143,8 @@ public:
 	//who's next letter to be hit is the one provided
 	UFUNCTION(BlueprintCallable)
 	TArray<AKCD_Ship*> GetValidShips(FName Letter);
-
+	
+	UFUNCTION(BlueprintCallable)
+	void AddStats(FKCD_TypingStats StatsToAdd);
 	
 };

@@ -3,6 +3,8 @@
 
 #include "KCD_Ship.h"
 
+#include "KCD_GameMode.h"
+#include "KCD_WaveManager.h"
 #include "PaperSprite.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/ChildActorComponent.h"
@@ -165,6 +167,8 @@ void AKCD_Ship::Untargeted()
 	CurrentLetterIndex = 0;
 	CurrentLetter = LettersInstances[CurrentLetterIndex]->CurrentLetter;
 
+	StartTime = 0;
+
 	SubTargetSprite->SetVisibility(false);
 	MainTargetSprite->SetVisibility(false);
 }
@@ -182,12 +186,25 @@ bool AKCD_Ship::Hit(FName Letter)
 	if(!isDestroyed)
 	{
 		TotalTypeWord += Letter.ToString().ToLower();
+
+		// if(FMath::IsNearlyEqual(GetNum(TotalTypeWord), GetNum(CurrentWord), 0.5))
+		// {
+		// 	UE_LOG(LogTemp, Warning, TEXT("Wanted word : %s"), *CurrentWord);
+		// 	UE_LOG(LogTemp, Warning, TEXT("Looked at word : %s"), *TotalTypeWord);
+		// 	UE_LOG(LogTemp, Warning, TEXT("Word distance at same size : %i"), EditDistance());
+		// }
 		
 		if (LettersInstances[CurrentLetterIndex]->CurrentLetter == Letter)
 		{
 			LettersInstances[CurrentLetterIndex]->Hide();
 
 			CurrentLetterIndex++;
+
+			if(StartTime == 0)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("%s : Started Timer"))
+				StartTime = GetWorld()->GetRealTimeSeconds();
+			}
 
 			if (LettersInstances.Num() <= CurrentLetterIndex)
 			{
@@ -209,8 +226,9 @@ bool AKCD_Ship::Hit(FName Letter)
 		}
 	}
 
-	if(IsTarget)
+	if(IsPrimaryTarget)
 		Stats.Mistakes++;
+	
 	
 	return false;
 }
@@ -226,15 +244,21 @@ void AKCD_Ship::ShipDestroyed()
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShipDestroyedSound,
 		this->GetTransform().GetLocation());
 
-	const double timeToComplete = GetWorld()->GetRealTimeSeconds() - StartTime;
+	const double endTime = GetWorld()->GetRealTimeSeconds();
+	
+	const double timeToComplete = endTime - StartTime;
 
 	Stats.TimeTaken = timeToComplete;
 	
 	//TODO : Send Stats to file
+	//
+	// UE_LOG(LogTemp, Warning, TEXT("Wanted word : %s"), *CurrentWord);
+	// UE_LOG(LogTemp, Warning, TEXT("Looked at word : %s"), *TotalTypeWord);
+	// UE_LOG(LogTemp, Warning, TEXT("Word distance at completion : %i"), EditDistance());
 
-	UE_LOG(LogTemp, Warning, TEXT("Word distance : %i"), EditDistance());
-	UE_LOG(LogTemp, Warning, TEXT("Wanted word : %s"), *CurrentWord);
-	UE_LOG(LogTemp, Warning, TEXT("Looked at word : %s"), *TotalTypeWord);
+	AKCD_GameMode* gamemode = Cast<AKCD_GameMode>(UGameplayStatics::GetGameMode(this));
+	
+	gamemode->GetShipSpawner()->AddStats(Stats);
 	
 	this->Destroy();
 }
@@ -249,13 +273,11 @@ void AKCD_Ship::SetMainTarget()
 	IsPrimaryTarget = true;
 	LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
 
-	StartTime = GetWorld()->GetRealTimeSeconds();
-
 	SetActorLocation(GetTransform().GetLocation() + FVector(-5.0, 0.0, 0.0));
 
 	SubTargetSprite->SetVisibility(false);
 	MainTargetSprite->SetVisibility(true);
 
-	if(CurrentLetterIndex != 0)
-		Stats.WasAltTarget = true;
+	if(CurrentLetterIndex == 0)
+		Stats.WasAltTarget = false;
 }
