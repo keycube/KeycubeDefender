@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "KCD_GameMode.h"
+#include "KCD_PlayerScore.h"
 #include "KCD_Ship.h"
 #include "KVA_CubeVisual.h"
 #include "KCD_Cube.generated.h"
@@ -103,5 +104,15 @@ public:
 	//Numbers of ships destroy without having an empty target list
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
 	int ComboCounter = 0;
+
+	UFUNCTION()
+	void WriteScore(FString Name);
+
+	UFUNCTION()
+	static TArray<FKCD_PlayerScore> FetchScores();
+	
+private:
+
+
 
 };

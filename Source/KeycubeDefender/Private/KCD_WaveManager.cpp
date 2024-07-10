@@ -3,6 +3,7 @@
 
 #include "KCD_WaveManager.h"
 
+#include "KCD_Cube.h"
 #include "KCD_LaneHolder.h"
 #include "KCD_WordDictionnary.h"
 #include "Engine/World.h"
@@ -200,6 +201,16 @@ AKCD_Lane* AKCD_WaveManager::FetchRandomLane()
 void AKCD_WaveManager::ShipCrashed()
 {
 	AverageStats();
+	AKCD_Cube* Cube = Cast<AKCD_Cube>(UGameplayStatics::GetPlayerPawn(this, 0));
+	
+	Cube->WriteScore("Tester");
+
+	TArray<FKCD_PlayerScore> scores = Cube->FetchScores();
+
+	for (auto Score : scores)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s : %i"), *Score.Name, Score.Score);
+	}
 }
 
 void AKCD_WaveManager::AverageStats()

@@ -2,6 +2,8 @@
 
 
 #include "KCD_Cube.h"
+
+#include "IPropertyTable.h"
 #include "KCD_GameMode.h"
 #include "KCD_PlayerController.h"
 #include "KCD_WaveManager.h"
@@ -282,5 +284,111 @@ void AKCD_Cube::NewTargets(const TArray<AKCD_Ship*>& ShipList)
 TArray<AKCD_Ship*> AKCD_Cube::GetCurrentTargets()
 {
 	return CurrentTargets;
+}
+
+void AKCD_Cube::WriteScore(FString Name)
+{
+	//Set the relative path where the file is saved and the name of the file
+	FString RelativePath = FPaths::ProjectContentDir();
+	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
+		+ std::string("Leaderboard.csv")));
+
+	//Open the file in append mode and check if it is opened
+	std::ofstream myfile (path);
+	if (myfile.is_open())
+	{
+		TArray<FKCD_PlayerScore> Leaderboard = FetchScores();
+		
+		//Create an FString with the score data
+		FString ResultFString;
+		ResultFString = Name + "," +
+			FString::FromInt(Score);
+
+		//Convert the FString into a std::string
+		std::string ResultString = std::string(TCHAR_TO_UTF8(*ResultFString));
+
+		if(Leaderboard.IsEmpty())
+		{
+			myfile << ResultString + "\n";
+			//Close the file
+			myfile.close();
+			return;
+		}
+
+		for(auto score : Leaderboard)
+		{
+			if(score.Score < Score)
+			{
+				myfile << ResultString + "\n";
+			}
+			
+			//Create an FString with the score data
+			FString LeaderboardFString;
+			LeaderboardFString = score.Name + "," +
+				FString::FromInt(score.Score);
+
+			//Convert the FString into a std::string
+			std::string LeaderboardString = std::string(TCHAR_TO_UTF8(*LeaderboardFString));
+			//Data
+			myfile << LeaderboardString + "\n";
+		}
+
+		//Close the file
+		myfile.close();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for write"));
+	}
+}
+
+TArray<FKCD_PlayerScore> AKCD_Cube::FetchScores()
+{
+	TArray<FKCD_PlayerScore> Scores;
+
+	//Line we will read from the file
+	std::string line;
+	std::string cell;
+	
+	//Set the relative path where the file is saved and the name of the file
+	FString RelativePath = FPaths::ProjectContentDir();
+	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
+		+ std::string("Leaderboard.csv")));
+
+	//Try to open the file we want to read from.
+	std::ifstream myfile (path);
+	if (myfile.is_open())
+	{
+		
+		//Read all the lines of the file
+		while ( getline (myfile,line) )
+		{
+			// Create a stringstream from line
+			std::stringstream ss(line);
+			
+			std::string stringGot[2];
+			int x = 0;
+			
+			while( getline (ss, cell, ','))
+			{
+				stringGot[x] = cell;
+				x++;
+			}
+			
+			FKCD_PlayerScore CheckedScore;
+
+			CheckedScore.Name = stringGot[0].c_str();
+			CheckedScore.Score = std::stoi(stringGot[1]);
+
+			Scores.Add(CheckedScore);
+		}
+		myfile.close();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for read"));
+	}
+	
+	return Scores;
 }
 
