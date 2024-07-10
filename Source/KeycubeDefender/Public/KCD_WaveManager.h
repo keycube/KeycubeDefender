@@ -102,7 +102,7 @@ private:
 	AKCD_Lane* FetchRandomLane();
 
 	UFUNCTION()
-	void ShipCrashed();
+	void GameFinished();
 
 	UFUNCTION()
 	void AverageStats();

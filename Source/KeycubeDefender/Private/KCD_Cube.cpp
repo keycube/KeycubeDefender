@@ -320,7 +320,7 @@ void AKCD_Cube::WriteScore(FString Name)
 
 		for(auto score : Leaderboard)
 		{
-			if(score.Score < Score)
+			if(score.Score < Score && !isWritten)
 			{
 				myfile << ResultString + "\n";
 				isWritten = true;

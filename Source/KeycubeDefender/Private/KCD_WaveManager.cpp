@@ -45,7 +45,7 @@ void AKCD_WaveManager::BeginPlay()
 			UE_LOG(LogTemp, Warning, TEXT("LaneHolder is invalid"));
 		} else
 		{
-			LaneHolder->OnShipCrashedDelegate.AddDynamic(this, &AKCD_WaveManager::ShipCrashed);
+			LaneHolder->OnShipCrashedDelegate.AddDynamic(this, &AKCD_WaveManager::GameFinished);
 		}
 	},  0.1, false);
 
@@ -118,6 +118,7 @@ void AKCD_WaveManager::NextWave()
 	if (CurrentWaveIndex > WaveData->GetRowNames().Num())
 	{
 		OnVictoryDelegate.Broadcast();
+		GameFinished();
 		return;
 	}
 	
@@ -198,19 +199,12 @@ AKCD_Lane* AKCD_WaveManager::FetchRandomLane()
 	return LaneHolder->Lanes[FMath::RandRange(0, LaneHolder->Lanes.Num() - 1)];
 }
 
-void AKCD_WaveManager::ShipCrashed()
+void AKCD_WaveManager::GameFinished()
 {
 	AverageStats();
 	AKCD_Cube* Cube = Cast<AKCD_Cube>(UGameplayStatics::GetPlayerPawn(this, 0));
 	
 	Cube->WriteScore("Tester");
-
-	TArray<FKCD_PlayerScore> scores = Cube->FetchScores();
-
-	for (auto Score : scores)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s : %i"), *Score.Name, Score.Score);
-	}
 }
 
 void AKCD_WaveManager::AverageStats()

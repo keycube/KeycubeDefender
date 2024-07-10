@@ -108,7 +108,7 @@ public:
 	UFUNCTION()
 	void WriteScore(FString Name);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	static TArray<FKCD_PlayerScore> FetchScores();
 	
 private:
