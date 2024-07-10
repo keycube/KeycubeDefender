@@ -293,12 +293,12 @@ void AKCD_Cube::WriteScore(FString Name)
 	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
 		+ std::string("Leaderboard.csv")));
 
+	TArray<FKCD_PlayerScore> Leaderboard = FetchScores();
+	
 	//Open the file in append mode and check if it is opened
 	std::ofstream myfile (path);
 	if (myfile.is_open())
 	{
-		TArray<FKCD_PlayerScore> Leaderboard = FetchScores();
-		
 		//Create an FString with the score data
 		FString ResultFString;
 		ResultFString = Name + "," +
@@ -307,8 +307,11 @@ void AKCD_Cube::WriteScore(FString Name)
 		//Convert the FString into a std::string
 		std::string ResultString = std::string(TCHAR_TO_UTF8(*ResultFString));
 
+		bool isWritten = false;
+
 		if(Leaderboard.IsEmpty())
 		{
+			UE_LOG(LogTemp, Warning, TEXT("Leaderboard was empty"));
 			myfile << ResultString + "\n";
 			//Close the file
 			myfile.close();
@@ -320,6 +323,7 @@ void AKCD_Cube::WriteScore(FString Name)
 			if(score.Score < Score)
 			{
 				myfile << ResultString + "\n";
+				isWritten = true;
 			}
 			
 			//Create an FString with the score data
@@ -332,6 +336,9 @@ void AKCD_Cube::WriteScore(FString Name)
 			//Data
 			myfile << LeaderboardString + "\n";
 		}
+
+		if(!isWritten)
+			myfile << ResultString + "\n";
 
 		//Close the file
 		myfile.close();
@@ -386,7 +393,7 @@ TArray<FKCD_PlayerScore> AKCD_Cube::FetchScores()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for read"));
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open score file for read"));
 	}
 	
 	return Scores;
