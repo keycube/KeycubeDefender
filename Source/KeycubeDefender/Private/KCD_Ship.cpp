@@ -159,6 +159,9 @@ void AKCD_Ship::SpawnLetters()
 
 void AKCD_Ship::Untargeted()
 {
+	if(isDestroyed)
+		return;
+	
 	for (auto letter : LettersInstances)
 	{
 		letter->Unhighlight();
@@ -202,7 +205,6 @@ bool AKCD_Ship::Hit(FName Letter)
 
 			if(StartTime == 0)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("%s : Started Timer"))
 				StartTime = GetWorld()->GetRealTimeSeconds();
 			}
 

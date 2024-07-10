@@ -149,6 +149,7 @@ void AKCD_Cube::RemoveTarget(AKCD_Ship* Ship)
 
 	//If it isn't the primary target, we remove it from the current targets
 	CurrentTargets.Remove(Ship);
+	Ship->Untargeted();
 	Ship->OnShipDestroyedDelegate.RemoveAll(this);
 	if(CurrentTargets.IsEmpty())
 	{
