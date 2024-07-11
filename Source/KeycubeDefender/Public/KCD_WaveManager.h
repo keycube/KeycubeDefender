@@ -125,19 +125,6 @@ private:
 	TArray<FKCD_TypingStats> MainTypingStats;
 	UPROPERTY()
 	TArray<FKCD_TypingStats> AltTypingStats;
-
-	inline static const char alphanum[] =
-"0123456789"
-"!@#$%^&*"
-"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-"abcdefghijklmnopqrstuvwxyz";
-
-	int stringLength = sizeof(alphanum) - 1;
-
-	char genRandom() const
-	{
-		return alphanum[rand() % stringLength];
-	}
 	
 public:	
 

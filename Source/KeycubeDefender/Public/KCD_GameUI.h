@@ -14,5 +14,23 @@ UCLASS()
 class KEYCUBEDEFENDER_API UKCD_GameUI : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+	UFUNCTION(BlueprintCallable)
+	void WriteNewUser();
+
+	UFUNCTION()
+	FString GenerateUser();
+
+	inline static const char alphanum[] =
+"0123456789"
+"!@#$%^&*"
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+"abcdefghijklmnopqrstuvwxyz";
+
+	int stringLength = sizeof(alphanum) - 1;
+
+	char genRandom() const
+	{
+		return alphanum[rand() % stringLength];
+	}
 };
