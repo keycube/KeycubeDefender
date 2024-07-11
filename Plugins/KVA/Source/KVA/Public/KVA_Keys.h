@@ -28,7 +28,7 @@ public:
 	UMaterialInterface* BaseMaterial;
 
 	//Input linked to the key
-	UPROPERTY(EditAnywhere, Category = Variables)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Variables)
 	FKey AssociatedKey;
 	//highlight state handle
 	UPROPERTY(EditAnywhere, Category = Variables)

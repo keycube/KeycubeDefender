@@ -224,7 +224,10 @@ void AKVA_CubeVisual::LoadKeyMatrix()
 				z = 0;
 			}
 		}
+		//Close the file
 		myfile.close();
+		//Reset the key matrix
+		FillKeyMap();
 	}
 	else
 	{

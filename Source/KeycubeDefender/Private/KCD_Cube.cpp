@@ -3,7 +3,6 @@
 
 #include "KCD_Cube.h"
 
-#include "IPropertyTable.h"
 #include "KCD_GameMode.h"
 #include "KCD_PlayerController.h"
 #include "KCD_WaveManager.h"

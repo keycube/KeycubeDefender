@@ -204,7 +204,7 @@ void AKCD_WaveManager::GameFinished()
 	AverageStats();
 	AKCD_Cube* Cube = Cast<AKCD_Cube>(UGameplayStatics::GetPlayerPawn(this, 0));
 	
-	Cube->WriteScore("Tester");
+	//Cube->WriteScore("Tester");
 }
 
 void AKCD_WaveManager::AverageStats()
@@ -278,7 +278,7 @@ void AKCD_WaveManager::WriteStats(FString RowName, FKCD_TypingStats Stat)
 	{
 		//Create an FString with all results
 		FString ResultFString;
-		ResultFString = ",," + FString::SanitizeFloat(Stat.Score) + "," +
+		ResultFString = ",,," + FString::SanitizeFloat(Stat.Score) + "," +
 			FString::SanitizeFloat(Stat.TimeTaken) + "," +
 				FString::SanitizeFloat(Stat.Mistakes) + "," +
 					FString::SanitizeFloat(Stat.WordSize) + "," +
