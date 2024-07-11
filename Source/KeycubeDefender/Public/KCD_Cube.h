@@ -105,7 +105,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
 	int ComboCounter = 0;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void WriteScore(FString Name);
 
 	UFUNCTION(BlueprintCallable)
