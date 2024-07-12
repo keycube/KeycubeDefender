@@ -70,9 +70,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Variables")
 	TArray<FEncapsule> WordIndexUsed;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
-	UDataTable* WaveData;
 
 	//Spawns the ship of the specified tier and sets it's letter
 	UFUNCTION(BlueprintCallable)
@@ -86,10 +83,11 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void PlayWaveSequence();
 
-	// Reads the data table and fills an FWave 
-	// struct with the data of the current wave
+	//Generates data for the requested wave. Data is determined by
+	//values from LikelihoodValues and base data + dampener for speed and spawn
+	//time
 	UFUNCTION(BlueprintCallable)
-	void ReadCurrentWaveData(int waveIndex);
+	void GenerateWaveData(int waveIndex);
 
 private:
 	FTimerHandle SpawnTimerHandle;
@@ -115,8 +113,22 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	int CurrentWaveIndex = 0;
+	
 	UPROPERTY()
 	FWave CurrentWaveData;
+
+	UPROPERTY(EditAnywhere)
+	TMap<int, float> LikelihoodValues = {{0,1},
+		{1, 0.4}, {2, 0.2}};
+
+	UPROPERTY(EditAnywhere)
+	float BaseSpeed = 0.8;
+	UPROPERTY(EditAnywhere)
+	float SpeedDampener = 25;
+	UPROPERTY(EditAnywhere)
+	float BaseSpawnTime = 3;
+	UPROPERTY(EditAnywhere)
+	float SpawnDampener = 0.05;
 
 	UPROPERTY()
 	AKCD_LaneHolder* LaneHolder;

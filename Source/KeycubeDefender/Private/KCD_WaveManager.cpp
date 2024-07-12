@@ -24,12 +24,7 @@ AKCD_WaveManager::AKCD_WaveManager()
 void AKCD_WaveManager::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (WaveData == nullptr)
-	{
-		UE_LOG(LogTemp, Error, TEXT("WAVE DATA NOT FOUND"));
-	}
-
+	
 	//Get the current game mode and cast it to the required game mode
 	GameModeInstance = Cast<AKCD_GameMode>(UGameplayStatics::GetGameMode(this));
 
@@ -114,15 +109,8 @@ void AKCD_WaveManager::PrepareShip(int ShipTier)
 void AKCD_WaveManager::NextWave()
 {
 	CurrentWaveIndex++;
-
-	if (CurrentWaveIndex > WaveData->GetRowNames().Num())
-	{
-		OnVictoryDelegate.Broadcast();
-		GameFinished();
-		return;
-	}
 	
-	ReadCurrentWaveData(CurrentWaveIndex);
+	GenerateWaveData(CurrentWaveIndex);
 
 	//Start a looping timer to spawn ships at an interval
 	GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, this, &AKCD_WaveManager::PlayWaveSequence,
@@ -149,32 +137,24 @@ void AKCD_WaveManager::PlayWaveSequence()
 	}
 }
 
-void AKCD_WaveManager::ReadCurrentWaveData(int WaveIndex)
+void AKCD_WaveManager::GenerateWaveData(int waveIndex)
 {
-	const FKCD_WaveData* CurrentWave = WaveData->FindRow<FKCD_WaveData>(FName(FString::FromInt(WaveIndex)), "");
-
-	//Check if the wave is valid (there should always be at least one ship of T0)
-	if (CurrentWave->NumberOfT0 <= 0)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Wave is invalid"));
-		return;
-	}
-	//Fill the current wave number of ships
-	CurrentWaveData.NumShipTier.Add(0, CurrentWave->NumberOfT0);
+	//Calculate a rounded down number of each ship tiers
+	CurrentWaveData.NumShipTier.Add(0, floor(LikelihoodValues[0] * waveIndex));
 	if(CurrentWaveData.NumShipTier[0] > 0)
 		CurrentWaveData.availableTiers.Add(0);
 	
-	CurrentWaveData.NumShipTier.Add(1, CurrentWave->NumberOfT1);
+	CurrentWaveData.NumShipTier.Add(1, floor(LikelihoodValues[1] * waveIndex));
 	if(CurrentWaveData.NumShipTier[1] > 0)
 		CurrentWaveData.availableTiers.Add(1);
 	
-	CurrentWaveData.NumShipTier.Add(2, CurrentWave->NumberOfT2);
+	CurrentWaveData.NumShipTier.Add(2, floor(LikelihoodValues[2] * waveIndex));
 	if(CurrentWaveData.NumShipTier[2] > 0)
 		CurrentWaveData.availableTiers.Add(2);
 
-	//fill the variable for the speed of this wave
-	CurrentWaveData.SpawnTime = CurrentWave->SpawnSpeed;
-	CurrentWaveData.SpeedModifier = CurrentWave->SpeedModifier;
+	//Calculate speed and spawn time of this wave
+	CurrentWaveData.SpawnTime = BaseSpawnTime / ( 1 + (waveIndex * SpawnDampener));
+	CurrentWaveData.SpeedModifier = BaseSpeed * ( 1 + (waveIndex / SpeedDampener));
 }
 
 void AKCD_WaveManager::RemoveShip(AKCD_Ship* Ship)
@@ -186,8 +166,7 @@ void AKCD_WaveManager::RemoveShip(AKCD_Ship* Ship)
 	//When it is the last ship of the wave, we wait a bit then start the new wave
 	if(ShipsAlive.IsEmpty() && CurrentWaveData.availableTiers.IsEmpty())
 	{
-		if(CurrentWaveIndex != WaveData->GetRowNames().Num())
-			OnWaveCompleteDelegate.Broadcast(CurrentWaveIndex);
+		OnWaveCompleteDelegate.Broadcast(CurrentWaveIndex);
 		
 		GetWorld()->GetTimerManager().SetTimer(NewWaveTimerHandle, this, &AKCD_WaveManager::NextWave,
 			3, false);
