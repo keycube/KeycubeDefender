@@ -31,7 +31,7 @@ UPaperSprite* AKCD_Letters::GetSpriteFromTable()
 {
 	
 	FKCD_LetterAssociation* LetterAssociation = SpritesTable->FindRow<FKCD_LetterAssociation>(CurrentLetter, "");
-	if(LetterAssociation->LetterSprite != nullptr)
+	if(LetterAssociation != nullptr)
 	{
 		return LetterAssociation->LetterSprite;
 	}
