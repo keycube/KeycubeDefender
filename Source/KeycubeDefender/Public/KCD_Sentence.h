@@ -87,6 +87,9 @@ private :
 
 	UFUNCTION(BlueprintCallable)
 	void KeyPress(FKey key);
+
+	UFUNCTION(BlueprintCallable)
+	void WordComplete();
 	
 protected:
 	// Called when the game starts or when spawned

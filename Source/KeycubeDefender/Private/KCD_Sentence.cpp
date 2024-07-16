@@ -43,6 +43,8 @@ void AKCD_Sentence::BeginPlay()
 
 void AKCD_Sentence::SetSentence(FString Sentence)
 {
+	CurrentLetterIndex = 0;
+	
 	CurrentSentence = Sentence;
 
 	SpawnLetters();
@@ -78,7 +80,7 @@ void AKCD_Sentence::SpawnLetters()
 			//Position uses half the size of the word and offset that position
 			//with the leght of th eprevious letters
 			float yPosition = (ScreenSize/2) - (Lettersize * (x + 0.5));
-			float zPosition = Lettersize * -(y + 0.5); 
+			float zPosition = Lettersize * -(2 * y); 
 			spawnTransform.SetLocation(FVector{0.0f, yPosition, zPosition});
 			
 			LettersInstances.Add(AddChildLetter(letter, spawnTransform));
@@ -86,12 +88,15 @@ void AKCD_Sentence::SpawnLetters()
 		}
 		//Add a space at the end of the word
 		float yPosition = (ScreenSize/2) - (Lettersize * (x + 0.5));
-		float zPosition = Lettersize * -(y + 0.5); 
+		float zPosition = Lettersize * -(2 * y); 
 		spawnTransform.SetLocation(FVector{0.0f, yPosition, zPosition});
 			
 		LettersInstances.Add(AddChildLetter(" ", spawnTransform));
 		x++;
 	}
+	//Remove the last element, which is a stray space
+	LettersInstances.Last()->Destroy();
+	LettersInstances.Pop();
 	
 }
 
@@ -105,8 +110,20 @@ bool AKCD_Sentence::Hit(FName Letter)
 		UE_LOG(LogTemp, Warning, TEXT("Hit successfull"));
 		
 		LettersInstances[CurrentLetterIndex]->Hide();
-		CurrentLetterIndex++;
+		if(LettersInstances.Num() > CurrentLetterIndex + 1)
+			CurrentLetterIndex++;
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("This is the end of the sentence"));
+			WordComplete();
+		}
+		
 		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
+
+		FVector markerLocation = LettersInstances[CurrentLetterIndex]->GetTransform().GetLocation();
+		markerLocation.Z = markerLocation.Z - (Lettersize/2);
+		
+		LetterMarker->SetWorldLocation(markerLocation);
 		return true;
 	}
 
@@ -189,6 +206,18 @@ void AKCD_Sentence::KeyPress(FKey key)
 		Hit(key.GetFName());
 	}
 	
+}
+
+void AKCD_Sentence::WordComplete()
+{
+	for (auto LettersInstance : LettersInstances)
+	{
+		LettersInstance->Destroy();
+	}
+
+	LettersInstances.Empty();
+
+	SetSentence("This is the other test sentence for when you complete the first one");
 }
 
 
