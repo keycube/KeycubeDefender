@@ -49,6 +49,9 @@ private :
 	
 	UPROPERTY(EditAnywhere, Category="Words")
 	FString TotalTypeWord;
+
+	UPROPERTY(EditAnywhere, Category="Words")
+	TMap<FKey, FString> SpecialKeys;
 	
 	//Time the sentence was started at
 	UPROPERTY()
@@ -81,6 +84,9 @@ private :
 	//Transforms the letter to hex code
 	UFUNCTION(BlueprintCallable)
 	AKCD_Letters* AddChildLetter(FString Letter, FTransform SpawnTransform);
+
+	UFUNCTION(BlueprintCallable)
+	void KeyPress(FKey key);
 	
 protected:
 	// Called when the game starts or when spawned

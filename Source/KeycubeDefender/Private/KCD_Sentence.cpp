@@ -6,7 +6,9 @@
 #include <iomanip>
 #include <iostream>
 
+#include "KCD_PlayerController.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetStringLibrary.h"
 
 // Sets default values
@@ -27,6 +29,13 @@ AKCD_Sentence::AKCD_Sentence()
 void AKCD_Sentence::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//Get the current player controller
+	AKCD_PlayerController* PlayerController = Cast<AKCD_PlayerController>(UGameplayStatics::GetPlayerController(
+		this, 0));
+
+	//Subscribes to the delegate for then a key is pressed and when it's released
+	PlayerController->KeyPressDelegate.AddDynamic(this, &AKCD_Sentence::KeyPress);
 
 	SetSentence("This is a test sentence, you are not supposed to see this");
 	
@@ -69,9 +78,6 @@ void AKCD_Sentence::SpawnLetters()
 			//Position uses half the size of the word and offset that position
 			//with the leght of th eprevious letters
 			float yPosition = (ScreenSize/2) - (Lettersize * (x + 0.5));
-
-			UE_LOG(LogTemp, Warning, TEXT("YPosition : %f"), yPosition)
-			
 			float zPosition = Lettersize * -(y + 0.5); 
 			spawnTransform.SetLocation(FVector{0.0f, yPosition, zPosition});
 			
@@ -91,6 +97,21 @@ void AKCD_Sentence::SpawnLetters()
 
 bool AKCD_Sentence::Hit(FName Letter)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Key Hit : %s"), *Letter.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("Key required : %s"), *LettersInstances[CurrentLetterIndex]->CurrentLetter.ToString());
+	
+	if(LettersInstances[CurrentLetterIndex]->CurrentLetter == ToHex(Letter.ToString()))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Hit successfull"));
+		
+		LettersInstances[CurrentLetterIndex]->Hide();
+		CurrentLetterIndex++;
+		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
+		return true;
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Hit failed"));
+	
 	return false;
 }
 
@@ -156,6 +177,18 @@ AKCD_Letters* AKCD_Sentence::AddChildLetter(FString Letter, FTransform SpawnTran
 	}
 	
 	return letterObject;
+}
+
+void AKCD_Sentence::KeyPress(FKey key)
+{
+	if(SpecialKeys.Contains(key))
+	{
+		Hit(FName(SpecialKeys[key]));
+	} else
+	{
+		Hit(key.GetFName());
+	}
+	
 }
 
 
