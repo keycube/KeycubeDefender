@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "KCD_Sentence.generated.h"
 
+class UBoxComponent;
 class UPaperSpriteComponent;
 
 UCLASS()
@@ -22,6 +23,9 @@ public:
 	USceneComponent* SentenceHolder;
 	UPROPERTY(EditAnywhere, Category="Holder")
 	UPaperSpriteComponent* LetterMarker;
+	UPROPERTY(EditAnywhere, Category="mesh")
+	UBoxComponent* Collision;
+	
 
 private :
 	//Var for the letters to spawn
@@ -40,6 +44,8 @@ private :
 	UPROPERTY(EditAnywhere, Category="Words")
 	float Lettersize = 30.0;
 
+	UPROPERTY(EditAnywhere, Category="Words")
+	float ScreenSize = 500.0;
 	
 	UPROPERTY(EditAnywhere, Category="Words")
 	FString TotalTypeWord;
@@ -63,6 +69,18 @@ private :
 	//Set the word associated with the ship
 	UFUNCTION(BlueprintCallable)
 	int EditDistance();
+
+	//Transforms the letter to hex code
+	UFUNCTION(BlueprintCallable)
+	FString ToHex(FString letter);
+
+	//Transforms the letter to hex code
+	UFUNCTION(BlueprintCallable)
+	TArray<FString> WordsFromString();
+
+	//Transforms the letter to hex code
+	UFUNCTION(BlueprintCallable)
+	AKCD_Letters* AddChildLetter(FString Letter, FTransform SpawnTransform);
 	
 protected:
 	// Called when the game starts or when spawned
