@@ -38,19 +38,6 @@ void AKCD_Sentence::SetSentence(FString Sentence)
 	CurrentSentence = Sentence;
 
 	SpawnLetters();
-
-	// for (auto letter : UKismetStringLibrary::GetCharacterArrayFromString(CurrentSentence))
-	// {
-	// 	std::string f = TCHAR_TO_UTF8(*letter);
-	// 	char c = f[0];
-	// 	
-	// 	std::stringstream stream;
-	// 	stream << std::hex << std::setw(2) << std::setfill('0') << (int) static_cast <unsigned char>(c);
-	// 	std::string result( stream.str() );
-	//
-	// 	FString resultFstring(result.c_str());
-	// }
-	
 	
 }
 
@@ -92,7 +79,8 @@ void AKCD_Sentence::SpawnLetters()
 			std::string f = TCHAR_TO_UTF8(*letter);
 			char c = f[0];
 			std::stringstream stream;
-			stream << std::hex << std::setw(2) << std::setfill('0') << (int) static_cast <unsigned char>(c);
+			stream << std::hex << std::setw(2) << std::setfill('0') <<
+				(int) static_cast <unsigned char>(std::tolower(c));
 			std::string result( stream.str() );
 			FString resultFstring(result.c_str());
 			
