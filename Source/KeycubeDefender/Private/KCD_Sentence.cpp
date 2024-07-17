@@ -3,9 +3,11 @@
 
 #include "KCD_Sentence.h"
 
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 
+#include "AsyncTreeDifferences.h"
 #include "KCD_PlayerController.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -116,6 +118,7 @@ bool AKCD_Sentence::Hit(FName Letter)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("This is the end of the sentence"));
 			WordComplete();
+			return true;
 		}
 		
 		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
@@ -217,7 +220,46 @@ void AKCD_Sentence::WordComplete()
 
 	LettersInstances.Empty();
 
-	SetSentence("This is the other test sentence for when you complete the first one");
+	SetSentence(FetchNewSentence());
+	//SetSentence("This is a test");
+}
+
+FString AKCD_Sentence::FetchNewSentence()
+{
+	//Line we will read from the file
+	std::string line;
+	
+	//Set the relative path where the file is saved and the name of the file
+	FString RelativePath = FPaths::ProjectContentDir();
+	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
+		+ std::string("Game/DataStrucs/phrases2.txt")));
+
+	//Try to open the file we want to read from.
+	std::ifstream myfile (path);
+	if (myfile.is_open())
+	{
+		int x = 0;
+		srand(time(0)); 
+		int randomLine = rand()%501;
+
+		//Read all the lines of the file
+		while ( getline (myfile,line) )
+		{
+			if(x == randomLine)
+			{
+				myfile.close();
+				return line.c_str();
+			}
+			x++;
+		}
+		myfile.close();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open score file for read"));
+	}
+
+	return "";
 }
 
 

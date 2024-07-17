@@ -90,6 +90,9 @@ private :
 
 	UFUNCTION(BlueprintCallable)
 	void WordComplete();
+
+	UFUNCTION(BlueprintCallable)
+	FString FetchNewSentence();
 	
 protected:
 	// Called when the game starts or when spawned
