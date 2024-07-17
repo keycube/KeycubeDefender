@@ -76,6 +76,9 @@ private :
 	//Tries to type the next letter. Returns if the hit was successful
 	UFUNCTION(BlueprintCallable)
 	virtual bool Hit(FName Letter);
+
+	UFUNCTION()
+	void MoveMarker();
 	
 	//Set the word associated with the ship
 	UFUNCTION(BlueprintCallable)

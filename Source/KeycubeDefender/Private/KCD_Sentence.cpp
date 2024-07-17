@@ -24,48 +24,6 @@ AKCD_Sentence::AKCD_Sentence()
 
 }
 
-void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
-{
-	//Set the relative path where the file is saved and the name of the file
-	FString RelativePath = FPaths::ProjectContentDir();
-	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
-		+ std::string("TypingStats.csv")));
-
-	//Open the file in append mode and check if it is opened
-	std::ofstream myfile (path, std::ios::app);
-	if (myfile.is_open())
-	{
-		//Create an FString with all results
-		FString ResultFString;
-		ResultFString = ",,," + FString::SanitizeFloat(Stat.Score) + "," +
-			FString::SanitizeFloat(Stat.TimeTaken) + "," +
-				FString::SanitizeFloat(Stat.Mistakes) + "," +
-					FString::SanitizeFloat(Stat.WordSize) + "," +
-						FString::SanitizeFloat(Stat.WordDistance) + "," +
-							Stat.WantedSentence + "," +
-								Stat.TypedSentence + ",";
-
-		//Convert the FString into a std::string
-		std::string ResultString = std::string(TCHAR_TO_UTF8(*ResultFString));
-		
-		//RowName
-		myfile << std::string((TCHAR_TO_UTF8(*("," + RowName + "\n"))));
-		//Titles
-		myfile << ",,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence\n";
-		//Data
-		myfile << ResultString + "\n";
-		//Skip lines for readability
-		myfile << "\n\n";
-		
-		//Close the file
-		myfile.close();
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for write"));
-	}
-}
-
 // Called when the game starts or when spawned
 void AKCD_Sentence::BeginPlay()
 {
@@ -85,10 +43,10 @@ void AKCD_Sentence::BeginPlay()
 void AKCD_Sentence::SetSentence(FString Sentence)
 {
 	CurrentLetterIndex = 0;
-	
 	CurrentSentence = Sentence;
-
+	
 	SpawnLetters();
+	MoveMarker();
 	
 }
 
@@ -163,16 +121,21 @@ bool AKCD_Sentence::Hit(FName Letter)
 		
 		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
 
-		FVector markerLocation = LettersInstances[CurrentLetterIndex]->GetTransform().GetLocation();
-		markerLocation.Z = markerLocation.Z - (Lettersize/2);
-		
-		LetterMarker->SetWorldLocation(markerLocation);
+		MoveMarker();
 		return true;
 	}
 
 	Mistakes++;
 	
 	return false;
+}
+
+void AKCD_Sentence::MoveMarker()
+{
+	FVector markerLocation = LettersInstances[CurrentLetterIndex]->GetTransform().GetLocation();
+	markerLocation.Z = markerLocation.Z - (Lettersize/2);
+		
+	LetterMarker->SetWorldLocation(markerLocation);
 }
 
 int AKCD_Sentence::EditDistance()
@@ -381,6 +344,49 @@ void AKCD_Sentence::AverageStats()
 	
 	WriteStats("Average", AverageStat);
 }
+
+void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
+{
+	//Set the relative path where the file is saved and the name of the file
+	FString RelativePath = FPaths::ProjectContentDir();
+	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
+		+ std::string("TypingStats.csv")));
+
+	//Open the file in append mode and check if it is opened
+	std::ofstream myfile (path, std::ios::app);
+	if (myfile.is_open())
+	{
+		//Create an FString with all results
+		FString ResultFString;
+		ResultFString = ",,," + FString::SanitizeFloat(Stat.Score) + "," +
+			FString::SanitizeFloat(Stat.TimeTaken) + "," +
+				FString::SanitizeFloat(Stat.Mistakes) + "," +
+					FString::SanitizeFloat(Stat.WordSize) + "," +
+						FString::SanitizeFloat(Stat.WordDistance) + "," +
+							Stat.WantedSentence + "," +
+								Stat.TypedSentence + ",";
+
+		//Convert the FString into a std::string
+		std::string ResultString = std::string(TCHAR_TO_UTF8(*ResultFString));
+		
+		//RowName
+		myfile << std::string((TCHAR_TO_UTF8(*("," + RowName + "\n"))));
+		//Titles
+		myfile << ",,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence\n";
+		//Data
+		myfile << ResultString + "\n";
+		//Skip lines for readability
+		myfile << "\n\n";
+		
+		//Close the file
+		myfile.close();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for write"));
+	}
+}
+
 
 
 // Called every frame

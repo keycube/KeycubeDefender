@@ -9,18 +9,33 @@ void UKCD_GameUI::WriteNewUser()
 {
 	//Set the relative path where the file is saved and the name of the file
 	FString RelativePath = FPaths::ProjectContentDir();
-	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
+	std::string resultPath = (std::string((TCHAR_TO_UTF8(*RelativePath))
 		+ std::string("Result.csv")));
 
+	std::string typingPath = (std::string((TCHAR_TO_UTF8(*RelativePath))
+	+ std::string("TypingStats.csv")));
+
+	std::string Str = std::string((TCHAR_TO_UTF8(*GenerateUser())));
+	
 	//Open the file in append mode and check if it is opened
-	std::ofstream myfile (path, std::ios::app);
+	std::ofstream myfile (resultPath, std::ios::app);
 	if (myfile.is_open())
 	{
-		std::string Str = std::string((TCHAR_TO_UTF8(*GenerateUser())));
-		
 		myfile << "user_" + Str + "\n";
 		
 		myfile.close();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for write"));
+	}
+
+	std::ofstream myfileType (typingPath, std::ios::app);
+	if (myfileType.is_open())
+	{
+		myfileType << "user_" + Str + "\n";
+		
+		myfileType.close();
 	}
 	else
 	{
