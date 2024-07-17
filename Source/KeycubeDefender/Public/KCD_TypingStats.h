@@ -20,7 +20,9 @@ public:
 		WordSize(0),
 		Mistakes(0),
 		WordDistance(0),
-		WasAltTarget(true)
+		WasAltTarget(true),
+		WantedSentence(""),
+		TypedSentence("")
 	{
 	}
 
@@ -41,4 +43,10 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool WasAltTarget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString WantedSentence;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString TypedSentence;
 };

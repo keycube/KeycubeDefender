@@ -5,11 +5,8 @@
 
 #include <fstream>
 #include <iomanip>
-#include <iostream>
 
-#include "AsyncTreeDifferences.h"
 #include "KCD_PlayerController.h"
-#include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetStringLibrary.h"
 
@@ -25,6 +22,48 @@ AKCD_Sentence::AKCD_Sentence()
 	LetterMarker = CreateDefaultSubobject<UPaperSpriteComponent>("Marker");
 	LetterMarker->SetupAttachment(RootComponent);
 
+}
+
+void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
+{
+	//Set the relative path where the file is saved and the name of the file
+	FString RelativePath = FPaths::ProjectContentDir();
+	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
+		+ std::string("TypingStats.csv")));
+
+	//Open the file in append mode and check if it is opened
+	std::ofstream myfile (path, std::ios::app);
+	if (myfile.is_open())
+	{
+		//Create an FString with all results
+		FString ResultFString;
+		ResultFString = ",,," + FString::SanitizeFloat(Stat.Score) + "," +
+			FString::SanitizeFloat(Stat.TimeTaken) + "," +
+				FString::SanitizeFloat(Stat.Mistakes) + "," +
+					FString::SanitizeFloat(Stat.WordSize) + "," +
+						FString::SanitizeFloat(Stat.WordDistance) + "," +
+							Stat.WantedSentence + "," +
+								Stat.TypedSentence + ",";
+
+		//Convert the FString into a std::string
+		std::string ResultString = std::string(TCHAR_TO_UTF8(*ResultFString));
+		
+		//RowName
+		myfile << std::string((TCHAR_TO_UTF8(*("," + RowName + "\n"))));
+		//Titles
+		myfile << ",,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence\n";
+		//Data
+		myfile << ResultString + "\n";
+		//Skip lines for readability
+		myfile << "\n\n";
+		
+		//Close the file
+		myfile.close();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for write"));
+	}
 }
 
 // Called when the game starts or when spawned
@@ -57,7 +96,7 @@ void AKCD_Sentence::SpawnLetters()
 {
 	//Base transform of the letters, used to spawn the letter in local position
 	FTransform spawnTransform{
-		FRotator{0.0f, -90.0f, 0.0f},                 // Rotation
+		FRotator{0.0f, -90.0f, 0.0f}, // Rotation
 		FVector{0.0f, 0.0f, 0.0f},  // Translation
 		FVector{1.0f, 1.0f, 1.0f}   // Scale
 	};
@@ -104,19 +143,20 @@ void AKCD_Sentence::SpawnLetters()
 
 bool AKCD_Sentence::Hit(FName Letter)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Key Hit : %s"), *Letter.ToString());
-	UE_LOG(LogTemp, Warning, TEXT("Key required : %s"), *LettersInstances[CurrentLetterIndex]->CurrentLetter.ToString());
+	TotalTypeSentence += Letter.ToString().ToLower();
+	
+	if(StartTime == 0)
+	{
+		StartTime = GetWorld()->GetRealTimeSeconds();
+	}
 	
 	if(LettersInstances[CurrentLetterIndex]->CurrentLetter == ToHex(Letter.ToString()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit successfull"));
-		
 		LettersInstances[CurrentLetterIndex]->Hide();
 		if(LettersInstances.Num() > CurrentLetterIndex + 1)
 			CurrentLetterIndex++;
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("This is the end of the sentence"));
 			WordComplete();
 			return true;
 		}
@@ -130,15 +170,41 @@ bool AKCD_Sentence::Hit(FName Letter)
 		return true;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Hit failed"));
+	Mistakes++;
 	
 	return false;
 }
 
 int AKCD_Sentence::EditDistance()
 {
+	int m = GetNum(CurrentSentence);
+	int n = GetNum(TotalTypeSentence);
 
-	return 0;
+	std::string s = TCHAR_TO_UTF8(*CurrentSentence);
+	std::string t = TCHAR_TO_UTF8(*TotalTypeSentence);
+	
+	std::vector<int> prev(n + 1, 0), curr(n + 1, 0);
+
+	for (int j = 0; j <= n; j++) {
+		prev[j] = j;
+	}
+
+	for (int i = 1; i <= m; i++) {
+		curr[0] = i;
+		for (int j = 1; j <= n; j++) {
+			if (s[i - 1] == t[j - 1]) {
+				curr[j] = prev[j - 1];
+			}
+			else {
+				int mn
+					= std::min(1 + prev[j], 1 + curr[j - 1]);
+				curr[j] = std::min(mn, 1 + prev[j - 1]);
+			}
+		}
+		prev = curr;
+	}
+
+	return prev[n];
 }
 
 FString AKCD_Sentence::ToHex(FString Letter)
@@ -213,6 +279,29 @@ void AKCD_Sentence::KeyPress(FKey key)
 
 void AKCD_Sentence::WordComplete()
 {
+	double finishTime = GetWorld()->GetRealTimeSeconds();
+	double completionTime = finishTime - StartTime;
+
+	FKCD_TypingStats CurrentStat;
+
+	CurrentStat.TimeTaken = completionTime;
+	CurrentStat.Score = ((CurrentSentence.Len() - 1 )/CurrentStat.TimeTaken) * 60 * 0.2;;
+	CurrentStat.Mistakes = Mistakes;
+	CurrentStat.WordDistance = EditDistance();
+	CurrentStat.WordSize = CurrentSentence.Len();
+	CurrentStat.WantedSentence = CurrentSentence;
+	CurrentStat.TypedSentence = TotalTypeSentence;
+
+	Stats.Add(CurrentStat);
+
+	if(TEMP < 6)
+	{
+		WriteStats(("Sentence : " + FString::FromInt(TEMP)), CurrentStat);
+	} else
+	{
+		AverageStats();
+	}
+	
 	for (auto LettersInstance : LettersInstances)
 	{
 		LettersInstance->Destroy();
@@ -220,7 +309,11 @@ void AKCD_Sentence::WordComplete()
 
 	LettersInstances.Empty();
 
+	TotalTypeSentence = "";
+	StartTime = GetWorld()->GetRealTimeSeconds();
+	Mistakes = 0;
 	SetSentence(FetchNewSentence());
+	TEMP++;
 	//SetSentence("This is a test");
 }
 
@@ -260,6 +353,33 @@ FString AKCD_Sentence::FetchNewSentence()
 	}
 
 	return "";
+}
+
+void AKCD_Sentence::AverageStats()
+{
+	FKCD_TypingStats AverageStat;
+
+	//Makes an average of all main target stats
+	for (auto TypeStat : Stats)
+	{
+		AverageStat.Mistakes += TypeStat.Mistakes;
+		AverageStat.Score += TypeStat.Score;
+		AverageStat.TimeTaken += TypeStat.TimeTaken;
+		AverageStat.WordDistance += TypeStat.WordDistance;
+		AverageStat.WordSize += TypeStat.WordSize;
+	}
+
+	int size = Stats.Num();
+	
+	AverageStat.Mistakes = AverageStat.Mistakes / size;
+	AverageStat.Score = AverageStat.Score / size;
+	AverageStat.TimeTaken = AverageStat.TimeTaken / size;
+	AverageStat.WordDistance = AverageStat.WordDistance / size;
+	AverageStat.WordSize = AverageStat.WordSize / size;
+	AverageStat.WasAltTarget = false;
+	
+	
+	WriteStats("Average", AverageStat);
 }
 
 

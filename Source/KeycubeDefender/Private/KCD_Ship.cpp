@@ -251,12 +251,6 @@ void AKCD_Ship::ShipDestroyed()
 
 	Stats.TimeTaken = timeToComplete;
 	
-	//TODO : Send Stats to file
-	//
-	// UE_LOG(LogTemp, Warning, TEXT("Wanted word : %s"), *CurrentWord);
-	// UE_LOG(LogTemp, Warning, TEXT("Looked at word : %s"), *TotalTypeWord);
-	// UE_LOG(LogTemp, Warning, TEXT("Word distance at completion : %i"), EditDistance());
-	
 	Stats.Score = ((GetNum(CurrentWord) - 1 )/Stats.TimeTaken) * 60 * 0.2;
 	
 	AKCD_GameMode* gamemode = Cast<AKCD_GameMode>(UGameplayStatics::GetGameMode(this));

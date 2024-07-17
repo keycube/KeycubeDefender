@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "KCD_Letters.h"
+#include "KCD_TypingStats.h"
 #include "GameFramework/Actor.h"
 #include "KCD_Sentence.generated.h"
 
@@ -48,7 +49,7 @@ private :
 	float ScreenSize = 500.0;
 	
 	UPROPERTY(EditAnywhere, Category="Words")
-	FString TotalTypeWord;
+	FString TotalTypeSentence;
 
 	UPROPERTY(EditAnywhere, Category="Words")
 	TMap<FKey, FString> SpecialKeys;
@@ -56,6 +57,13 @@ private :
 	//Time the sentence was started at
 	UPROPERTY()
 	double StartTime = 0;
+
+	UPROPERTY()
+	int Mistakes = 0;
+
+	//Stats for each sentences typed
+	UPROPERTY()
+	TArray<FKCD_TypingStats> Stats;
 
 	//Set the word associated with the ship
 	UFUNCTION(BlueprintCallable)
@@ -93,6 +101,15 @@ private :
 
 	UFUNCTION(BlueprintCallable)
 	FString FetchNewSentence();
+
+	UFUNCTION()
+	void AverageStats();
+	
+	UFUNCTION()
+	void WriteStats(FString RowName, FKCD_TypingStats Stat);
+
+	UPROPERTY()
+	int TEMP = 0;
 	
 protected:
 	// Called when the game starts or when spawned
