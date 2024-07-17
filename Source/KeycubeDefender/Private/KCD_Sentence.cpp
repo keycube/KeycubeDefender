@@ -261,7 +261,7 @@ void AKCD_Sentence::WordComplete(bool wasComplete)
 
 	if (!wasComplete)
 	{
-		CurrentSentence = CurrentSentence.RightChop(CurrentLetterIndex);
+		CurrentSentence.LeftInline(CurrentLetterIndex);
 	}
 
 	CurrentStat.TimeTaken = completionTime;
