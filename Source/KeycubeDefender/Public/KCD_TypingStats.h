@@ -22,7 +22,8 @@ public:
 		WordDistance(0),
 		WasAltTarget(true),
 		WantedSentence(""),
-		TypedSentence("")
+		TypedSentence(""),
+		WasComplete(true)
 	{
 	}
 
@@ -49,4 +50,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString TypedSentence;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool WasComplete;
 };

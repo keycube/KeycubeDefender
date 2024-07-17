@@ -61,6 +61,17 @@ private :
 	UPROPERTY()
 	int Mistakes = 0;
 
+	// How much time (s) is given to write the sentences
+	UPROPERTY(EditAnywhere)
+	float TimeGiven = 20;
+	// Used to manage time
+	UPROPERTY()
+	FTimerHandle TimerHandle;
+	//If the user has already started typing
+	UPROPERTY()
+	bool HasStarted = false;
+
+
 	//Stats for each sentences typed
 	UPROPERTY()
 	TArray<FKCD_TypingStats> Stats;
@@ -100,7 +111,7 @@ private :
 	void KeyPress(FKey key);
 
 	UFUNCTION(BlueprintCallable)
-	void WordComplete();
+	void WordComplete(bool wasComplete);
 
 	UFUNCTION(BlueprintCallable)
 	FString FetchNewSentence();
@@ -110,9 +121,12 @@ private :
 	
 	UFUNCTION()
 	void WriteStats(FString RowName, FKCD_TypingStats Stat);
-
+	
+	UFUNCTION()
+	void TestOver();
+	
 	UPROPERTY()
-	int TEMP = 0;
+	int SentenceNum = 0;
 	
 protected:
 	// Called when the game starts or when spawned

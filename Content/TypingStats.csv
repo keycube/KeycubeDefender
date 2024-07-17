@@ -1,15 +1,25 @@
 ,Sentence : 0
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence
-,,,58.860561,11.416813,1.0,57.0,16.0,This is a test sentence, you are not supposed to see this,leftmousebuttonthis is a test sentence, you are not supposed to see this,
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
+,,,41.57011,7.216724,2.0,26.0,16.0,no exchange without a bill,leftmousebuttonno exchange without a bvill,true
 
 
 ,Sentence : 1
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence
-,,,25.2407,12.360989,2.0,27.0,2.0,it should be sunny tomorrow,it should be sunny tommororow,
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
+,,,56.874054,5.274813,0.0,26.0,0.0,the four seasons will come,the four seasons will come,true
 
 
 ,Sentence : 2
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence
-,,,41.028698,7.604433,3.0,27.0,3.0,two or three cups of coffee,two or three cups of cogfeefee,
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
+,,,52.611153,6.614567,2.0,30.0,2.0,win first prize in the contest, win first prize in the constest,true
+
+
+,Sentence : 3
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
+,,,395.699371,0.909782,0.0,31.0,30.0,correct your diction immediatel,c,false
+
+
+,Average
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
+,,,136.688675,5.003971,1.0,28.25,12.0,,,true
 
 

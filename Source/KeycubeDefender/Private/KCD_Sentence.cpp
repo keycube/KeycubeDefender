@@ -13,7 +13,7 @@
 // Sets default values
 AKCD_Sentence::AKCD_Sentence()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SentenceHolder = CreateDefaultSubobject<USceneComponent>("Sentence Holder");
@@ -21,7 +21,6 @@ AKCD_Sentence::AKCD_Sentence()
 
 	LetterMarker = CreateDefaultSubobject<UPaperSpriteComponent>("Marker");
 	LetterMarker->SetupAttachment(RootComponent);
-
 }
 
 // Called when the game starts or when spawned
@@ -36,18 +35,17 @@ void AKCD_Sentence::BeginPlay()
 	//Subscribes to the delegate for then a key is pressed and when it's released
 	PlayerController->KeyPressDelegate.AddDynamic(this, &AKCD_Sentence::KeyPress);
 
-	SetSentence("This is a test sentence, you are not supposed to see this");
-	
+	SetSentence(FetchNewSentence());
+	//SetSentence("This is a test sentence, you are not supposed to see this");
 }
 
 void AKCD_Sentence::SetSentence(FString Sentence)
 {
 	CurrentLetterIndex = 0;
 	CurrentSentence = Sentence;
-	
+
 	SpawnLetters();
 	MoveMarker();
-	
 }
 
 void AKCD_Sentence::SpawnLetters()
@@ -55,8 +53,8 @@ void AKCD_Sentence::SpawnLetters()
 	//Base transform of the letters, used to spawn the letter in local position
 	FTransform spawnTransform{
 		FRotator{0.0f, -90.0f, 0.0f}, // Rotation
-		FVector{0.0f, 0.0f, 0.0f},  // Translation
-		FVector{1.0f, 1.0f, 1.0f}   // Scale
+		FVector{0.0f, 0.0f, 0.0f}, // Translation
+		FVector{1.0f, 1.0f, 1.0f} // Scale
 	};
 	//Total size of the word
 	const float WordSize = Lettersize * CurrentSentence.Len();
@@ -68,7 +66,7 @@ void AKCD_Sentence::SpawnLetters()
 	for (auto Element : WordsFromString())
 	{
 		//Check if the word would be too big for the screen size
-		if((Lettersize * (x + 0.5)) + (Lettersize * (Element.Len() + 0.5)) > ScreenSize)
+		if ((Lettersize * (x + 0.5)) + (Lettersize * (Element.Len() + 0.5)) > ScreenSize)
 		{
 			x = 0;
 			y++;
@@ -78,47 +76,54 @@ void AKCD_Sentence::SpawnLetters()
 		{
 			//Position uses half the size of the word and offset that position
 			//with the leght of th eprevious letters
-			float yPosition = (ScreenSize/2) - (Lettersize * (x + 0.5));
-			float zPosition = Lettersize * -(2 * y); 
+			float yPosition = (ScreenSize / 2) - (Lettersize * (x + 0.5));
+			float zPosition = Lettersize * -(2 * y);
 			spawnTransform.SetLocation(FVector{0.0f, yPosition, zPosition});
-			
+
 			LettersInstances.Add(AddChildLetter(letter, spawnTransform));
 			x++;
 		}
 		//Add a space at the end of the word
-		float yPosition = (ScreenSize/2) - (Lettersize * (x + 0.5));
-		float zPosition = Lettersize * -(2 * y); 
+		float yPosition = (ScreenSize / 2) - (Lettersize * (x + 0.5));
+		float zPosition = Lettersize * -(2 * y);
 		spawnTransform.SetLocation(FVector{0.0f, yPosition, zPosition});
-			
+
 		LettersInstances.Add(AddChildLetter(" ", spawnTransform));
 		x++;
 	}
 	//Remove the last element, which is a stray space
 	LettersInstances.Last()->Destroy();
 	LettersInstances.Pop();
-	
 }
 
 bool AKCD_Sentence::Hit(FName Letter)
 {
 	TotalTypeSentence += Letter.ToString().ToLower();
-	
-	if(StartTime == 0)
+
+	if (!HasStarted)
+	{
+		HasStarted = true;
+
+		// This with execute a function after the specified Delay
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle,this, &AKCD_Sentence::TestOver, TimeGiven, false);
+	}
+
+	if (StartTime == 0)
 	{
 		StartTime = GetWorld()->GetRealTimeSeconds();
 	}
-	
-	if(LettersInstances[CurrentLetterIndex]->CurrentLetter == ToHex(Letter.ToString()))
+
+	if (LettersInstances[CurrentLetterIndex]->CurrentLetter == ToHex(Letter.ToString()))
 	{
 		LettersInstances[CurrentLetterIndex]->Hide();
-		if(LettersInstances.Num() > CurrentLetterIndex + 1)
+		if (LettersInstances.Num() > CurrentLetterIndex + 1)
 			CurrentLetterIndex++;
 		else
 		{
-			WordComplete();
+			WordComplete(true);
 			return true;
 		}
-		
+
 		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
 
 		MoveMarker();
@@ -126,15 +131,15 @@ bool AKCD_Sentence::Hit(FName Letter)
 	}
 
 	Mistakes++;
-	
+
 	return false;
 }
 
 void AKCD_Sentence::MoveMarker()
 {
 	FVector markerLocation = LettersInstances[CurrentLetterIndex]->GetTransform().GetLocation();
-	markerLocation.Z = markerLocation.Z - (Lettersize/2);
-		
+	markerLocation.Z = markerLocation.Z - (Lettersize / 2);
+
 	LetterMarker->SetWorldLocation(markerLocation);
 }
 
@@ -145,20 +150,25 @@ int AKCD_Sentence::EditDistance()
 
 	std::string s = TCHAR_TO_UTF8(*CurrentSentence);
 	std::string t = TCHAR_TO_UTF8(*TotalTypeSentence);
-	
+
 	std::vector<int> prev(n + 1, 0), curr(n + 1, 0);
 
-	for (int j = 0; j <= n; j++) {
+	for (int j = 0; j <= n; j++)
+	{
 		prev[j] = j;
 	}
 
-	for (int i = 1; i <= m; i++) {
+	for (int i = 1; i <= m; i++)
+	{
 		curr[0] = i;
-		for (int j = 1; j <= n; j++) {
-			if (s[i - 1] == t[j - 1]) {
+		for (int j = 1; j <= n; j++)
+		{
+			if (s[i - 1] == t[j - 1])
+			{
 				curr[j] = prev[j - 1];
 			}
-			else {
+			else
+			{
 				int mn
 					= std::min(1 + prev[j], 1 + curr[j - 1]);
 				curr[j] = std::min(mn, 1 + prev[j - 1]);
@@ -180,9 +190,9 @@ FString AKCD_Sentence::ToHex(FString Letter)
 	std::stringstream stream;
 
 	stream << std::hex << std::setw(2) << std::setfill('0') <<
-		(int) static_cast <unsigned char>(std::tolower(c));
+		(int)static_cast<unsigned char>(std::tolower(c));
 
-	std::string result( stream.str() );
+	std::string result(stream.str());
 	FString resultFstring(result.c_str());
 
 	return resultFstring;
@@ -194,11 +204,12 @@ TArray<FString> AKCD_Sentence::WordsFromString()
 	std::string sentence = TCHAR_TO_UTF8(*CurrentSentence);
 	size_t pos = 0;
 	std::string word;
-	while ((pos = sentence.find(" ")) != std::string::npos) {
+	while ((pos = sentence.find(" ")) != std::string::npos)
+	{
 		word = sentence.substr(0, pos);
 
 		wordArray.Add(word.c_str());
-		
+
 		sentence.erase(0, pos + 1);
 	}
 	//Last word in the sentence
@@ -217,52 +228,58 @@ AKCD_Letters* AKCD_Sentence::AddChildLetter(FString Letter, FTransform SpawnTran
 	child->SetRelativeTransform(SpawnTransform);
 	//Get a reference to the child's class and set it's letter
 	AKCD_Letters* letterObject = Cast<AKCD_Letters>(child->GetChildActor());
-	if(letterObject != nullptr)
+	if (letterObject != nullptr)
 	{
 		letterObject->SetLetter(FName(ToHex(Letter)));
-	} else
+	}
+	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Letter object reference NULL"));
 	}
-	
+
 	return letterObject;
 }
 
 void AKCD_Sentence::KeyPress(FKey key)
 {
-	if(SpecialKeys.Contains(key))
+	if (SpecialKeys.Contains(key))
 	{
 		Hit(FName(SpecialKeys[key]));
-	} else
+	}
+	else
 	{
 		Hit(key.GetFName());
 	}
-	
 }
 
-void AKCD_Sentence::WordComplete()
+void AKCD_Sentence::WordComplete(bool wasComplete)
 {
 	double finishTime = GetWorld()->GetRealTimeSeconds();
 	double completionTime = finishTime - StartTime;
 
 	FKCD_TypingStats CurrentStat;
 
+	if (!wasComplete)
+	{
+		CurrentSentence = CurrentSentence.RightChop(CurrentLetterIndex);
+	}
+
 	CurrentStat.TimeTaken = completionTime;
-	CurrentStat.Score = ((CurrentSentence.Len() - 1 )/CurrentStat.TimeTaken) * 60 * 0.2;;
+	CurrentStat.Score = ((CurrentSentence.Len() - 1) / CurrentStat.TimeTaken) * 60 * 0.2;;
 	CurrentStat.Mistakes = Mistakes;
 	CurrentStat.WordDistance = EditDistance();
 	CurrentStat.WordSize = CurrentSentence.Len();
 	CurrentStat.WantedSentence = CurrentSentence;
 	CurrentStat.TypedSentence = TotalTypeSentence;
+	CurrentStat.WasComplete = wasComplete;
 
 	Stats.Add(CurrentStat);
 
-	if(TEMP < 6)
+	WriteStats(("Sentence : " + FString::FromInt(SentenceNum)), CurrentStat);
+
+	if(!wasComplete)
 	{
-		WriteStats(("Sentence : " + FString::FromInt(TEMP)), CurrentStat);
-	} else
-	{
-		AverageStats();
+		return;
 	}
 	
 	for (auto LettersInstance : LettersInstances)
@@ -276,32 +293,31 @@ void AKCD_Sentence::WordComplete()
 	StartTime = GetWorld()->GetRealTimeSeconds();
 	Mistakes = 0;
 	SetSentence(FetchNewSentence());
-	TEMP++;
-	//SetSentence("This is a test");
+	SentenceNum++;
 }
 
 FString AKCD_Sentence::FetchNewSentence()
 {
 	//Line we will read from the file
 	std::string line;
-	
+
 	//Set the relative path where the file is saved and the name of the file
 	FString RelativePath = FPaths::ProjectContentDir();
 	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
 		+ std::string("Game/DataStrucs/phrases2.txt")));
 
 	//Try to open the file we want to read from.
-	std::ifstream myfile (path);
+	std::ifstream myfile(path);
 	if (myfile.is_open())
 	{
 		int x = 0;
-		srand(time(0)); 
-		int randomLine = rand()%501;
+		srand(time(0));
+		int randomLine = rand() % 501;
 
 		//Read all the lines of the file
-		while ( getline (myfile,line) )
+		while (getline(myfile, line))
 		{
-			if(x == randomLine)
+			if (x == randomLine)
 			{
 				myfile.close();
 				return line.c_str();
@@ -333,15 +349,15 @@ void AKCD_Sentence::AverageStats()
 	}
 
 	int size = Stats.Num();
-	
+
 	AverageStat.Mistakes = AverageStat.Mistakes / size;
 	AverageStat.Score = AverageStat.Score / size;
 	AverageStat.TimeTaken = AverageStat.TimeTaken / size;
 	AverageStat.WordDistance = AverageStat.WordDistance / size;
 	AverageStat.WordSize = AverageStat.WordSize / size;
 	AverageStat.WasAltTarget = false;
-	
-	
+
+
 	WriteStats("Average", AverageStat);
 }
 
@@ -353,31 +369,32 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 		+ std::string("TypingStats.csv")));
 
 	//Open the file in append mode and check if it is opened
-	std::ofstream myfile (path, std::ios::app);
+	std::ofstream myfile(path, std::ios::app);
 	if (myfile.is_open())
 	{
 		//Create an FString with all results
 		FString ResultFString;
 		ResultFString = ",,," + FString::SanitizeFloat(Stat.Score) + "," +
 			FString::SanitizeFloat(Stat.TimeTaken) + "," +
-				FString::SanitizeFloat(Stat.Mistakes) + "," +
-					FString::SanitizeFloat(Stat.WordSize) + "," +
-						FString::SanitizeFloat(Stat.WordDistance) + "," +
-							Stat.WantedSentence + "," +
-								Stat.TypedSentence + ",";
+			FString::SanitizeFloat(Stat.Mistakes) + "," +
+			FString::SanitizeFloat(Stat.WordSize) + "," +
+			FString::SanitizeFloat(Stat.WordDistance) + "," +
+			Stat.WantedSentence + "," +
+			Stat.TypedSentence + "," +
+			UKismetStringLibrary::Conv_BoolToString(Stat.WasComplete);
 
 		//Convert the FString into a std::string
 		std::string ResultString = std::string(TCHAR_TO_UTF8(*ResultFString));
-		
+
 		//RowName
 		myfile << std::string((TCHAR_TO_UTF8(*("," + RowName + "\n"))));
 		//Titles
-		myfile << ",,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence\n";
+		myfile << ",,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed\n";
 		//Data
 		myfile << ResultString + "\n";
 		//Skip lines for readability
 		myfile << "\n\n";
-		
+
 		//Close the file
 		myfile.close();
 	}
@@ -387,12 +404,19 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 	}
 }
 
+void AKCD_Sentence::TestOver()
+{
+	WordComplete(false);
+	AverageStats();
+	//TODO : Show the UI and disable the input
+
+	UE_LOG(LogTemp, Warning, TEXT("Test is over"));
+	this->Destroy();
+}
 
 
 // Called every frame
 void AKCD_Sentence::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
-
