@@ -1,0 +1,15 @@
+,Sentence : 0
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
+,,,30.515156,14.550147,8.0,38.0,8.0,salesmen must make their monthly quota,salesmen must make ytheid r montkhkly dqyauota,true
+
+
+,Sentence : 1
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
+,,,39.532009,5.463927,1.0,19.0,1.0,they watched the en,they watched tehe en,false
+
+
+,Average
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
+,,,35.023582,10.007037,4.5,28.5,4.5,,,true
+
+
