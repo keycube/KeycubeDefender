@@ -99,43 +99,36 @@ void AKCD_Sentence::SpawnLetters()
 	LettersInstances.Pop();
 }
 
-bool AKCD_Sentence::Hit(FName Letter)
+void AKCD_Sentence::Hit(FName Letter)
 {
 	TotalTypeSentence += Letter.ToString().ToLower();
+	TotalTypeInput += Letter.ToString().ToLower();
 
 	if (!HasStarted)
 	{
 		HasStarted = true;
-
+		StartTime = GetWorld()->GetRealTimeSeconds();
 		// This with execute a function after the specified Delay
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle,this, &AKCD_Sentence::TestOver, TimeGiven, false);
-	}
-
-	if (StartTime == 0)
-	{
-		StartTime = GetWorld()->GetRealTimeSeconds();
 	}
 
 	if (LettersInstances[CurrentLetterIndex]->CurrentLetter == ToHex(Letter.ToString()))
 	{
 		LettersInstances[CurrentLetterIndex]->Hide();
-		if (LettersInstances.Num() > CurrentLetterIndex + 1)
-			CurrentLetterIndex++;
-		else
-		{
-			WordComplete(true);
-			return true;
-		}
-
-		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
-
-		MoveMarker();
-		return true;
+	}
+	else
+	{
+		Mistakes++;
+		LettersInstances[CurrentLetterIndex]->ErrorHighlight();
 	}
 
-	Mistakes++;
-
-	return false;
+	if(LettersInstances.Num() > CurrentLetterIndex + 1)
+	{
+		CurrentLetterIndex++;
+		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
+		MoveMarker();
+	}
+	
 }
 
 void AKCD_Sentence::MoveMarker()
@@ -249,23 +242,33 @@ void AKCD_Sentence::KeyPress(FKey key)
 	{
 		Hit(FName(SpecialKeys[key]));
 	}
+	else if(key == FKey("Backspace"))
+	{
+		if(CurrentLetterIndex != 0)
+		{
+			LettersInstances[CurrentLetterIndex]->Unhighlight();
+			CurrentLetterIndex--;
+			LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
+			TotalTypeSentence.LeftChopInline(1);
+			TotalTypeInput.Append("~");
+		}
+	}
+	else if(key == FKey("Enter"))
+	{
+		WordComplete();
+	}
 	else
 	{
 		Hit(key.GetFName());
 	}
 }
 
-void AKCD_Sentence::WordComplete(bool wasComplete)
+void AKCD_Sentence::WordComplete()
 {
 	double finishTime = GetWorld()->GetRealTimeSeconds();
 	double completionTime = finishTime - StartTime;
 
 	FKCD_TypingStats CurrentStat;
-
-	if (!wasComplete)
-	{
-		CurrentSentence.LeftInline(CurrentLetterIndex);
-	}
 
 	CurrentStat.TimeTaken = completionTime;
 	CurrentStat.Score = ((CurrentSentence.Len() - 1) / CurrentStat.TimeTaken) * 60 * 0.2;;
@@ -274,16 +277,11 @@ void AKCD_Sentence::WordComplete(bool wasComplete)
 	CurrentStat.WordSize = CurrentSentence.Len();
 	CurrentStat.WantedSentence = CurrentSentence;
 	CurrentStat.TypedSentence = TotalTypeSentence;
-	CurrentStat.WasComplete = wasComplete;
+	CurrentStat.Keystrokes = TotalTypeInput;
 
 	Stats.Add(CurrentStat);
 
 	WriteStats(("Sentence : " + FString::FromInt(SentenceNum)), CurrentStat);
-
-	if(!wasComplete)
-	{
-		return;
-	}
 	
 	for (auto LettersInstance : LettersInstances)
 	{
@@ -384,7 +382,7 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 			FString::SanitizeFloat(Stat.WordDistance) + "," +
 			Stat.WantedSentence + "," +
 			Stat.TypedSentence + "," +
-			UKismetStringLibrary::Conv_BoolToString(Stat.WasComplete);
+			Stat.Keystrokes;
 
 		//Convert the FString into a std::string
 		std::string ResultString = std::string(TCHAR_TO_UTF8(*ResultFString));
@@ -392,7 +390,7 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 		//RowName
 		myfile << std::string((TCHAR_TO_UTF8(*("," + RowName + "\n"))));
 		//Titles
-		myfile << ",,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed\n";
+		myfile << ",,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes\n";
 		//Data
 		myfile << ResultString + "\n";
 		//Skip lines for readability
@@ -409,7 +407,6 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 
 void AKCD_Sentence::TestOver()
 {
-	WordComplete(false);
 	AverageStats();
 	//TODO : Show the UI and disable the input
 

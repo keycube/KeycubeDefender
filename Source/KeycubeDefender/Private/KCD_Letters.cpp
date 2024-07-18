@@ -67,3 +67,9 @@ void AKCD_Letters::Hide()
 	IsLetterHidden = true;
 }
 
+void AKCD_Letters::ErrorHighlight()
+{
+	Sprite->SetSpriteColor(ErrorColor);
+	IsLetterHidden = false;
+}
+

@@ -32,6 +32,8 @@ public:
 	FLinearColor BaseColor;
 	UPROPERTY(EditAnywhere, Category="Variable")
 	FLinearColor HiddenColor;
+	UPROPERTY(EditAnywhere, Category="Variable")
+	FLinearColor ErrorColor;
 
 	UPROPERTY(EditAnywhere, Category="Variable")
 	bool IsLetterHidden;
@@ -69,9 +71,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Unhighlight();
 
-	//TODO : Remove this if it is unused
-	//Visual feedback to make the letter easier to see
+	//Visual feedback to hide the letter
 	UFUNCTION(BlueprintCallable)
 	void Hide();
+
+	//Visual feedback of a wrong letter typed
+	UFUNCTION(BlueprintCallable)
+	void ErrorHighlight();
 		
 };

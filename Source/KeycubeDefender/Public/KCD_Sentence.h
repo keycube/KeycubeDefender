@@ -54,6 +54,9 @@ private :
 	FString TotalTypeSentence;
 
 	UPROPERTY(EditAnywhere, Category="Words")
+	FString TotalTypeInput;
+
+	UPROPERTY(EditAnywhere, Category="Words")
 	TMap<FKey, FString> SpecialKeys;
 	
 	//Time the sentence was started at
@@ -88,7 +91,7 @@ private :
 
 	//Tries to type the next letter. Returns if the hit was successful
 	UFUNCTION(BlueprintCallable)
-	virtual bool Hit(FName Letter);
+	void Hit(FName Letter);
 
 	UFUNCTION()
 	void MoveMarker();
@@ -113,7 +116,7 @@ private :
 	void KeyPress(FKey key);
 
 	UFUNCTION(BlueprintCallable)
-	void WordComplete(bool wasComplete);
+	void WordComplete();
 
 	UFUNCTION(BlueprintCallable)
 	FString FetchNewSentence();

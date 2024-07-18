@@ -23,7 +23,7 @@ public:
 		WasAltTarget(true),
 		WantedSentence(""),
 		TypedSentence(""),
-		WasComplete(true)
+		Keystrokes("")
 	{
 	}
 
@@ -52,5 +52,5 @@ public:
 	FString TypedSentence;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool WasComplete;
+	FString Keystrokes;
 };
