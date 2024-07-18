@@ -16,6 +16,9 @@ AKCD_Sentence::AKCD_Sentence()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	ActorCenter = CreateDefaultSubobject<USceneComponent>("Actor center");
+	RootComponent = ActorCenter;
+	
 	SentenceHolder = CreateDefaultSubobject<USceneComponent>("Sentence Holder");
 	SentenceHolder->SetupAttachment(RootComponent);
 

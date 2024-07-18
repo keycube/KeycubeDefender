@@ -19,7 +19,9 @@ class KEYCUBEDEFENDER_API AKCD_Sentence : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AKCD_Sentence();
-
+	
+	UPROPERTY(EditAnywhere, Category="Holder")
+	USceneComponent* ActorCenter;
 	UPROPERTY(EditAnywhere, Category="Holder")
 	USceneComponent* SentenceHolder;
 	UPROPERTY(EditAnywhere, Category="Holder")
