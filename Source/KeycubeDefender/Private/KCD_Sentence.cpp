@@ -106,17 +106,18 @@ void AKCD_Sentence::Hit(FName Letter)
 
 	LastInputTime = GetWorld()->GetRealTimeSeconds();
 
-	if(LettersInstances.Num() <= CurrentLetterIndex + 1)
+	//Don't try to replace the last typed letter if we are at the end of the sentence
+	if(LettersInstances.Num() <= CurrentLetterIndex)
 	{
+		Mistakes++;
 		return;
 	}
+	
 	
 	if (!HasStarted)
 	{
 		HasStarted = true;
 		StartTime = GetWorld()->GetRealTimeSeconds();
-		// This with execute a function after the specified Delay
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle,this, &AKCD_Sentence::TestOver, TimeGiven, false);
 	}
 
 	if (LettersInstances[CurrentLetterIndex]->CurrentLetter == ToHex(Letter.ToString()))
@@ -129,10 +130,13 @@ void AKCD_Sentence::Hit(FName Letter)
 		LettersInstances[CurrentLetterIndex]->ErrorHighlight();
 	}
 
-	
 	CurrentLetterIndex++;
-	LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
-	MoveMarker();
+	
+	if(LettersInstances.Num() > CurrentLetterIndex)
+	{
+		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
+		MoveMarker();
+	}
 	
 }
 
@@ -251,11 +255,15 @@ void AKCD_Sentence::KeyPress(FKey key)
 	{
 		if(CurrentLetterIndex != 0)
 		{
-			LettersInstances[CurrentLetterIndex]->Unhighlight();
+			//Don't try to unhighlight the current letter if we are after the end
+			if(CurrentLetterIndex < LettersInstances.Num())
+				LettersInstances[CurrentLetterIndex]->Unhighlight();
+			
 			CurrentLetterIndex--;
 			LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
 			TotalTypeSentence.LeftChopInline(1);
 			TotalTypeInput.Append("~");
+			MoveMarker();
 		}
 	}
 	else if(key == FKey("Enter"))
@@ -295,7 +303,7 @@ void AKCD_Sentence::SentenceComplete()
 	LettersInstances.Empty();
 
 	TotalTypeSentence = "";
-	StartTime = GetWorld()->GetRealTimeSeconds();
+	HasStarted = false;
 	Mistakes = 0;
 	SetSentence(FetchNewSentence());
 	SentenceNum++;

@@ -71,13 +71,7 @@ private :
 
 	UPROPERTY()
 	int Mistakes = 0;
-
-	// How much time (s) is given to write the sentences
-	UPROPERTY(EditAnywhere)
-	float TimeGiven = 20;
-	// Used to manage time
-	UPROPERTY()
-	FTimerHandle TimerHandle;
+	
 	//If the user has already started typing
 	UPROPERTY()
 	bool HasStarted = false;
