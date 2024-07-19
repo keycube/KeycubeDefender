@@ -93,6 +93,9 @@ private :
 	UFUNCTION(BlueprintCallable)
 	void Hit(FName Letter);
 
+	UFUNCTION(BlueprintCallable)
+	void Backspace();
+	
 	UFUNCTION()
 	void MoveMarker();
 	

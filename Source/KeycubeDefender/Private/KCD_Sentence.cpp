@@ -106,6 +106,8 @@ void AKCD_Sentence::Hit(FName Letter)
 
 	LastInputTime = GetWorld()->GetRealTimeSeconds();
 
+	UE_LOG(LogTemp, Warning, TEXT("In the hit : %s"), *Letter.ToString());
+
 	//Don't try to replace the last typed letter if we are at the end of the sentence
 	if(LettersInstances.Num() <= CurrentLetterIndex)
 	{
@@ -138,6 +140,22 @@ void AKCD_Sentence::Hit(FName Letter)
 		MoveMarker();
 	}
 	
+}
+
+void AKCD_Sentence::Backspace()
+{
+	if(CurrentLetterIndex != 0)
+	{
+		//Don't try to unhighlight the current letter if we are after the end
+		if(CurrentLetterIndex < LettersInstances.Num())
+			LettersInstances[CurrentLetterIndex]->Unhighlight();
+			
+		CurrentLetterIndex--;
+		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
+		TotalTypeSentence.LeftChopInline(1);
+		TotalTypeInput.Append("~");
+		MoveMarker();
+	}
 }
 
 void AKCD_Sentence::MoveMarker()
@@ -247,23 +265,21 @@ AKCD_Letters* AKCD_Sentence::AddChildLetter(FString Letter, FTransform SpawnTran
 
 void AKCD_Sentence::KeyPress(FKey key)
 {
+	//TODO : TEST THE OTHER METHOD
+
+
+	
+	UE_LOG(LogTemp, Warning, TEXT("Key hit : %s"), *key.GetFName().ToString());
+	
 	if (SpecialKeys.Contains(key))
 	{
-		Hit(FName(SpecialKeys[key]));
+		//Hit(FName(SpecialKeys[key]));
 	}
 	else if(key == FKey("Backspace"))
 	{
 		if(CurrentLetterIndex != 0)
 		{
-			//Don't try to unhighlight the current letter if we are after the end
-			if(CurrentLetterIndex < LettersInstances.Num())
-				LettersInstances[CurrentLetterIndex]->Unhighlight();
-			
-			CurrentLetterIndex--;
-			LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
-			TotalTypeSentence.LeftChopInline(1);
-			TotalTypeInput.Append("~");
-			MoveMarker();
+			Backspace();
 		}
 	}
 	else if(key == FKey("Enter"))
@@ -272,7 +288,7 @@ void AKCD_Sentence::KeyPress(FKey key)
 	}
 	else
 	{
-		Hit(key.GetFName());
+		//Hit(key.GetFName());
 	}
 }
 

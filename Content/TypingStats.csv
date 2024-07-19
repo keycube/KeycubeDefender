@@ -163,3 +163,83 @@
 ,,,47.691353,7.102423,2.2,28.8,2.0,,,
 
 
+,Sentence : 0
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,57.763603,5.816812,0.0,29.0,1.0,do you like to shop on Sunday,do you like to shop on sunday,do you like to shop on sunday
+
+
+,Sentence : 1
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,29.992907,7.601797,4.0,20.0,0.0,we park in driveways,we park in driveways,do you like to shop on sundaywe park in the ~~~~driveways
+
+
+,Sentence : 2
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,36.836914,10.750086,7.0,34.0,2.0,beautiful paintings in the gallery,beautidul paintings intthe gallery,do you like to shop on sundaywe park in the ~~~~drivewaysbeautidul paintings a~int the~~~~the gallery
+
+
+,Sentence : 3
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,55.045467,5.45004,1.0,26.0,0.0,we better investigate this,we better investigate this,do you like to shop on sundaywe park in the ~~~~drivewaysbeautidul paintings a~int the~~~~the gallerywe better invest ~igate this
+
+
+,Sentence : 4
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,50.457802,6.183385,2.0,27.0,2.0,the aspirations of a nation,the aspiratonns of a nation,do you like to shop on sundaywe park in the ~~~~drivewaysbeautidul paintings a~int the~~~~the gallerywe better invest ~igate thisthe aspiratonns of a nation
+
+
+,Average
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,46.019337,7.160424,2.8,27.2,1.0,,,
+
+
+,Sentence : 0
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,inf,0.0,0.0,27.0,26.0,companies announce a merger,c,c
+
+
+,Sentence : 0
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,inf,0.0,1.0,27.0,26.0,we dine out on the weekends,d,d
+
+
+,Sentence : 1
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,inf,0.0,0.0,34.0,34.0,that sticker needs to be validated,,d
+
+
+,Sentence : 2
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,inf,0.0,0.0,34.0,34.0,that sticker needs to be validated,,d
+
+
+,Sentence : 3
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,inf,0.0,0.0,34.0,34.0,that sticker needs to be validated,,d
+
+
+,Sentence : 4
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,inf,0.0,0.0,34.0,34.0,that sticker needs to be validated,,d
+
+
+,Average
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,inf,0.0,0.2,32.6,32.4,,,
+
+
+,Sentence : 0
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,32.050598,10.483424,7.0,29.0,7.0,the fourth edition was better,the,[]{":. edition was better,the,[]{":. edition was better
+
+
+,Sentence : 1
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,199.284149,1.866681,0.0,32.0,21.0,interesting observation was made,interesting,the,[]{":. edition was betterinteresting
+
+
+,Sentence : 1
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,31.307381,10.732293,2.0,29.0,21.0,prevailing wind from the east,prevai,,ng,apartments,;;'prevai,,ng
+
+
