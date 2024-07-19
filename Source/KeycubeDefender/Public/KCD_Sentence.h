@@ -129,6 +129,9 @@ private :
 	
 	UPROPERTY()
 	int SentenceNum = 0;
+
+	UPROPERTY(EditAnywhere)
+	int RequiredSentences = 5;
 	
 protected:
 	// Called when the game starts or when spawned

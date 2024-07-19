@@ -301,12 +301,19 @@ void AKCD_Sentence::SentenceComplete()
 	}
 
 	LettersInstances.Empty();
+	
+	SentenceNum++;
+	if(SentenceNum >= RequiredSentences)
+	{
+		TestOver();
+		return;
+	}
 
 	TotalTypeSentence = "";
 	HasStarted = false;
 	Mistakes = 0;
 	SetSentence(FetchNewSentence());
-	SentenceNum++;
+	
 
 	OnSentenceCompleteDelegate.Broadcast();
 }
