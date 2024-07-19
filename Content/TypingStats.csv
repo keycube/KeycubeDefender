@@ -1,130 +1,50 @@
 ,Sentence : 0
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,42.543503,10.436376,2.0,38.0,2.0,did you see that spectacular explosion,did you see that spectuacurlar explosion,true
-
-
-,Sentence : 1
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,26.318281,9.575094,2.0,22.0,2.0,so you think you deser,so you thiunk you descer,false
-
-
-,Average
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,34.430893,10.005735,2.0,30.0,2.0,,,true
-
-
-,Sentence : 0
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,43.583195,6.883387,0.0,26.0,0.0,the cream rises to the top,the cream rises to the top,true
-
-
-,Sentence : 1
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,54.242779,7.964194,0.0,37.0,0.0,the elevator door appears to be stuck,the elevator door appears to be stuck,true
-
-
-,Sentence : 2
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,51.105896,5.165744,2.0,23.0,2.0,just what the doctor or,ljust whaet the doctor or,false
-
-
-,Average
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,49.643955,6.671108,0.666667,28.666667,0.666667,,,true
-
-
-,Sentence : 0
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,42.187149,8.533404,1.0,31.0,1.0,an excellent way to communicate,an excellent way to communiucate,true
-
-
-,Sentence : 1
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,55.025124,7.196713,1.0,34.0,1.0,tell a lie and your nose will grow,tell a lie and your nose wuill grow,true
-
-
-,Sentence : 2
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,39.326759,4.2719,0.0,15.0,0.0,everyone wants ,everyone wants ,false
-
-
-,Average
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,45.513012,6.667339,0.666667,26.666667,0.666667,,,true
-
-
-,Sentence : 0
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,44.586815,7.266722,0.0,28.0,0.0,do not feel too bad about it,do not feel too bad about it,true
-
-
-,Sentence : 1
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,29.697241,10.910104,5.0,28.0,5.0,peering through a small hole,peering trhrouhtgt h a small hole,true
-
-
-,Sentence : 2
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,19.602745,1.836477,0.0,4.0,0.0,be d,be d,false
-
-
-,Average
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,31.295601,6.671101,1.666667,20.0,1.666667,,,true
-
-
-,Sentence : 0
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,31.367105,14.537523,5.0,39.0,15.0,safe to walk the streets in the evening,leftcommandsafe ti uo walk the tstreets in the evening,true
-
-
-,Sentence : 1
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,35.118088,5.467268,2.0,17.0,2.0,everybody looses ,everybofydy looses ,false
-
-
-,Average
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,33.242596,10.002396,3.5,28.0,8.5,,,true
-
-
-,Sentence : 0
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,55.383892,6.933424,0.0,33.0,0.0,sharp cheese keeps the mind sharp,sharp cheese keeps the mind sharp,true
-
-
-,Sentence : 1
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,46.737511,8.472852,1.0,34.0,1.0,interactions between men and women,interactions between men adnd women,true
-
-
-,Sentence : 2
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,52.221531,4.595805,1.0,21.0,1.0,your presentation was, your presentation was,false
-
-
-,Average
-,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Was completed
-,,,51.447643,6.66736,0.666667,29.333333,0.666667,,,true
-
-
-,Sentence : 0
 ,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,,18.995405,19.583684,3.0,32.0,1.0,so you think you deserve a raise,lo you think you deserve a raise,
+,,,40.687637,6.783387,1.0,24.0,1.0,what a lovely red jacket,what a lovelu red jacket,what a lovelu red jacket
 
 
 ,Average
 ,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,,18.995405,19.583684,3.0,32.0,1.0,,,
+,,,40.687637,6.783387,1.0,24.0,1.0,,,
 
 
 ,Sentence : 0
 ,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,,27.224379,18.072038,4.0,42.0,2.0,rent is paid at the beginning of the month,remt is paid at the beginning of the month ,~~~~~~~~~
+,,,45.420174,7.133394,1.0,28.0,1.0,all together in one big pile,all togetyer in one big pile,all togetyer in one big pile
+
+
+,Sentence : 1
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,26.593266,11.281051,0.0,26.0,13.0,this is too much to handle,this is too m,all togetyer in one big pilethis is too m
+
+
+,Sentence : 0
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,46.774277,7.183435,0.0,29.0,0.0,the water was monitored daily,the water was monitored daily,the water was monitored daily
+
+
+,Sentence : 0
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,29.284491,11.883424,2.0,30.0,8.0,if at first you do not succeed,if at first you donoot succeeddddddd,if at first you donoot succeeddddddd
 
 
 ,Average
 ,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,,27.224379,18.072038,4.0,42.0,2.0,,,
+,,,29.284491,11.883424,2.0,30.0,8.0,,,
+
+
+,Sentence : 0
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,51.891354,5.550057,1.0,25.0,1.0,we accept personal checks,we wccept personal checks,we wccept personal checks
+
+
+,Sentence : 0
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,46.627861,8.750133,0.0,35.0,0.0,keep receipts for all your expenses,keep receipts for all your expenses,keep receipts for all your expenses
+
+
+,Average
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,46.627861,8.750133,0.0,35.0,0.0,,,
 
 

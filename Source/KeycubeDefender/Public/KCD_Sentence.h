@@ -11,6 +11,8 @@
 class UBoxComponent;
 class UPaperSpriteComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSentenceComplete);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTestComplete);
 UCLASS()
 class KEYCUBEDEFENDER_API AKCD_Sentence : public AActor
 {
@@ -31,6 +33,7 @@ public:
 	
 
 private :
+	
 	//Var for the letters to spawn
 	UPROPERTY(EditAnywhere ,Category="Variables")
 	TArray<AKCD_Letters*> LettersInstances;
@@ -62,6 +65,9 @@ private :
 	//Time the sentence was started at
 	UPROPERTY()
 	double StartTime = 0;
+	//Time the sentence was started at
+	UPROPERTY()
+	double LastInputTime = 0;
 
 	UPROPERTY()
 	int Mistakes = 0;
@@ -116,13 +122,10 @@ private :
 	void KeyPress(FKey key);
 
 	UFUNCTION(BlueprintCallable)
-	void WordComplete();
+	void SentenceComplete();
 
 	UFUNCTION(BlueprintCallable)
 	FString FetchNewSentence();
-
-	UFUNCTION()
-	void AverageStats();
 	
 	UFUNCTION()
 	void WriteStats(FString RowName, FKCD_TypingStats Stat);
@@ -137,11 +140,21 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
+
+	UPROPERTY(BlueprintAssignable)
+	FOnSentenceComplete OnSentenceCompleteDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnTestComplete OnTestCompleteDelegate;
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Words", meta = (ExposeOnSpawn=true))
 	FString CurrentSentence;
+
+	UFUNCTION(BlueprintCallable)
+	FKCD_TypingStats AverageStats();
 
 };

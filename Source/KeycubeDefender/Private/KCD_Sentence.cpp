@@ -104,6 +104,13 @@ void AKCD_Sentence::Hit(FName Letter)
 	TotalTypeSentence += Letter.ToString().ToLower();
 	TotalTypeInput += Letter.ToString().ToLower();
 
+	LastInputTime = GetWorld()->GetRealTimeSeconds();
+
+	if(LettersInstances.Num() <= CurrentLetterIndex + 1)
+	{
+		return;
+	}
+	
 	if (!HasStarted)
 	{
 		HasStarted = true;
@@ -122,12 +129,10 @@ void AKCD_Sentence::Hit(FName Letter)
 		LettersInstances[CurrentLetterIndex]->ErrorHighlight();
 	}
 
-	if(LettersInstances.Num() > CurrentLetterIndex + 1)
-	{
-		CurrentLetterIndex++;
-		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
-		MoveMarker();
-	}
+	
+	CurrentLetterIndex++;
+	LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
+	MoveMarker();
 	
 }
 
@@ -255,7 +260,7 @@ void AKCD_Sentence::KeyPress(FKey key)
 	}
 	else if(key == FKey("Enter"))
 	{
-		WordComplete();
+		SentenceComplete();
 	}
 	else
 	{
@@ -263,10 +268,9 @@ void AKCD_Sentence::KeyPress(FKey key)
 	}
 }
 
-void AKCD_Sentence::WordComplete()
+void AKCD_Sentence::SentenceComplete()
 {
-	double finishTime = GetWorld()->GetRealTimeSeconds();
-	double completionTime = finishTime - StartTime;
+	const double completionTime = LastInputTime - StartTime;
 
 	FKCD_TypingStats CurrentStat;
 
@@ -295,6 +299,8 @@ void AKCD_Sentence::WordComplete()
 	Mistakes = 0;
 	SetSentence(FetchNewSentence());
 	SentenceNum++;
+
+	OnSentenceCompleteDelegate.Broadcast();
 }
 
 FString AKCD_Sentence::FetchNewSentence()
@@ -335,7 +341,7 @@ FString AKCD_Sentence::FetchNewSentence()
 	return "";
 }
 
-void AKCD_Sentence::AverageStats()
+FKCD_TypingStats AKCD_Sentence::AverageStats()
 {
 	FKCD_TypingStats AverageStat;
 
@@ -359,7 +365,7 @@ void AKCD_Sentence::AverageStats()
 	AverageStat.WasAltTarget = false;
 
 
-	WriteStats("Average", AverageStat);
+	return AverageStat;
 }
 
 void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
@@ -407,9 +413,13 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 
 void AKCD_Sentence::TestOver()
 {
-	AverageStats();
+	OnTestCompleteDelegate.Broadcast();
+	
+	WriteStats("Average", AverageStats());
 	//TODO : Show the UI and disable the input
 
+	
+	
 	UE_LOG(LogTemp, Warning, TEXT("Test is over"));
 	this->Destroy();
 }
