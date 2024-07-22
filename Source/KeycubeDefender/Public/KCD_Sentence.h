@@ -116,9 +116,6 @@ private :
 	AKCD_Letters* AddChildLetter(FString Letter, FTransform SpawnTransform);
 
 	UFUNCTION(BlueprintCallable)
-	void KeyPress(FKey key);
-
-	UFUNCTION(BlueprintCallable)
 	void SentenceComplete();
 
 	UFUNCTION(BlueprintCallable)

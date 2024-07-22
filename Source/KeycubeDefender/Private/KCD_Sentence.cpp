@@ -31,13 +31,6 @@ void AKCD_Sentence::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//Get the current player controller
-	AKCD_PlayerController* PlayerController = Cast<AKCD_PlayerController>(UGameplayStatics::GetPlayerController(
-		this, 0));
-
-	//Subscribes to the delegate for then a key is pressed and when it's released
-	PlayerController->KeyPressDelegate.AddDynamic(this, &AKCD_Sentence::KeyPress);
-
 	SetSentence(FetchNewSentence());
 	//SetSentence("This is a test sentence, you are not supposed to see this");
 }
@@ -261,35 +254,6 @@ AKCD_Letters* AKCD_Sentence::AddChildLetter(FString Letter, FTransform SpawnTran
 	}
 
 	return letterObject;
-}
-
-void AKCD_Sentence::KeyPress(FKey key)
-{
-	//TODO : TEST THE OTHER METHOD
-
-
-	
-	UE_LOG(LogTemp, Warning, TEXT("Key hit : %s"), *key.GetFName().ToString());
-	
-	if (SpecialKeys.Contains(key))
-	{
-		//Hit(FName(SpecialKeys[key]));
-	}
-	else if(key == FKey("Backspace"))
-	{
-		if(CurrentLetterIndex != 0)
-		{
-			Backspace();
-		}
-	}
-	else if(key == FKey("Enter"))
-	{
-		SentenceComplete();
-	}
-	else
-	{
-		//Hit(key.GetFName());
-	}
 }
 
 void AKCD_Sentence::SentenceComplete()
