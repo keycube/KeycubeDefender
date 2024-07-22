@@ -288,3 +288,63 @@
 ,,,47.602989,7.976751,1.8,32.4,0.6,,,
 
 
+,Sentence : 0
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,45.740707,7.083406,0.0,28.0,0.0,apartments are too expensive,apartments are too expensive,apartments are too expensive
+
+
+,Sentence : 1
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,49.783707,7.713367,1.0,33.0,0.0,everyone wants to win the lottery,everyone wants to win the lottery,apartments are too expensiveeveryi~one wants to win the lottery
+
+
+,Sentence : 2
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,48.788071,8.116738,1.0,34.0,0.0,neither a borrower nor a lender be,neither a borrower nor a lender be,apartments are too expensiveeveryi~one wants to win the lotteryb~neither a borrower nor a lender be
+
+
+,Sentence : 3
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,42.856785,4.200035,0.0,16.0,0.0,fish are jumping,fish are jumping,apartments are too expensiveeveryi~one wants to win the lotteryb~neither a borrower nor a lender befish are jumping
+
+
+,Sentence : 4
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,46.451073,7.75009,1.0,31.0,0.0,the king sends you to the tower,the king sends you to the tower,apartments are too expensiveeveryi~one wants to win the lotteryb~neither a borrower nor a lender befish are jumpingthe king sends you to thee~ tower
+
+
+,Average
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,46.724068,6.972727,0.6,28.4,0.0,,,
+
+
+,Sentence : 0
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,53.813999,6.466719,1.0,30.0,0.0,get aboard the ship is leaving,get aboard the ship is leaving,get av~board the ship is leaving
+
+
+,Sentence : 1
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,39.351852,10.368,4.0,35.0,2.0,a tumor is OK provided it is benign,a tumor is ok provided it is benign,get av~board the ship is leavinga tumor s~is ok provided it is ge~~veni~~~~benin~gn
+
+
+,Sentence : 2
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,66.80349,4.850046,0.0,28.0,0.0,learn to walk before you run,learn to walk before you run,get av~board the ship is leavinga tumor s~is ok provided it is ge~~veni~~~~benin~gnlearn to walk before you run
+
+
+,Sentence : 3
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,46.681633,7.968873,1.0,32.0,0.0,only an idiot would lie in court,only an idiot would lie in court,get av~board the ship is leavinga tumor s~is ok provided it is ge~~veni~~~~benin~gnlearn to walk before you runonlu~y an idiot would lie in court
+
+
+,Sentence : 4
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,49.810905,5.300044,1.0,23.0,0.0,we are having spaghetti,we are having spaghetti,get av~board the ship is leavinga tumor s~is ok provided it is ge~~veni~~~~benin~gnlearn to walk before you runonlu~y an idiot would lie in courtwe are having spagge~~hetti
+
+
+,Average
+,,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,,51.292377,6.990736,1.4,29.6,0.4,,,
+
+
