@@ -93,13 +93,15 @@ private :
 	UFUNCTION(BlueprintCallable)
 	void Hit(FName Letter);
 
+	//Deletes the last character entered
 	UFUNCTION(BlueprintCallable)
 	void Backspace();
-	
+
+	//Moves the letter indicator to the current letter
 	UFUNCTION()
 	void MoveMarker();
 	
-	//Set the word associated with the ship
+	//Distance between the wanted sentence and what was written
 	UFUNCTION(BlueprintCallable)
 	int EditDistance();
 
@@ -107,23 +109,27 @@ private :
 	UFUNCTION(BlueprintCallable)
 	FString ToHex(FString letter);
 
-	//Transforms the letter to hex code
+	//Divides the sentence into individual words
 	UFUNCTION(BlueprintCallable)
 	TArray<FString> WordsFromString();
 
-	//Transforms the letter to hex code
+	//Spawns the letters sprites as child objects
 	UFUNCTION(BlueprintCallable)
 	AKCD_Letters* AddChildLetter(FString Letter, FTransform SpawnTransform);
 
+	//Confirms the completion of the sentence and cleans up variables for the next one
 	UFUNCTION(BlueprintCallable)
 	void SentenceComplete();
 
+	//Fetches a random sentence in the sentence file
 	UFUNCTION(BlueprintCallable)
 	FString FetchNewSentence();
-	
+
+	//Writes the specified stat to the stat file
 	UFUNCTION()
 	void WriteStats(FString RowName, FKCD_TypingStats Stat);
-	
+
+	//Finishes up the test
 	UFUNCTION()
 	void TestOver();
 	

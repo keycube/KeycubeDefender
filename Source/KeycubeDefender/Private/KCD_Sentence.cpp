@@ -97,9 +97,8 @@ void AKCD_Sentence::Hit(FName Letter)
 	TotalTypeSentence += Letter.ToString().ToLower();
 	TotalTypeInput += Letter.ToString().ToLower();
 
+	//Keep the moment when the last keystroke is done
 	LastInputTime = GetWorld()->GetRealTimeSeconds();
-
-	UE_LOG(LogTemp, Warning, TEXT("In the hit : %s"), *Letter.ToString());
 
 	//Don't try to replace the last typed letter if we are at the end of the sentence
 	if(LettersInstances.Num() <= CurrentLetterIndex)
@@ -108,13 +107,15 @@ void AKCD_Sentence::Hit(FName Letter)
 		return;
 	}
 	
-	
+	//Start the timer if it is the 1st keystroke of the sentence
 	if (!HasStarted)
 	{
 		HasStarted = true;
 		StartTime = GetWorld()->GetRealTimeSeconds();
 	}
 
+	//If the HEX value of the letters match, we give positive feedback
+	//If not, we add a mistake and give negative feedback
 	if (LettersInstances[CurrentLetterIndex]->CurrentLetter == ToHex(Letter.ToString()))
 	{
 		LettersInstances[CurrentLetterIndex]->Hide();
@@ -125,8 +126,10 @@ void AKCD_Sentence::Hit(FName Letter)
 		LettersInstances[CurrentLetterIndex]->ErrorHighlight();
 	}
 
+	//Advance the letter to the next one
 	CurrentLetterIndex++;
-	
+
+	//If we aren't at the last letter, we target the next letter
 	if(LettersInstances.Num() > CurrentLetterIndex)
 	{
 		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
@@ -137,6 +140,7 @@ void AKCD_Sentence::Hit(FName Letter)
 
 void AKCD_Sentence::Backspace()
 {
+	//Check if we are at the beginning of the sentence
 	if(CurrentLetterIndex != 0)
 	{
 		//Don't try to unhighlight the current letter if we are after the end
@@ -153,14 +157,17 @@ void AKCD_Sentence::Backspace()
 
 void AKCD_Sentence::MoveMarker()
 {
+	//Get the position of the targeted letter and give is an offset
 	FVector markerLocation = LettersInstances[CurrentLetterIndex]->GetTransform().GetLocation();
-	markerLocation.Z = markerLocation.Z - (Lettersize / 2);
+	markerLocation.Z = markerLocation.Z - (Lettersize / 1.5);
 
+	//Move the marker to the location
 	LetterMarker->SetWorldLocation(markerLocation);
 }
 
 int AKCD_Sentence::EditDistance()
 {
+	//Get the lenght of both what is written and what we wanted
 	int m = GetNum(CurrentSentence);
 	int n = GetNum(TotalTypeSentence);
 
@@ -168,12 +175,13 @@ int AKCD_Sentence::EditDistance()
 	std::string t = TCHAR_TO_UTF8(*TotalTypeSentence);
 
 	std::vector<int> prev(n + 1, 0), curr(n + 1, 0);
-
+	
 	for (int j = 0; j <= n; j++)
 	{
 		prev[j] = j;
 	}
 
+	//For every letters, we compare and calculate the minimum modification (add, remove, change) required for them to match
 	for (int i = 1; i <= m; i++)
 	{
 		curr[0] = i;
@@ -220,6 +228,8 @@ TArray<FString> AKCD_Sentence::WordsFromString()
 	std::string sentence = TCHAR_TO_UTF8(*CurrentSentence);
 	size_t pos = 0;
 	std::string word;
+	
+	//Find the spaces and divides the sentence
 	while ((pos = sentence.find(" ")) != std::string::npos)
 	{
 		word = sentence.substr(0, pos);
@@ -258,8 +268,10 @@ AKCD_Letters* AKCD_Sentence::AddChildLetter(FString Letter, FTransform SpawnTran
 
 void AKCD_Sentence::SentenceComplete()
 {
+	//Get the sentence completion time
 	const double completionTime = LastInputTime - StartTime;
 
+	//Create a stat for the sentence
 	FKCD_TypingStats CurrentStat;
 
 	CurrentStat.TimeTaken = completionTime;
@@ -273,15 +285,22 @@ void AKCD_Sentence::SentenceComplete()
 
 	Stats.Add(CurrentStat);
 
+	//Write the current sentence's stat to the file
 	WriteStats(("Sentence : " + FString::FromInt(SentenceNum)), CurrentStat);
-	
+
+	//Cleans up the sentence variables
 	for (auto LettersInstance : LettersInstances)
 	{
 		LettersInstance->Destroy();
 	}
-
 	LettersInstances.Empty();
-	
+	TotalTypeSentence = "";
+	TotalTypeInput = "";
+	HasStarted = false;
+	Mistakes = 0;
+
+	//Advances the sentence to the next one
+	//If it was the last sentence, launches the end of the test
 	SentenceNum++;
 	if(SentenceNum >= RequiredSentences)
 	{
@@ -289,12 +308,9 @@ void AKCD_Sentence::SentenceComplete()
 		return;
 	}
 
-	TotalTypeSentence = "";
-	HasStarted = false;
-	Mistakes = 0;
+	//Set the new sentence
 	SetSentence(FetchNewSentence());
 	
-
 	OnSentenceCompleteDelegate.Broadcast();
 }
 
@@ -312,6 +328,7 @@ FString AKCD_Sentence::FetchNewSentence()
 	std::ifstream myfile(path);
 	if (myfile.is_open())
 	{
+		//Generates a random number
 		int x = 0;
 		srand(time(0));
 		int randomLine = rand() % 501;
@@ -319,6 +336,7 @@ FString AKCD_Sentence::FetchNewSentence()
 		//Read all the lines of the file
 		while (getline(myfile, line))
 		{
+			//if we are at the random number, we close the file and return the sentence
 			if (x == randomLine)
 			{
 				myfile.close();
@@ -330,7 +348,7 @@ FString AKCD_Sentence::FetchNewSentence()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Unable to open score file for read"));
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open sentence file for read"));
 	}
 
 	return "";
@@ -340,7 +358,7 @@ FKCD_TypingStats AKCD_Sentence::AverageStats()
 {
 	FKCD_TypingStats AverageStat;
 
-	//Makes an average of all main target stats
+	//Makes an average of all the stats
 	for (auto TypeStat : Stats)
 	{
 		AverageStat.Mistakes += TypeStat.Mistakes;
