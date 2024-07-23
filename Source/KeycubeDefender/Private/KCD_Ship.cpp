@@ -121,7 +121,7 @@ void AKCD_Ship::SpawnLetters()
 	//Base transform of the letters, used to spawn the letter in local position
 	FTransform BackgroundTransform{
 		FRotator{0.0f, -90.0f, 0.0f},                 // Rotation
-		FVector{0.0f, 0, 0.5},  // Translation
+		FVector{0.0f, 0, 3},  // Translation
 		FVector{(2.0f * CurrentWord.Len()) + 1.5f, 2.5f, 2.5f}   // Scale
 	};
 
@@ -262,7 +262,8 @@ void AKCD_Ship::ShipDestroyed()
 
 void AKCD_Ship::SetShipSpeed(float Modifier)
 {
-	ProjectileMovement->InitialSpeed = BaseSpeed * Modifier;
+	//ProjectileMovement->InitialSpeed = BaseSpeed * Modifier;
+	ProjectileMovement->InitialSpeed = 0;
 }
 
 void AKCD_Ship::SetMainTarget()

@@ -424,7 +424,7 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 		myfile << std::quoted(TCHAR_TO_UTF8(*Stat.WantedSentence));
 		myfile << ",";
 		myfile << std::quoted(TCHAR_TO_UTF8(*Stat.TypedSentence));
-		myfile << ",";w
+		myfile << ",";
 		myfile << std::quoted(TCHAR_TO_UTF8(*Stat.Keystrokes));
 		//Skip lines for readability
 		myfile << "\n\n";
