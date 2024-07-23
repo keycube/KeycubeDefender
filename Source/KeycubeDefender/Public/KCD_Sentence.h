@@ -58,9 +58,6 @@ private :
 
 	UPROPERTY(EditAnywhere, Category="Words")
 	FString TotalTypeInput;
-
-	UPROPERTY(EditAnywhere, Category="Words")
-	TMap<FKey, FString> SpecialKeys;
 	
 	//Time the sentence was started at
 	UPROPERTY()
@@ -150,9 +147,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnTestComplete OnTestCompleteDelegate;
-	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Words", meta = (ExposeOnSpawn=true))
 	FString CurrentSentence;

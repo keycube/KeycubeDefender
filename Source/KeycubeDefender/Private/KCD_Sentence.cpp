@@ -14,7 +14,7 @@
 AKCD_Sentence::AKCD_Sentence()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	ActorCenter = CreateDefaultSubobject<USceneComponent>("Actor center");
 	RootComponent = ActorCenter;
@@ -333,6 +333,17 @@ FString AKCD_Sentence::FetchNewSentence()
 		srand(time(0));
 		int randomLine = rand() % 501;
 
+		while(SentencesIndexUsed.Contains(randomLine))
+		{
+			randomLine++;
+			if(randomLine >= 501)
+			{
+				randomLine = 0;
+			}
+		}
+		
+		SentencesIndexUsed.AddUnique(randomLine);
+
 		//Read all the lines of the file
 		while (getline(myfile, line))
 		{
@@ -435,11 +446,4 @@ void AKCD_Sentence::TestOver()
 	
 	UE_LOG(LogTemp, Warning, TEXT("Test is over"));
 	this->Destroy();
-}
-
-
-// Called every frame
-void AKCD_Sentence::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
