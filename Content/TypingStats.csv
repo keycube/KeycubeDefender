@@ -119,3 +119,27 @@ user_$o!85BP9jPFhIBaBnP1%
 ,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
 ,,57.019737,5.126727,0.8,25.2,0.0,"","",""
 
+,Sentence : 0
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,14.316702,25.983639,0.0,32.0,0.0,"only an idiot would lie in court","only an idiot would lie in court","only an idiot would lie in court"
+
+,Sentence : 1
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,8.728311,37.120584,10.0,28.0,6.0,"the early bird gets the worm","the early bird gets the worm    rm","the earli~y bird ta~~gets the worm      ~~o~rm"
+
+,Sentence : 2
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,15.182148,24.502462,2.0,32.0,0.0,"coalition governments never work","coalition governments never work","coalition goverme~~nments never work"
+
+,Sentence : 3
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,16.225061,23.66709,2.0,33.0,0.0,"vote according to your conscience","vote according to your conscience","vote according to youur~~r conscience"
+
+,Sentence : 4
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,18.382818,19.583503,0.0,31.0,0.0,"an excellent way to communicate","an excellent way to communicate","an excellent way to communicate"
+
+,Average
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,14.567009,26.171455,2.8,31.2,1.2,"","",""
+
