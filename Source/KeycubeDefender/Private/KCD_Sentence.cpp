@@ -420,6 +420,7 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 		myfile << ",,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes\n";
 		//Data
 		myfile << ResultString + ",";
+		//Quote the sentences to avoid csv dividing them with used symbols
 		myfile << std::quoted(TCHAR_TO_UTF8(*Stat.WantedSentence));
 		myfile << ",";
 		myfile << std::quoted(TCHAR_TO_UTF8(*Stat.TypedSentence));
