@@ -405,24 +405,26 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 	{
 		//Create an FString with all results
 		FString ResultFString;
-		ResultFString = ",,," + FString::SanitizeFloat(Stat.Score) + "," +
+		ResultFString = ",," + FString::SanitizeFloat(Stat.Score) + "," +
 			FString::SanitizeFloat(Stat.TimeTaken) + "," +
 			FString::SanitizeFloat(Stat.Mistakes) + "," +
 			FString::SanitizeFloat(Stat.WordSize) + "," +
-			FString::SanitizeFloat(Stat.WordDistance) + "," +
-			Stat.WantedSentence + "," +
-			Stat.TypedSentence + "," +
-			Stat.Keystrokes;
+			FString::SanitizeFloat(Stat.WordDistance);
 
 		//Convert the FString into a std::string
 		std::string ResultString = std::string(TCHAR_TO_UTF8(*ResultFString));
 
 		//RowName
-		myfile << std::string((TCHAR_TO_UTF8(*("," + RowName + "\n"))));
+		myfile << std::string(TCHAR_TO_UTF8(*("," + RowName + "\n")));
 		//Titles
-		myfile << ",,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes\n";
+		myfile << ",,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes\n";
 		//Data
-		myfile << ResultString + "\n";
+		myfile << ResultString + ",";
+		myfile << std::quoted(TCHAR_TO_UTF8(*Stat.WantedSentence));
+		myfile << ",";
+		myfile << std::quoted(TCHAR_TO_UTF8(*Stat.TypedSentence));
+		myfile << ",";
+		myfile << std::quoted(TCHAR_TO_UTF8(*Stat.Keystrokes));
 		//Skip lines for readability
 		myfile << "\n\n";
 
