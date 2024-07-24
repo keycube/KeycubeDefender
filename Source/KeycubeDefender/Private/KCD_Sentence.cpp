@@ -322,7 +322,7 @@ FString AKCD_Sentence::FetchNewSentence()
 	//Set the relative path where the file is saved and the name of the file
 	FString RelativePath = FPaths::ProjectContentDir();
 	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
-		+ std::string("Game/DataStrucs/phrases2.txt")));
+		+ std::string("phrases2.txt")));
 
 	//Try to open the file we want to read from.
 	std::ifstream myfile(path);

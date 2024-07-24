@@ -143,3 +143,39 @@ user_$o!85BP9jPFhIBaBnP1%
 ,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
 ,,14.567009,26.171455,2.8,31.2,1.2,"","",""
 
+,Sentence : 0
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,47.614834,8.316736,2.0,34.0,0.0,"the pen is mightier than the sword","the pen is mightier than the sword","the pen si ~~~is mightier than the sword"
+
+,Sentence : 1
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,54.264023,7.518794,0.0,35.0,0.0,"the punishment should fit the crime","the punishment should fit the crime","the punishment should fit the crime"
+
+,Sentence : 2
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,45.956406,7.833511,3.0,31.0,0.0,"never mix religion and politics","never mix religion and politics","nne~~ever m,~ix religion and politics"
+
+,Sentence : 3
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,46.183525,10.133483,1.0,40.0,0.0,"burglars never leave their business card","burglars never leave their business card","burglars never leave their business cart~d"
+
+,Sentence : 4
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,41.321419,9.583408,4.0,34.0,1.0,"that sticker needs to be validated","that sticker needs to be validate","that sticker needs a~to be s~vva~~alidate"
+
+,Average
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,47.068043,8.677186,2.0,34.8,0.2,"","",""
+
+,Sentence : 0
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,47.195271,7.119358,0.0,29.0,0.0,"video camera with a zoom lens","video camera with a zoom lens","video camera with a zoom lens"
+
+,Sentence : 1
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,65.62516,2.925707,0.0,17.0,0.0,"rain rain go away","rain rain go away","rain rain go away"
+
+,Sentence : 2
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,58.492096,5.334054,0.0,27.0,0.0,"the union will go on strike","the union will go on strike","the union will go on strike"
+
