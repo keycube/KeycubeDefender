@@ -88,7 +88,7 @@ private :
 
 	//Tries to type the next letter. Returns if the hit was successful
 	UFUNCTION(BlueprintCallable)
-	void Hit(FName Letter);
+	bool Hit(FName Letter);
 
 	//Deletes the last character entered
 	UFUNCTION(BlueprintCallable)
@@ -153,5 +153,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FKCD_TypingStats AverageStats();
+
+	UFUNCTION(BlueprintCallable)
+	int GetCurrentIndex(){return CurrentLetterIndex;}
 
 };

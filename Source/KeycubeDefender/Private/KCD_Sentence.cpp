@@ -92,8 +92,10 @@ void AKCD_Sentence::SpawnLetters()
 	LettersInstances.Pop();
 }
 
-void AKCD_Sentence::Hit(FName Letter)
+bool AKCD_Sentence::Hit(FName Letter)
 {
+	bool WasGood = false;
+	
 	TotalTypeSentence += Letter.ToString().ToLower();
 	TotalTypeInput += Letter.ToString().ToLower();
 
@@ -104,7 +106,7 @@ void AKCD_Sentence::Hit(FName Letter)
 	if(LettersInstances.Num() <= CurrentLetterIndex)
 	{
 		Mistakes++;
-		return;
+		return false;
 	}
 	
 	//Start the timer if it is the 1st keystroke of the sentence
@@ -119,11 +121,13 @@ void AKCD_Sentence::Hit(FName Letter)
 	if (LettersInstances[CurrentLetterIndex]->CurrentLetter == ToHex(Letter.ToString()))
 	{
 		LettersInstances[CurrentLetterIndex]->Hide();
+		WasGood = true;
 	}
 	else
 	{
 		Mistakes++;
 		LettersInstances[CurrentLetterIndex]->ErrorHighlight();
+		WasGood = false;
 	}
 
 	//Advance the letter to the next one
@@ -135,7 +139,7 @@ void AKCD_Sentence::Hit(FName Letter)
 		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
 		MoveMarker();
 	}
-	
+	return WasGood;
 }
 
 void AKCD_Sentence::Backspace()
