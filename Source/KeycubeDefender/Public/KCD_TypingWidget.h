@@ -10,6 +10,16 @@
 /**
  * 
  */
+
+USTRUCT()
+struct FLetter
+{
+	GENERATED_BODY()
+
+	bool WasGood;
+	FName Letter;
+};
+
 UCLASS()
 class KEYCUBEDEFENDER_API UKCD_TypingWidget : public UUserWidget
 {
@@ -32,6 +42,12 @@ protected:
 	void LetterFeedback(bool wasRight);
 
 	UFUNCTION(BlueprintCallable)
+	FString RemoveEndMarker(int Index, FString Sentence);
+
+	UFUNCTION(BlueprintCallable)
+	void RemoveBeginningMarker(int Index);
+	
+	UFUNCTION(BlueprintCallable)
 	FString RefreshSentence();
 
 private:
@@ -44,5 +60,10 @@ private:
 	FString STYLE_WRONG = "<Wrong>";
 	UPROPERTY()
 	FString STYLE_END = "</>";
-	
+
+	UFUNCTION(BlueprintCallable)
+	FString GetMarker(bool wasRight)
+	{
+		return (wasRight) ? STYLE_RIGHT : STYLE_WRONG;
+	}
 };

@@ -10,28 +10,62 @@ void UKCD_TypingWidget::NewSentence()
 
 void UKCD_TypingWidget::LetterFeedback(bool wasRight)
 {
-	int index = (SentenceInstance->GetCurrentIndex() - 1) + IndexOffset;
-
-	//Cut the string where the letter is
-	FString begining = ModifiedSentence.Left(index);
-	FString end = ModifiedSentence.Mid(index);
-
-	if(wasRight)
+	if(SentenceInstance->GetCurrentIndex() >= SentenceInstance->CurrentSentence.Len())
 	{
-		begining.Append(STYLE_RIGHT);
-		IndexOffset += STYLE_RIGHT.Len();
-	} else
+		UE_LOG(LogTemp, Warning, TEXT("End of the sentence"));
+		return;
+	}
+	
+	int index = (SentenceInstance->GetCurrentIndex()) + IndexOffset;
+	
+	int checkedIndex = SentenceInstance->GetCurrentIndex();
+	
+	if(checkedIndex > 0)
 	{
-		begining.Append(STYLE_WRONG);
-		IndexOffset += STYLE_WRONG.Len();
+		if(wasRight == LetterAssociation[checkedIndex - 1])
+		{
+			std::string tempString = std::string(TCHAR_TO_UTF8(*RemoveEndMarker(index, ModifiedSentence)));
+			ModifiedSentence = tempString.c_str();
+			tempString.insert(index - 2, TCHAR_TO_UTF8(*STYLE_END));
+			ModifiedSentence = tempString.c_str();
+			
+			LetterAssociation.Add(checkedIndex, wasRight);
+
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *ModifiedSentence);
+			
+			return;
+		}
 	}
 
-	end.InsertAt(1, STYLE_END);
-	IndexOffset += STYLE_END.Len();
+	std::string convertedString = TCHAR_TO_UTF8(*ModifiedSentence);
 
-	ModifiedSentence = begining + end;
+	FString Marker = GetMarker(wasRight);
+
+	convertedString.insert(index + 1, TCHAR_TO_UTF8(*STYLE_END));
+	convertedString.insert(index, TCHAR_TO_UTF8(*Marker));
+
+	IndexOffset += Marker.Len() + STYLE_END.Len();
+
+	ModifiedSentence = convertedString.c_str();
 
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *ModifiedSentence);
+
+	LetterAssociation.Add(checkedIndex, wasRight);
+	
+}
+
+FString UKCD_TypingWidget::RemoveEndMarker(int Index, FString Sentence)
+{
+	std::string convertedString = TCHAR_TO_UTF8(*Sentence);
+
+	convertedString.erase(Index - 3, 3);
+
+	FString Temp = convertedString.c_str();
+	return Temp;
+}
+
+void UKCD_TypingWidget::RemoveBeginningMarker(int Index)
+{
 	
 }
 
