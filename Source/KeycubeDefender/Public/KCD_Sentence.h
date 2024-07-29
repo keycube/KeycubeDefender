@@ -157,4 +157,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int GetCurrentIndex(){return CurrentLetterIndex;}
 
+	UFUNCTION(BlueprintCallable)
+	void AdvanceIndex();
+	
+
 };

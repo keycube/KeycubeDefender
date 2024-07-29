@@ -129,16 +129,7 @@ bool AKCD_Sentence::Hit(FName Letter)
 		LettersInstances[CurrentLetterIndex]->ErrorHighlight();
 		WasGood = false;
 	}
-
-	//Advance the letter to the next one
-	CurrentLetterIndex++;
-
-	//If we aren't at the last letter, we target the next letter
-	if(LettersInstances.Num() > CurrentLetterIndex)
-	{
-		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
-		MoveMarker();
-	}
+	
 	return WasGood;
 }
 
@@ -394,6 +385,19 @@ FKCD_TypingStats AKCD_Sentence::AverageStats()
 
 
 	return AverageStat;
+}
+
+void AKCD_Sentence::AdvanceIndex()
+{
+	//Advance the letter to the next one
+	CurrentLetterIndex++;
+
+	//If we aren't at the last letter, we target the next letter
+	if(LettersInstances.Num() > CurrentLetterIndex)
+	{
+		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
+		MoveMarker();
+	}
 }
 
 void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
