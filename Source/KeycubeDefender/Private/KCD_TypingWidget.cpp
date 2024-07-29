@@ -25,7 +25,6 @@ void UKCD_TypingWidget::LetterFeedback(bool wasRight)
 		if(wasRight == LetterAssociation[checkedIndex - 1])
 		{
 			std::string tempString = std::string(TCHAR_TO_UTF8(*RemoveEndMarker(index, ModifiedSentence)));
-			ModifiedSentence = tempString.c_str();
 			tempString.insert(index - 2, TCHAR_TO_UTF8(*STYLE_END));
 			ModifiedSentence = tempString.c_str();
 			
@@ -54,6 +53,37 @@ void UKCD_TypingWidget::LetterFeedback(bool wasRight)
 	
 }
 
+void UKCD_TypingWidget::BackspaceFeedback()
+{
+	int index = (SentenceInstance->GetCurrentIndex()) + IndexOffset;
+	
+	int checkedIndex = SentenceInstance->GetCurrentIndex() - 1;
+	
+	if(checkedIndex <= 0)
+	{
+		return;
+	}
+
+	if(LetterAssociation[checkedIndex] == LetterAssociation[checkedIndex - 1])
+	{
+		//No need to remove from the global index since we add the end tag back
+		std::string tempString = std::string(TCHAR_TO_UTF8(*RemoveEndMarker(index, ModifiedSentence)));
+		index -= STYLE_END.Len();
+		tempString.insert(index - 1, TCHAR_TO_UTF8(*STYLE_END));
+		ModifiedSentence = tempString.c_str();
+	} else
+	{
+		std::string tempString = std::string(TCHAR_TO_UTF8(*RemoveEndMarker(index, ModifiedSentence)));
+		IndexOffset -= STYLE_END.Len();
+		tempString = std::string(TCHAR_TO_UTF8(*RemoveBeginningMarker(index, ModifiedSentence)));
+		IndexOffset -= STYLE_RIGHT.Len();
+		ModifiedSentence = tempString.c_str();
+	}
+	
+
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *ModifiedSentence);
+}
+
 FString UKCD_TypingWidget::RemoveEndMarker(int Index, FString Sentence)
 {
 	std::string convertedString = TCHAR_TO_UTF8(*Sentence);
@@ -64,9 +94,14 @@ FString UKCD_TypingWidget::RemoveEndMarker(int Index, FString Sentence)
 	return Temp;
 }
 
-void UKCD_TypingWidget::RemoveBeginningMarker(int Index)
+FString UKCD_TypingWidget::RemoveBeginningMarker(int Index, FString Sentence)
 {
-	
+	std::string convertedString = TCHAR_TO_UTF8(*Sentence);
+
+	convertedString.erase(Index - 8, 7);
+
+	FString Temp = convertedString.c_str();
+	return Temp;
 }
 
 FString UKCD_TypingWidget::RefreshSentence()

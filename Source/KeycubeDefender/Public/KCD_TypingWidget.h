@@ -42,10 +42,13 @@ protected:
 	void LetterFeedback(bool wasRight);
 
 	UFUNCTION(BlueprintCallable)
+	void BackspaceFeedback();
+
+	UFUNCTION(BlueprintCallable)
 	FString RemoveEndMarker(int Index, FString Sentence);
 
 	UFUNCTION(BlueprintCallable)
-	void RemoveBeginningMarker(int Index);
+	FString RemoveBeginningMarker(int Index, FString Sentence);
 	
 	UFUNCTION(BlueprintCallable)
 	FString RefreshSentence();
