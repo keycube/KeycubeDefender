@@ -21,6 +21,11 @@ void AKVA_CubeVisual::BeginPlay()
 
 void AKVA_CubeVisual::KeyPressed(FKey KeyToPress)
 {
+	if(!Keys.Contains(KeyToPress))
+	{
+		return;
+	}
+	
 	AKVA_Keys* KeyPressed = Keys.FindRef(KeyToPress);
 	KeyPressed->KeyPressed_Keys();
 }
