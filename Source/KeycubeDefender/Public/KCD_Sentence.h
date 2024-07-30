@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "KCD_Letters.h"
 #include "KCD_TypingStats.h"
+#include "KVA_CubeVisual.h"
 #include "GameFramework/Actor.h"
 #include "KCD_Sentence.generated.h"
 
@@ -137,6 +138,11 @@ private :
 	int RequiredSentences = 5;
 	
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AKVA_CubeVisual* CubeInstance;
+	
+	UFUNCTION()
+	void KeyPress(FKey KeyParam);
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

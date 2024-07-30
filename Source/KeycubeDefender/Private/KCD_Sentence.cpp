@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iomanip>
 
+#include "KCD_GameMode.h"
 #include "KCD_PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetStringLibrary.h"
@@ -26,11 +27,24 @@ AKCD_Sentence::AKCD_Sentence()
 	LetterMarker->SetupAttachment(RootComponent);
 }
 
+void AKCD_Sentence::KeyPress(FKey KeyParam)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Event called"));
+	CubeInstance->KeyPressed(KeyParam);
+}
+
 // Called when the game starts or when spawned
 void AKCD_Sentence::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Get the current player controller
+	AKCD_PlayerController* PlayerController = Cast<AKCD_PlayerController>(UGameplayStatics::GetPlayerController(
+		this, 0));
+
+	//Subscribes to the delegate for then a key is pressed and when it's released
+	PlayerController->KeyPressDelegate.AddDynamic(this, &AKCD_Sentence::KeyPress);
+	
 	SetSentence(FetchNewSentence());
 	//SetSentence("This is a test sentence, you are not supposed to see this");
 }

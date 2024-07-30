@@ -183,3 +183,31 @@ user_$o!85BP9jPFhIBaBnP1%
 ,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
 ,,inf,0.0,0.0,29.0,28.0,"I listen to the tape everyday","i","i"
 
+,Sentence : 0
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,35.501503,12.506513,0.0,38.0,0.0,"salesmen must make their monthly quota","salesmen must make their monthly quota","salesmen must make their monthly quota"
+
+,Sentence : 1
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,40.254677,10.433571,13.0,36.0,33.0,"a much higher risk of getting cancer","asdwawdwasdwa","d~a~asdwawdwasdwa"
+
+,Sentence : 2
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,150.907867,2.703636,11.0,35.0,30.0,"everybody looses in custody battles","dwasdwasdwa","dwasdwasdwa"
+
+,Sentence : 3
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,1178.017578,0.183359,3.0,19.0,19.0,"time to go shopping","dwa","dwa"
+
+,Sentence : 4
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,1495.372681,0.216668,3.0,28.0,26.0,"three two one zero blast off","dwa","dwa"
+
+,Average
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,580.010864,5.208749,6.0,31.2,21.6,"","",""
+
+,Sentence : 0
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,46.451015,5.166733,0.0,21.0,0.0,"he called seven times","he called seven times","he called seven times"
+
