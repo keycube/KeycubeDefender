@@ -75,7 +75,8 @@ void UKCD_TypingWidget::BackspaceFeedback()
 	{
 		std::string tempString = std::string(TCHAR_TO_UTF8(*RemoveEndMarker(index, ModifiedSentence)));
 		IndexOffset -= STYLE_END.Len();
-		tempString = std::string(TCHAR_TO_UTF8(*RemoveBeginningMarker(index, ModifiedSentence)));
+		index -= STYLE_END.Len();
+		tempString = std::string(TCHAR_TO_UTF8(*RemoveBeginningMarker(index, tempString.c_str())));
 		IndexOffset -= STYLE_RIGHT.Len();
 		ModifiedSentence = tempString.c_str();
 	}
@@ -91,6 +92,8 @@ FString UKCD_TypingWidget::RemoveEndMarker(int Index, FString Sentence)
 	convertedString.erase(Index - 3, 3);
 
 	FString Temp = convertedString.c_str();
+
+	UE_LOG(LogTemp, Warning, TEXT("String after end marker removed : %s"), *Temp);
 	return Temp;
 }
 
@@ -101,6 +104,9 @@ FString UKCD_TypingWidget::RemoveBeginningMarker(int Index, FString Sentence)
 	convertedString.erase(Index - 8, 7);
 
 	FString Temp = convertedString.c_str();
+
+	UE_LOG(LogTemp, Warning, TEXT("String after begin marker removed : %s"), *Temp);
+	
 	return Temp;
 }
 
