@@ -6,6 +6,8 @@
 void UKCD_TypingWidget::NewSentence()
 {
 	ModifiedSentence = SentenceInstance->CurrentSentence;
+	IndexOffset = 0;
+	LetterAssociation.Empty();
 }
 
 void UKCD_TypingWidget::LetterFeedback(bool wasRight)

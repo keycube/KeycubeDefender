@@ -403,9 +403,14 @@ FKCD_TypingStats AKCD_Sentence::AverageStats()
 
 void AKCD_Sentence::AdvanceIndex()
 {
+	
+	if(LettersInstances.Num() <= CurrentLetterIndex)
+	{
+		return;
+	}
 	//Advance the letter to the next one
 	CurrentLetterIndex++;
-
+	
 	//If we aren't at the last letter, we target the next letter
 	if(LettersInstances.Num() > CurrentLetterIndex)
 	{
