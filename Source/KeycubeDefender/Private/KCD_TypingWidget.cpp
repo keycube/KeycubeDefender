@@ -70,7 +70,7 @@ void UKCD_TypingWidget::BackspaceFeedback()
 {
 	int checkedIndex = SentenceInstance->GetCurrentIndex() - 1;
 	
-	if(checkedIndex <= 0)
+	if(checkedIndex < 0)
 	{
 		return;
 	}
@@ -78,7 +78,16 @@ void UKCD_TypingWidget::BackspaceFeedback()
 	RemoveTarget(SentenceInstance->GetCurrentIndex() + IndexOffset);
 	
 	int index = SentenceInstance->GetCurrentIndex() + IndexOffset;
-	
+
+	//In case the player uses backspace for the 1st letter, we can't check the previous 
+	if(checkedIndex == 0)
+	{
+		RemoveMarker(index);
+
+		TargetLetter(SentenceInstance->GetCurrentIndex() + IndexOffset - 1);
+		return;
+	}
+	//Move the end marker if the last letter has the same beginning marker
 	if(LetterAssociation[checkedIndex] == LetterAssociation[checkedIndex - 1])
 	{
 		//No need to remove from the global index since we add the end tag back
@@ -88,12 +97,7 @@ void UKCD_TypingWidget::BackspaceFeedback()
 		ModifiedSentence = tempString.c_str();
 	} else
 	{
-		std::string tempString = std::string(TCHAR_TO_UTF8(*RemoveEndMarker(index, ModifiedSentence)));
-		IndexOffset -= STYLE_END.Len();
-		index -= STYLE_END.Len();
-		tempString = std::string(TCHAR_TO_UTF8(*RemoveBeginningMarker(index, tempString.c_str())));
-		IndexOffset -= STYLE_RIGHT.Len();
-		ModifiedSentence = tempString.c_str();
+		RemoveMarker(index);
 	}
 	
 	TargetLetter(SentenceInstance->GetCurrentIndex() + IndexOffset - 1);
@@ -173,4 +177,16 @@ void UKCD_TypingWidget::RemoveTarget(int index)
 	
 	UE_LOG(LogTemp, Warning, TEXT("String after current marker removed : %s"), *ModifiedSentence);
 	
+}
+
+void UKCD_TypingWidget::RemoveMarker(int index)
+{
+	int checkedIndex = SentenceInstance->GetCurrentIndex() - 1;
+	
+	std::string tempString = std::string(TCHAR_TO_UTF8(*RemoveEndMarker(index, ModifiedSentence)));
+	IndexOffset -= STYLE_END.Len();
+	index -= STYLE_END.Len();
+	tempString = std::string(TCHAR_TO_UTF8(*RemoveBeginningMarker(index, tempString.c_str())));
+	IndexOffset -= GetMarker(LetterAssociation[checkedIndex]).Len();
+	ModifiedSentence = tempString.c_str();
 }

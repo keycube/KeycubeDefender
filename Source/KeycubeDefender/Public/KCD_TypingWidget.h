@@ -59,6 +59,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void RemoveTarget(int index);
 
+	UFUNCTION(BlueprintCallable)
+	void RemoveMarker(int index);
+
 private:
 	UPROPERTY()
 	int IndexOffset = 0;
