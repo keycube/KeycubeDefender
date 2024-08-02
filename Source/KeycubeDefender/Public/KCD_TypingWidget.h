@@ -53,6 +53,12 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	FString RefreshSentence();
 
+	UFUNCTION(BlueprintCallable)
+	void TargetLetter(int index);
+
+	UFUNCTION(BlueprintCallable)
+	void RemoveTarget(int index);
+
 private:
 	UPROPERTY()
 	int IndexOffset = 0;
@@ -63,6 +69,8 @@ private:
 	FString STYLE_WRONG = "<Wrong>";
 	UPROPERTY()
 	FString STYLE_END = "</>";
+	UPROPERTY()
+	FString STYLE_CURRENT = "<Current>";
 
 	UFUNCTION(BlueprintCallable)
 	FString GetMarker(bool wasRight)
