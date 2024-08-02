@@ -77,7 +77,7 @@ void UKCD_TypingWidget::BackspaceFeedback()
 
 	RemoveTarget(SentenceInstance->GetCurrentIndex() + IndexOffset);
 	
-	int index = (SentenceInstance->GetCurrentIndex()) + IndexOffset;
+	int index = SentenceInstance->GetCurrentIndex() + IndexOffset;
 	
 	if(LetterAssociation[checkedIndex] == LetterAssociation[checkedIndex - 1])
 	{
@@ -96,7 +96,7 @@ void UKCD_TypingWidget::BackspaceFeedback()
 		ModifiedSentence = tempString.c_str();
 	}
 	
-	TargetLetter(index - 1);
+	TargetLetter(SentenceInstance->GetCurrentIndex() + IndexOffset - 1);
 	
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *ModifiedSentence);
 }
@@ -109,7 +109,6 @@ FString UKCD_TypingWidget::RemoveEndMarker(int Index, FString Sentence)
 
 	FString Temp = convertedString.c_str();
 
-	UE_LOG(LogTemp, Warning, TEXT("String after end marker removed : %s"), *Temp);
 	return Temp;
 }
 
@@ -120,8 +119,6 @@ FString UKCD_TypingWidget::RemoveBeginningMarker(int Index, FString Sentence)
 	convertedString.erase(Index - 8, 7);
 
 	FString Temp = convertedString.c_str();
-
-	UE_LOG(LogTemp, Warning, TEXT("String after begin marker removed : %s"), *Temp);
 	
 	return Temp;
 }
@@ -147,7 +144,7 @@ void UKCD_TypingWidget::TargetLetter(int index)
 	IndexOffset += STYLE_END.Len();
 	ModifiedSentence = tempString.c_str();
 
-	UE_LOG(LogTemp, Warning, TEXT("TEST : %s"), *ModifiedSentence);
+	UE_LOG(LogTemp, Warning, TEXT("Target added : : %s"), *ModifiedSentence);
 }
 
 void UKCD_TypingWidget::RemoveTarget(int index)
@@ -172,5 +169,8 @@ void UKCD_TypingWidget::RemoveTarget(int index)
 	IndexOffset -= STYLE_CURRENT.Len();
 	
 	ModifiedSentence = convertedString.c_str();
+
+	
+	UE_LOG(LogTemp, Warning, TEXT("String after current marker removed : %s"), *ModifiedSentence);
 	
 }
