@@ -54,6 +54,10 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	UPaperSprite* GetSpriteFromTable();
 
+	//Transforms the letter to hex code
+	UFUNCTION(BlueprintCallable)
+	FString ToHex(FString letter);
+
 public:
 	//Sets the letter
 	UFUNCTION(BlueprintCallable)

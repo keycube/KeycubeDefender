@@ -132,7 +132,7 @@ bool AKCD_Sentence::Hit(FName Letter)
 
 	//If the HEX value of the letters match, we give positive feedback
 	//If not, we add a mistake and give negative feedback
-	if (LettersInstances[CurrentLetterIndex]->CurrentLetter == ToHex(Letter.ToString()))
+	if (LettersInstances[CurrentLetterIndex]->CurrentLetter == Letter)
 	{
 		LettersInstances[CurrentLetterIndex]->Hide();
 		WasGood = true;
@@ -213,24 +213,6 @@ int AKCD_Sentence::EditDistance()
 	return prev[n];
 }
 
-FString AKCD_Sentence::ToHex(FString Letter)
-{
-	//Transforms the character into an Hex value to fetch
-	//the right sprite (Unreal doesn't allow special character as
-	//Data table row name)
-	std::string f = TCHAR_TO_UTF8(*Letter);
-	char c = f[0];
-	std::stringstream stream;
-
-	stream << std::hex << std::setw(2) << std::setfill('0') <<
-		(int)static_cast<unsigned char>(std::tolower(c));
-
-	std::string result(stream.str());
-	FString resultFstring(result.c_str());
-
-	return resultFstring;
-}
-
 TArray<FString> AKCD_Sentence::WordsFromString()
 {
 	TArray<FString> wordArray;
@@ -265,7 +247,7 @@ AKCD_Letters* AKCD_Sentence::AddChildLetter(FString Letter, FTransform SpawnTran
 	AKCD_Letters* letterObject = Cast<AKCD_Letters>(child->GetChildActor());
 	if (letterObject != nullptr)
 	{
-		letterObject->SetLetter(FName(ToHex(Letter)));
+		letterObject->SetLetter(FName(Letter));
 	}
 	else
 	{

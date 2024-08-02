@@ -3,6 +3,8 @@
 
 #include "KCD_Letters.h"
 
+#include <iomanip>
+
 #include "KCD_LetterAssociation.h"
 
 // Sets default values for this component's properties
@@ -30,12 +32,30 @@ void AKCD_Letters::SetSprite()
 UPaperSprite* AKCD_Letters::GetSpriteFromTable()
 {
 	
-	FKCD_LetterAssociation* LetterAssociation = SpritesTable->FindRow<FKCD_LetterAssociation>(CurrentLetter, "");
+	FKCD_LetterAssociation* LetterAssociation = SpritesTable->FindRow<FKCD_LetterAssociation>(FName(ToHex(CurrentLetter.ToString())), "");
 	if(LetterAssociation != nullptr)
 	{
 		return LetterAssociation->LetterSprite;
 	}
 	return nullptr;
+}
+
+FString AKCD_Letters::ToHex(FString Letter)
+{
+	//Transforms the character into an Hex value to fetch
+	//the right sprite (Unreal doesn't allow special character as
+	//Data table row name)
+	std::string f = TCHAR_TO_UTF8(*Letter);
+	char c = f[0];
+	std::stringstream stream;
+
+	stream << std::hex << std::setw(2) << std::setfill('0') <<
+		(int)static_cast<unsigned char>(std::tolower(c));
+
+	std::string result(stream.str());
+	FString resultFstring(result.c_str());
+
+	return resultFstring;
 }
 
 void AKCD_Letters::SetLetter(FName letter)

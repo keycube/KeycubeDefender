@@ -102,11 +102,7 @@ private :
 	//Distance between the wanted sentence and what was written
 	UFUNCTION(BlueprintCallable)
 	int EditDistance();
-
-	//Transforms the letter to hex code
-	UFUNCTION(BlueprintCallable)
-	FString ToHex(FString letter);
-
+	
 	//Divides the sentence into individual words
 	UFUNCTION(BlueprintCallable)
 	TArray<FString> WordsFromString();
