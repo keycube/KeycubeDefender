@@ -44,9 +44,10 @@ void AKVA_CubeVisual::KeyReleased(FKey KeyToRelease)
 
 void AKVA_CubeVisual::HighlightKeys(TArray<FKey> keysToHighlight)
 {
+	
 	for (auto key : keysToHighlight)
 	{
-		if(key.GetFName() == "")
+		if(!Keys.Contains(key))
 		{
 			continue;
 		}
@@ -60,7 +61,7 @@ void AKVA_CubeVisual::UnhighlightKeys(TArray<FKey> KeysToUnHighlight)
 {
 	for(auto key : KeysToUnHighlight)
 	{
-		if(key.GetFName() == "")
+		if(!Keys.Contains(key))
 		{
 			continue;
 		}

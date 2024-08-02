@@ -154,9 +154,21 @@ void AKCD_Sentence::Backspace()
 	{
 		//Don't try to unhighlight the current letter if we are after the end
 		if(CurrentLetterIndex < LettersInstances.Num())
+		{
 			LettersInstances[CurrentLetterIndex]->Unhighlight();
 			
+			TArray<FKey> unhilightKeys;
+			unhilightKeys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
+			CubeInstance->UnhighlightKeys(unhilightKeys);
+		}
+			
+			
 		CurrentLetterIndex--;
+
+		TArray<FKey> keys;
+		keys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
+		CubeInstance->HighlightKeys(keys);
+		
 		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
 		TotalTypeSentence.LeftChopInline(1);
 		TotalTypeInput.Append("~");
@@ -262,6 +274,10 @@ void AKCD_Sentence::SentenceComplete()
 	//Get the sentence completion time
 	const double completionTime = LastInputTime - StartTime;
 
+	TArray<FKey> unhilightKeys;
+	unhilightKeys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
+	CubeInstance->UnhighlightKeys(unhilightKeys);
+	
 	//Create a stat for the sentence
 	FKCD_TypingStats CurrentStat;
 
@@ -385,6 +401,9 @@ FKCD_TypingStats AKCD_Sentence::AverageStats()
 
 void AKCD_Sentence::AdvanceIndex()
 {
+	TArray<FKey> unhilightKeys;
+	unhilightKeys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
+	CubeInstance->UnhighlightKeys(unhilightKeys);
 	
 	if(LettersInstances.Num() <= CurrentLetterIndex)
 	{
@@ -397,6 +416,9 @@ void AKCD_Sentence::AdvanceIndex()
 	if(LettersInstances.Num() > CurrentLetterIndex)
 	{
 		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
+		TArray<FKey> keys;
+		keys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
+		CubeInstance->HighlightKeys(keys);
 		MoveMarker();
 	}
 }
