@@ -104,4 +104,13 @@ private:
 	//Load the key layout of the letters matrix from a file
 	UFUNCTION()
 	void LoadKeyMatrix();
+
+	UPROPERTY()
+	FRotator BaseRotation;
+	UPROPERTY()
+	FRotator TargetRotation;
+	UPROPERTY()
+	bool NeedsRotation = false;
+
+	virtual void Tick(float DeltaSeconds) override;
 };

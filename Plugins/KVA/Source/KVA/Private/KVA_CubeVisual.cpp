@@ -5,9 +5,12 @@
 #include "KVA_CubeInfo.h"
 #include "KVA_KeyTranslation.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AKVA_CubeVisual::AKVA_CubeVisual()
 {
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void AKVA_CubeVisual::BeginPlay()
@@ -17,6 +20,8 @@ void AKVA_CubeVisual::BeginPlay()
 	FillKeyMap();
 
 	LoadKeyMatrix();
+
+	BaseRotation = this->GetTransform().Rotator();
 }
 
 void AKVA_CubeVisual::KeyPressed(FKey KeyToPress)
@@ -44,7 +49,6 @@ void AKVA_CubeVisual::KeyReleased(FKey KeyToRelease)
 
 void AKVA_CubeVisual::HighlightKeys(TArray<FKey> keysToHighlight)
 {
-	
 	for (auto key : keysToHighlight)
 	{
 		if(!Keys.Contains(key))
@@ -54,6 +58,21 @@ void AKVA_CubeVisual::HighlightKeys(TArray<FKey> keysToHighlight)
 		Keys[key]->HighlightKey();
 
 		HighlitedKeys.AddUnique(key);
+
+		FVector Direction = this->GetTransform().GetRelativeTransform(this->GetTransform()).GetLocation() - Keys[key]->GetTransform().GetRelativeTransform(this->GetTransform()).GetLocation();
+		
+		Direction.Normalize();
+
+		UE_LOG(LogTemp, Warning, TEXT("Direction : %s"), *Direction.ToString());
+		
+		if(abs(Direction.X) > abs(Direction.Y))
+		{
+			TargetRotation = BaseRotation + FRotator(0, 8, 0);
+		} else
+		{
+			TargetRotation = BaseRotation + FRotator(0, -8, 0);
+		}
+		NeedsRotation = true;
 	}
 }
 
@@ -69,6 +88,8 @@ void AKVA_CubeVisual::UnhighlightKeys(TArray<FKey> KeysToUnHighlight)
 		Keys[key]->UnhighlightKey();
 
 		HighlitedKeys.Remove(key);
+		TargetRotation = BaseRotation;
+		NeedsRotation = true;
 	}
 }
 
@@ -90,8 +111,6 @@ void AKVA_CubeVisual::FillKeyMatrix(TArray<UChildActorComponent*> KeyActors, int
 		}
 	}
 }
-
-
 
 void AKVA_CubeVisual::FillKeyMap()
 {
@@ -238,5 +257,20 @@ void AKVA_CubeVisual::LoadKeyMatrix()
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for read"));
+	}
+}
+
+void AKVA_CubeVisual::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if(NeedsRotation)
+	{
+		SetActorRotation(FMath::Lerp(GetActorRotation(), TargetRotation, 0.1f));
+
+		if(FMath::IsNearlyEqual(GetActorRotation().Yaw, TargetRotation.Yaw, 0.5))
+		{
+			NeedsRotation = false;
+		}
 	}
 }

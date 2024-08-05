@@ -19,7 +19,6 @@ void UKCD_TypingWidget::LetterFeedback(bool wasRight)
 	
 	if(SentenceInstance->GetCurrentIndex() >= SentenceInstance->CurrentSentence.Len())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("End of the sentence"));
 		return;
 	}
 	
@@ -36,8 +35,6 @@ void UKCD_TypingWidget::LetterFeedback(bool wasRight)
 			ModifiedSentence = tempString.c_str();
 			
 			LetterAssociation.Add(checkedIndex, wasRight);
-	
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *ModifiedSentence);
 
 			TargetLetter(SentenceInstance->GetCurrentIndex() + IndexOffset + 1);
 			
@@ -55,8 +52,6 @@ void UKCD_TypingWidget::LetterFeedback(bool wasRight)
 	IndexOffset += Marker.Len() + STYLE_END.Len();
 	
 	ModifiedSentence = convertedString.c_str();
-	
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *ModifiedSentence);
 	
 	LetterAssociation.Add(checkedIndex, wasRight);
 	
@@ -134,7 +129,6 @@ void UKCD_TypingWidget::TargetLetter(int index)
 {
 	if(index < 0 || index - IndexOffset >= SentenceInstance->CurrentSentence.Len())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Last letter"));
 		return;
 	}
 	
@@ -145,8 +139,6 @@ void UKCD_TypingWidget::TargetLetter(int index)
 	tempString.insert(index + 1, TCHAR_TO_UTF8(*STYLE_END));
 	IndexOffset += STYLE_END.Len();
 	ModifiedSentence = tempString.c_str();
-
-	UE_LOG(LogTemp, Warning, TEXT("Target added : : %s"), *ModifiedSentence);
 }
 
 void UKCD_TypingWidget::RemoveTarget(int index)
@@ -171,10 +163,6 @@ void UKCD_TypingWidget::RemoveTarget(int index)
 	IndexOffset -= STYLE_CURRENT.Len();
 	
 	ModifiedSentence = convertedString.c_str();
-
-	
-	UE_LOG(LogTemp, Warning, TEXT("String after current marker removed : %s"), *ModifiedSentence);
-	
 }
 
 void UKCD_TypingWidget::RemoveMarker(int index)
