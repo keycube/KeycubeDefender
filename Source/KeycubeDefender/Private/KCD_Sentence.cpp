@@ -286,7 +286,8 @@ void AKCD_Sentence::SentenceComplete()
 	//Get the sentence completion time
 	const double completionTime = LastInputTime - StartTime;
 
-	UnhighlightCurrent();
+	if(CurrentLetterIndex < CurrentSentence.Len())
+		UnhighlightCurrent();
 	
 	//Create a stat for the sentence
 	FKCD_TypingStats CurrentStat;
@@ -411,12 +412,13 @@ FKCD_TypingStats AKCD_Sentence::AverageStats()
 
 void AKCD_Sentence::AdvanceIndex()
 {
-	UnhighlightCurrent();
-	
 	if(LettersInstances.Num() <= CurrentLetterIndex)
 	{
 		return;
 	}
+	
+	UnhighlightCurrent();
+	
 	//Advance the letter to the next one
 	CurrentLetterIndex++;
 	
