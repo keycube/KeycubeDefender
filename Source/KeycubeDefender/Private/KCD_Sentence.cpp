@@ -8,6 +8,8 @@
 
 #include "KCD_GameMode.h"
 #include "KCD_PlayerController.h"
+#include "DSP/Filter.h"
+#include "GenericPlatform/GenericPlatformChunkInstall.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetStringLibrary.h"
 
@@ -45,17 +47,31 @@ void AKCD_Sentence::BeginPlay()
 	//Subscribes to the delegate for then a key is pressed and when it's released
 	PlayerController->KeyPressDelegate.AddDynamic(this, &AKCD_Sentence::KeyPress);
 	
-	SetSentence(FetchNewSentence());
-	//SetSentence("This is a test sentence, you are not supposed to see this");
-}
+	// Used to manage time
+	FTimerHandle SetupTimerHandle;
+
+	// Waits a bit to make sure everything is spawned properly
+	GetWorld()->GetTimerManager().SetTimer(SetupTimerHandle, [&]()
+	{
+		SetSentence(FetchNewSentence());
+	},  0.1, false);}
 
 void AKCD_Sentence::SetSentence(FString Sentence)
 {
 	CurrentLetterIndex = 0;
 	CurrentSentence = Sentence;
-
+	
 	SpawnLetters();
 	MoveMarker();
+	if(CubeInstance != nullptr)
+	{
+		HighlightCurrent();
+	}else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Cube was not spawned"));
+	}
+	
+	OnNewSentenceDelegate.Broadcast();
 }
 
 void AKCD_Sentence::SpawnLetters()
@@ -157,17 +173,13 @@ void AKCD_Sentence::Backspace()
 		{
 			LettersInstances[CurrentLetterIndex]->Unhighlight();
 			
-			TArray<FKey> unhilightKeys;
-			unhilightKeys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
-			CubeInstance->UnhighlightKeys(unhilightKeys);
+			UnhighlightCurrent();
 		}
 			
 			
 		CurrentLetterIndex--;
 
-		TArray<FKey> keys;
-		keys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
-		CubeInstance->HighlightKeys(keys);
+		HighlightCurrent();
 		
 		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
 		TotalTypeSentence.LeftChopInline(1);
@@ -274,9 +286,7 @@ void AKCD_Sentence::SentenceComplete()
 	//Get the sentence completion time
 	const double completionTime = LastInputTime - StartTime;
 
-	TArray<FKey> unhilightKeys;
-	unhilightKeys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
-	CubeInstance->UnhighlightKeys(unhilightKeys);
+	UnhighlightCurrent();
 	
 	//Create a stat for the sentence
 	FKCD_TypingStats CurrentStat;
@@ -401,9 +411,7 @@ FKCD_TypingStats AKCD_Sentence::AverageStats()
 
 void AKCD_Sentence::AdvanceIndex()
 {
-	TArray<FKey> unhilightKeys;
-	unhilightKeys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
-	CubeInstance->UnhighlightKeys(unhilightKeys);
+	UnhighlightCurrent();
 	
 	if(LettersInstances.Num() <= CurrentLetterIndex)
 	{
@@ -416,9 +424,7 @@ void AKCD_Sentence::AdvanceIndex()
 	if(LettersInstances.Num() > CurrentLetterIndex)
 	{
 		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
-		TArray<FKey> keys;
-		keys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
-		CubeInstance->HighlightKeys(keys);
+		HighlightCurrent();
 		MoveMarker();
 	}
 }
@@ -478,4 +484,18 @@ void AKCD_Sentence::TestOver()
 	
 	UE_LOG(LogTemp, Warning, TEXT("Test is over"));
 	this->Destroy();
+}
+
+void AKCD_Sentence::HighlightCurrent()
+{
+	TArray<FKey> keys;
+	keys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
+	CubeInstance->HighlightKeys(keys);
+}
+
+void AKCD_Sentence::UnhighlightCurrent()
+{
+	TArray<FKey> unhilightKeys;
+	unhilightKeys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
+	CubeInstance->UnhighlightKeys(unhilightKeys);
 }

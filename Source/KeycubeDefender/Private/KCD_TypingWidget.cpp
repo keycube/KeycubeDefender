@@ -10,7 +10,6 @@ void UKCD_TypingWidget::NewSentence()
 	LetterAssociation.Empty();
 
 	TargetLetter(SentenceInstance->GetCurrentIndex());
-	UE_LOG(LogTemp, Warning, TEXT("New sentence"));
 }
 
 void UKCD_TypingWidget::LetterFeedback(bool wasRight)
@@ -63,7 +62,6 @@ void UKCD_TypingWidget::LetterFeedback(bool wasRight)
 	
 	TargetLetter(SentenceInstance->GetCurrentIndex() + IndexOffset + 1);
 
-	UE_LOG(LogTemp, Warning, TEXT("Sentence after manipulations : %s"), *ModifiedSentence);
 }
 
 void UKCD_TypingWidget::BackspaceFeedback()

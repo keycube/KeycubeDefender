@@ -13,6 +13,7 @@ class UBoxComponent;
 class UPaperSpriteComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSentenceComplete);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnNewSentence);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTestComplete);
 UCLASS()
 class KEYCUBEDEFENDER_API AKCD_Sentence : public AActor
@@ -126,6 +127,14 @@ private :
 	//Finishes up the test
 	UFUNCTION()
 	void TestOver();
+
+	//Finishes up the test
+	UFUNCTION()
+	void HighlightCurrent();
+
+	//Finishes up the test
+	UFUNCTION()
+	void UnhighlightCurrent();
 	
 	UPROPERTY()
 	int SentenceNum = 0;
@@ -149,6 +158,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnTestComplete OnTestCompleteDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnNewSentence OnNewSentenceDelegate;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Words", meta = (ExposeOnSpawn=true))
 	FString CurrentSentence;
