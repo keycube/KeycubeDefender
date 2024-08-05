@@ -192,9 +192,7 @@ void AKCD_Cube::UpdateHighlight()
 			targetableLetters.AddUnique(ship->CurrentLetter);
 		}
 	}
-
-	Cube->HighlightKeys(TranslateKeys(targetableLetters));
-
+	
 	//Same for here, we fill and array while checking if a letter in the 
 	//highlighted keys list is no longer present in the list of letters to target
 	//and feed that list to a function to untarget them
@@ -208,7 +206,7 @@ void AKCD_Cube::UpdateHighlight()
 	}
 
 	Cube->UnhighlightKeys(TranslateKeys(LettersToUntarget));
-	
+	Cube->HighlightKeys(TranslateKeys(targetableLetters));
 }
 
 void AKCD_Cube::FindPrimaryTarget()
