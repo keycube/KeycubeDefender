@@ -90,6 +90,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ChangeKey(AKVA_Keys* ChangingKey, FKey NewKey);
 
+	//Returns the associated FKey of the indicated key in the matrix
+	UFUNCTION(BlueprintCallable)
+	FKey GetKey(int Face, int Row, int Column);
+
+protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FRotator FaceOneRotation = FRotator(0, 8, 0);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FRotator FaceZeroRotation = FRotator(0, -8, 0);
+
 private:
 	
 	//Fill the map of association between the inputs and the

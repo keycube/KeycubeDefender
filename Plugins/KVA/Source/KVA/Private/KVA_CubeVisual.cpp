@@ -67,10 +67,10 @@ void AKVA_CubeVisual::HighlightKeys(TArray<FKey> keysToHighlight)
 		
 		if(abs(Direction.X) > abs(Direction.Y))
 		{
-			TargetRotation = BaseRotation + FRotator(0, 8, 0);
+			TargetRotation = BaseRotation + FaceZeroRotation;
 		} else
 		{
-			TargetRotation = BaseRotation + FRotator(0, -8, 0);
+			TargetRotation = BaseRotation + FaceOneRotation;
 		}
 		NeedsRotation = true;
 	}
@@ -191,6 +191,11 @@ void AKVA_CubeVisual::ChangeKey(AKVA_Keys* ChangingKey, FKey NewKey)
 	FillKeyMap();
 }
 
+FKey AKVA_CubeVisual::GetKey(int Face, int Row, int Column)
+{
+	return KeysMatrix[Face].Face[Row].Keys[Column]->AssociatedKey;
+}
+
 void AKVA_CubeVisual::LoadKeyMatrix()
 {
 	//Line we will read from the file
@@ -274,3 +279,4 @@ void AKVA_CubeVisual::Tick(float DeltaSeconds)
 		}
 	}
 }
+
