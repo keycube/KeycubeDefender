@@ -427,3 +427,15 @@ user_$o!85BP9jPFhIBaBnP1%
 ,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
 ,,inf,0.0,0.0,35.8,35.8,"","",""
 
+,Sentence : 0
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,68.713165,4.016697,0.0,24.0,0.0,"you are a capitalist pig","you are a capitalist pig","you are a capitalist pig"
+
+,Sentence : 1
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,35.091988,9.916794,3.0,30.0,0.0,"if at first you do not succeed","if at first you do not succeed","if a ~t first you don~ no ~t succeed"
+
+,Sentence : 2
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
+,,77.574425,4.950085,0.0,33.0,0.0,"coming up with killer sound bites","coming up with killer sound bites","coming up with killer sound bites"
+
