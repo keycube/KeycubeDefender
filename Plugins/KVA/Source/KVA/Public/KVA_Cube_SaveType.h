@@ -18,6 +18,9 @@ class KVA_API UKVA_Cube_SaveType : public USaveGame
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AKVA_CubeVisual> CubeType;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Name;
 
 	static const FString SlotName;
 

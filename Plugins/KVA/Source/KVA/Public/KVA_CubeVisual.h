@@ -43,6 +43,9 @@ public:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Name")
+	FString CubeTypeName = "Default";
+
 	//Map of association between the inputs and the
 	//keys on the cube
 	UPROPERTY(VisibleAnywhere, Category=Keys)
