@@ -38,5 +38,7 @@ void AKVA_CubeSpawner::ChangeCubeType()
 	GetWorld()->SpawnActor<AKVA_CubeVisual>(selectedCube, this->GetTransform(), SpawnInfo);
 
 	CubeSpawnedDelegate.Broadcast();
+	
+	Destroy();
 }
 
