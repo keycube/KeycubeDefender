@@ -20,6 +20,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnCubeSpawned CubeSpawnedDelegate;
 
+	UFUNCTION(BlueprintCallable)
+	AKVA_CubeVisual* GetCube() {return Cube;};
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -30,5 +33,8 @@ private :
 
 	UFUNCTION()
 	void ChangeCubeType();
+
+	UPROPERTY()
+	AKVA_CubeVisual* Cube;
 
 };

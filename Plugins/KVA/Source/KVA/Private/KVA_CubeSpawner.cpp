@@ -35,10 +35,8 @@ void AKVA_CubeSpawner::ChangeCubeType()
 
 	FActorSpawnParameters SpawnInfo;
 	
-	GetWorld()->SpawnActor<AKVA_CubeVisual>(selectedCube, this->GetTransform(), SpawnInfo);
+	Cube = GetWorld()->SpawnActor<AKVA_CubeVisual>(selectedCube, this->GetTransform(), SpawnInfo);
 
 	CubeSpawnedDelegate.Broadcast();
-	
-	Destroy();
 }
 
