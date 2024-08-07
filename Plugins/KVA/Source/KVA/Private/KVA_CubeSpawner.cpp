@@ -36,6 +36,9 @@ void AKVA_CubeSpawner::ChangeCubeType()
 	FActorSpawnParameters SpawnInfo;
 	
 	Cube = GetWorld()->SpawnActor<AKVA_CubeVisual>(selectedCube, this->GetTransform(), SpawnInfo);
+	//Unreal has a bug here, making the spawn ignore the scale
+	//so we adjust it manually
+	Cube->SetActorScale3D(GetActorScale());
 
 	CubeSpawnedDelegate.Broadcast();
 }
