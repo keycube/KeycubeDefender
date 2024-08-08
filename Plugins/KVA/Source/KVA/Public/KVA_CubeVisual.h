@@ -2,6 +2,9 @@
 #include "KVA_Keys.h"
 #include <iostream>
 #include <fstream>
+
+#include "KVA_SaveCubeOption.h"
+#include "Kismet/GameplayStatics.h"
 #include "KVA_CubeVisual.generated.h"
 
 USTRUCT()
@@ -119,12 +122,19 @@ private:
 	UFUNCTION()
 	void LoadKeyMatrix();
 
+	//Rotates the cube
+	UFUNCTION()
+	void RotateCube(FKey KeyToFace);
+
 	UPROPERTY()
 	FRotator BaseRotation;
 	UPROPERTY()
 	FRotator TargetRotation;
 	UPROPERTY()
 	bool NeedsRotation = false;
+
+	UPROPERTY()
+	UKVA_SaveCubeOption* CubeOptions;
 
 	virtual void Tick(float DeltaSeconds) override;
 };

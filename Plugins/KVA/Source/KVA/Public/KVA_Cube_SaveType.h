@@ -25,5 +25,5 @@ public:
 	static const FString SlotName;
 
 	UFUNCTION(BlueprintCallable)
-	FString GetSlotName() {return SlotName;};
+	FString GetSlotName() {return SlotName;}
 };

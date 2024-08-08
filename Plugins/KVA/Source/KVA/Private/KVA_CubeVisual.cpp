@@ -4,6 +4,7 @@
 
 #include "KVA_CubeInfo.h"
 #include "KVA_KeyTranslation.h"
+#include "KVA_SaveCubeOption.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -22,11 +23,30 @@ void AKVA_CubeVisual::BeginPlay()
 	LoadKeyMatrix();
 
 	BaseRotation = this->GetTransform().Rotator();
+
+	if(UKVA_SaveCubeOption* CubeSave = Cast<UKVA_SaveCubeOption>(UGameplayStatics::LoadGameFromSlot(UKVA_SaveCubeOption::SlotName, 0)))
+	{
+		CubeOptions = CubeSave;
+	} else
+	{
+		CubeOptions = Cast<UKVA_SaveCubeOption>(UGameplayStatics::CreateSaveGameObject(UKVA_SaveCubeOption::StaticClass()));
+	}
+
+	if(!CubeOptions->ShowCube)
+	{
+		SetActorHiddenInGame(true);
+	}
+
+	if(CubeOptions->InvertRotation)
+	{
+		FaceOneRotation = FaceOneRotation * -1;
+		FaceZeroRotation = FaceZeroRotation * -1;
+	}
 }
 
 void AKVA_CubeVisual::KeyPressed(FKey KeyToPress)
 {
-	if(!Keys.Contains(KeyToPress))
+	if(!Keys.Contains(KeyToPress) || !CubeOptions->ShowTypeHighligh)
 	{
 		return;
 	}
@@ -37,7 +57,7 @@ void AKVA_CubeVisual::KeyPressed(FKey KeyToPress)
 
 void AKVA_CubeVisual::KeyReleased(FKey KeyToRelease)
 {
-	if(!Keys.Contains(KeyToRelease))
+	if(!Keys.Contains(KeyToRelease) || !CubeOptions->ShowTypeHighligh)
 	{
 		return;
 	}
@@ -49,6 +69,16 @@ void AKVA_CubeVisual::KeyReleased(FKey KeyToRelease)
 
 void AKVA_CubeVisual::HighlightKeys(TArray<FKey> keysToHighlight)
 {
+	if(CubeOptions->ShouldRotate)
+	{
+		RotateCube(keysToHighlight.Last());
+	}
+	
+	if(!CubeOptions->ShowNextHighligh)
+	{
+		return;
+	}
+	
 	for (auto key : keysToHighlight)
 	{
 		if(!Keys.Contains(key))
@@ -58,26 +88,20 @@ void AKVA_CubeVisual::HighlightKeys(TArray<FKey> keysToHighlight)
 		Keys[key]->HighlightKey();
 
 		HighlitedKeys.AddUnique(key);
-
-		FVector Direction = this->GetTransform().GetRelativeTransform(this->GetTransform()).GetLocation() - Keys[key]->GetTransform().GetRelativeTransform(this->GetTransform()).GetLocation();
-		
-		Direction.Normalize();
-
-		UE_LOG(LogTemp, Warning, TEXT("Direction : %s"), *Direction.ToString());
-		
-		if(abs(Direction.X) > abs(Direction.Y))
-		{
-			TargetRotation = BaseRotation + FaceZeroRotation;
-		} else
-		{
-			TargetRotation = BaseRotation + FaceOneRotation;
-		}
-		NeedsRotation = true;
 	}
 }
 
 void AKVA_CubeVisual::UnhighlightKeys(TArray<FKey> KeysToUnHighlight)
 {
+
+	TargetRotation = BaseRotation;
+	NeedsRotation = true;
+	
+	if(!CubeOptions->ShowNextHighligh && !CubeOptions->ShowTypeHighligh)
+	{
+		return;
+	}
+	
 	for(auto key : KeysToUnHighlight)
 	{
 		if(!Keys.Contains(key))
@@ -88,8 +112,6 @@ void AKVA_CubeVisual::UnhighlightKeys(TArray<FKey> KeysToUnHighlight)
 		Keys[key]->UnhighlightKey();
 
 		HighlitedKeys.Remove(key);
-		TargetRotation = BaseRotation;
-		NeedsRotation = true;
 	}
 }
 
@@ -263,6 +285,34 @@ void AKVA_CubeVisual::LoadKeyMatrix()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for read"));
 	}
+}
+
+void AKVA_CubeVisual::RotateCube(FKey KeyToFace)
+{
+
+	if(!Keys.Contains(KeyToFace))
+	{
+		TargetRotation = BaseRotation;
+		NeedsRotation = true;
+		return;
+	}
+		
+	FVector Direction = this->GetTransform().GetRelativeTransform(this->GetTransform()).GetLocation()-
+		Keys[KeyToFace]->GetTransform().GetRelativeTransform(this->GetTransform()).GetLocation();
+		
+	Direction.Normalize();
+
+	UE_LOG(LogTemp, Warning, TEXT("Direction : %s"), *Direction.ToString());
+		
+	if(abs(Direction.X) > abs(Direction.Y))
+	{
+		TargetRotation = BaseRotation + FaceZeroRotation;
+	} else
+	{
+		TargetRotation = BaseRotation + FaceOneRotation;
+	}
+	NeedsRotation = true;
+	
 }
 
 void AKVA_CubeVisual::Tick(float DeltaSeconds)

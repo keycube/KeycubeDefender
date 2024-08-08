@@ -204,9 +204,11 @@ void AKCD_Cube::UpdateHighlight()
 			LettersToUntarget.Add(Letter.GetFName());
 		}
 	}
-
+	
 	Cube->UnhighlightKeys(TranslateKeys(LettersToUntarget));
-	Cube->HighlightKeys(TranslateKeys(targetableLetters));
+	if(!targetableLetters.IsEmpty())
+		Cube->HighlightKeys(TranslateKeys(targetableLetters));
+	
 }
 
 void AKCD_Cube::FindPrimaryTarget()
