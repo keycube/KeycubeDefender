@@ -20,6 +20,7 @@ public:
 		WordSize(0),
 		Mistakes(0),
 		WordDistance(0),
+		ErrorRate(0),
 		WasAltTarget(true),
 		WantedSentence(""),
 		TypedSentence(""),
@@ -41,6 +42,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double WordDistance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	double ErrorRate;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool WasAltTarget;

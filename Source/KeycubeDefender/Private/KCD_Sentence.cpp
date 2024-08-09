@@ -297,6 +297,7 @@ void AKCD_Sentence::SentenceComplete()
 	CurrentStat.Mistakes = Mistakes;
 	CurrentStat.WordDistance = EditDistance();
 	CurrentStat.WordSize = CurrentSentence.Len();
+	CurrentStat.ErrorRate = (CurrentStat.WordDistance / CurrentStat.WordSize) * 100;
 	CurrentStat.WantedSentence = CurrentSentence;
 	CurrentStat.TypedSentence = TotalTypeSentence;
 	CurrentStat.Keystrokes = TotalTypeInput;
@@ -394,6 +395,7 @@ FKCD_TypingStats AKCD_Sentence::AverageStats()
 		AverageStat.Score += TypeStat.Score;
 		AverageStat.TimeTaken += TypeStat.TimeTaken;
 		AverageStat.WordDistance += TypeStat.WordDistance;
+		AverageStat.ErrorRate += TypeStat.ErrorRate;
 		AverageStat.WordSize += TypeStat.WordSize;
 	}
 
@@ -403,6 +405,7 @@ FKCD_TypingStats AKCD_Sentence::AverageStats()
 	AverageStat.Score = AverageStat.Score / size;
 	AverageStat.TimeTaken = AverageStat.TimeTaken / size;
 	AverageStat.WordDistance = AverageStat.WordDistance / size;
+	AverageStat.ErrorRate = AverageStat.ErrorRate / size;
 	AverageStat.WordSize = AverageStat.WordSize / size;
 	AverageStat.WasAltTarget = false;
 
@@ -448,7 +451,8 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 			FString::SanitizeFloat(Stat.TimeTaken) + "," +
 			FString::SanitizeFloat(Stat.Mistakes) + "," +
 			FString::SanitizeFloat(Stat.WordSize) + "," +
-			FString::SanitizeFloat(Stat.WordDistance);
+			FString::SanitizeFloat(Stat.WordDistance) + "," +
+			FString::SanitizeFloat(Stat.ErrorRate);
 
 		//Convert the FString into a std::string
 		std::string ResultString = std::string(TCHAR_TO_UTF8(*ResultFString));
@@ -456,7 +460,7 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 		//RowName
 		myfile << std::string(TCHAR_TO_UTF8(*("," + RowName + "\n")));
 		//Titles
-		myfile << ",,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes\n";
+		myfile << ",,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes\n";
 		//Data
 		myfile << ResultString + ",";
 		//Quote the sentences to avoid csv dividing them with used symbols

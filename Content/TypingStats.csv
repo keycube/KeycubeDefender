@@ -1,465 +1,72 @@
 ,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,61.916,4.651463,0.0,25.0,0.0,"can we play cards tonight","can we play cards tonight","can we play cards tonight"
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,55.250538,6.950159,2.0,33.0,0.0,0.0,"electric cars need big fuel cells","electric cars need big fuel cells","electric cars need big ffu~~uel cells"
 
 ,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,56.214859,4.055867,0.0,20.0,0.0,"join us on the patio","join us on the patio","join us on the patio"
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,44.266979,9.216802,4.0,35.0,3.0,8.571429,"dolphins leap high out of the water","doplhin  leap high out of the water","doplhin  leap hight~ out of the water"
 
 ,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,49.845226,6.500121,2.0,28.0,1.0,"where did I leave my glasses","where did i leave my glasses","where did i leave myu~~u~y glasses"
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,64.285042,4.666716,0.0,26.0,0.0,0.0,"spill coffee on the carpet","spill coffee on the carpet","spill coffee on the carpet"
+
+,Sentence : 0
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,56.073776,5.350095,0.0,26.0,0.0,0.0,"an offer you cannot refuse","an offer you cannot refuse","an offer you cannot refuse"
+
+,Sentence : 1
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,29.014374,11.166879,6.0,28.0,7.0,25.0,"I am going to a music lesson","i amogoibn ta s music leeson","i am~mogoibn ta s music lees~son"
+
+,Sentence : 2
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,61.904068,4.070815,3.0,22.0,3.0,13.636364,"Mary had a little lamb","mary gha a little lamb","mary gha a little lamb"
+
+,Sentence : 0
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,42.508621,9.033461,4.0,33.0,4.0,12.121212,"this is a non profit organization","this a  a non profit aoganization","this a  a non profit aoganization"
+
+,Sentence : 1
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,40.373478,5.350047,3.0,19.0,3.0,15.789474,"batman wears a cape","batman eears a appe","batman eears a appe"
+
+,Sentence : 2
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,50.173832,4.78337,4.0,21.0,4.0,19.047619,"my dog sheds his hair","my dog sheds jos jaor","my dog sheds jos jaor"
 
 ,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,46.558155,7.216781,3.0,29.0,0.0,"listen to five hours of opera","listen to five hours of opera","kl~~listen to five hours ofg~ opera"
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,67.923653,3.533379,0.0,21.0,0.0,0.0,"santa claus got stuck","santa claus got stuck","santa claus got stuck"
 
 ,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,72.596176,3.967151,0.0,25.0,0.0,"you want to eat your cake","you want to eat your cake","you want to eat your cake"
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,53.730247,6.700137,4.0,31.0,0.0,0.0,"not quite so smart as you think","not quite so smart as you think","not quite so sa~nma~~~mart as you think"
 
 ,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,57.426086,5.278277,1.0,25.4,0.2,"","",""
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,50.941967,5.880079,3.0,25.0,2.2,9.391661,"","",""
 
-user_$o!85BP9jPFhIBaBnP1%
 ,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,46.660583,6.686586,1.0,27.0,0.0,"relations are very strained","relations are very strained","relation ~s are very strained"
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,56.67939,7.833535,1.0,38.0,0.0,0.0,"did you see that spectacular explosion","did you see that spectacular explosion","did you see that spectacua~lar explosion"
 
 ,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,48.124378,6.732554,3.0,28.0,0.0,"we must redouble our efforts","we must redouble our efforts","we must redouble to~~our evf~~fforts"
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,46.889324,7.933576,2.0,32.0,2.0,6.25,"my favourite sport is racketball","my favoriite sport is racketball","my favoriite sport is racketball"
 
 ,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,51.669777,6.735078,1.0,30.0,0.0,"it is difficult to concentrate","it is difficult to concentrate","it is difficv~~cult to concentrate"
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,53.707497,8.267002,1.0,38.0,1.0,2.631579,"salesmen must make their monthly quota","salesmen msst make their monthly quota","salesmen msst make their monthly quota"
 
 ,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,56.584515,6.150093,1.0,30.0,1.0,"a subject one can really enjoy","a subject one can really enjou","a subject one can really enjou"
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,56.839085,5.066936,1.0,25.0,0.0,0.0,"the location of the crime","the location of the crime","the location if~~of the crime"
 
 ,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,59.293228,5.666752,1.0,29.0,0.0,"the insulation is not working","the insulation is not working","the s~insulation is not working"
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,67.093445,4.650231,1.0,27.0,0.0,0.0,"the food at this restaurant","the food at this restaurant","the food at this restaure~ant"
 
 ,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,52.466499,6.394213,1.4,28.8,0.2,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,56.325459,4.900093,0.0,24.0,0.0,"what a lovely red jacket","what a lovely red jacket","what a lovely red jacket"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,46.635735,5.660895,2.0,23.0,0.0,"bad for the environment","bad for the environment","bad for a~the environn~ment"
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,51.206463,7.733399,0.0,34.0,0.0,"the pen is mightier than the sword","the pen is mightier than the sword","the pen is mightier than the sword"
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,47.44854,9.104601,1.0,37.0,0.0,"the chamber makes important decisions","the chamber makes important decisions","the chan~mber makes important decisions"
-
-,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,33.693996,6.766784,5.0,20.0,1.0,"you have my sympathy","you have my sympathuy","you ar~~have my su~ympathuy~y"
-
-,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,47.062042,6.833154,1.6,27.6,0.2,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,62.399487,5.000041,0.0,27.0,0.0,"the fire blazed all weekend","the fire blazed all weekend","the fire blazed all weekend"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,39.383896,9.750178,1.0,33.0,0.0,"electric cars need big fuel cells","electric cars need big fuel cells","electricv~ cars need big fuel cells"
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,41.721119,10.066845,2.0,36.0,0.0,"dinosaurs have been extinct for ages","dinosaurs have been extinct for ages","dina~osaurs have beenm~ extinct for ages"
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,64.686775,4.266714,0.0,24.0,1.0,"Canada has ten provinces","canada has ten provinces","canada has ten provinces"
-
-,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,49.841934,5.537506,2.0,24.0,0.0,"that is a very nasty cut","that is a very nasty cut","that is a veru~y nasty cy~ut"
-
-,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,51.60664,6.924257,1.0,28.8,0.2,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,47.084114,6.116713,3.0,25.0,0.0,"want to join us for lunch","want to join us for lunch","want tio~~o join us for t~lunch"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,65.881813,5.100042,0.0,29.0,0.0,"no more war no more bloodshed","no more war no more bloodshed","no more war no more bloodshed"
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,51.428146,5.133376,1.0,23.0,0.0,"a most ridiculous thing","a most ridiculous thing","a most ridiv~culous thing"
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,51.427734,4.433405,0.0,20.0,0.0,"zero in on the facts","zero in on the facts","zero in on the facts"
-
-,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,69.276901,4.850102,0.0,29.0,0.0,"listen to five hours of opera","listen to five hours of opera","listen to five hours of opera"
-
-,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,57.019737,5.126727,0.8,25.2,0.0,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,14.316702,25.983639,0.0,32.0,0.0,"only an idiot would lie in court","only an idiot would lie in court","only an idiot would lie in court"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,8.728311,37.120584,10.0,28.0,6.0,"the early bird gets the worm","the early bird gets the worm    rm","the earli~y bird ta~~gets the worm      ~~o~rm"
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,15.182148,24.502462,2.0,32.0,0.0,"coalition governments never work","coalition governments never work","coalition goverme~~nments never work"
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,16.225061,23.66709,2.0,33.0,0.0,"vote according to your conscience","vote according to your conscience","vote according to youur~~r conscience"
-
-,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,18.382818,19.583503,0.0,31.0,0.0,"an excellent way to communicate","an excellent way to communicate","an excellent way to communicate"
-
-,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,14.567009,26.171455,2.8,31.2,1.2,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,47.614834,8.316736,2.0,34.0,0.0,"the pen is mightier than the sword","the pen is mightier than the sword","the pen si ~~~is mightier than the sword"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,54.264023,7.518794,0.0,35.0,0.0,"the punishment should fit the crime","the punishment should fit the crime","the punishment should fit the crime"
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,45.956406,7.833511,3.0,31.0,0.0,"never mix religion and politics","never mix religion and politics","nne~~ever m,~ix religion and politics"
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,46.183525,10.133483,1.0,40.0,0.0,"burglars never leave their business card","burglars never leave their business card","burglars never leave their business cart~d"
-
-,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,41.321419,9.583408,4.0,34.0,1.0,"that sticker needs to be validated","that sticker needs to be validate","that sticker needs a~to be s~vva~~alidate"
-
-,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,47.068043,8.677186,2.0,34.8,0.2,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,47.195271,7.119358,0.0,29.0,0.0,"video camera with a zoom lens","video camera with a zoom lens","video camera with a zoom lens"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,65.62516,2.925707,0.0,17.0,0.0,"rain rain go away","rain rain go away","rain rain go away"
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,58.492096,5.334054,0.0,27.0,0.0,"the union will go on strike","the union will go on strike","the union will go on strike"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,29.0,28.0,"I listen to the tape everyday","i","i"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,35.501503,12.506513,0.0,38.0,0.0,"salesmen must make their monthly quota","salesmen must make their monthly quota","salesmen must make their monthly quota"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,40.254677,10.433571,13.0,36.0,33.0,"a much higher risk of getting cancer","asdwawdwasdwa","d~a~asdwawdwasdwa"
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,150.907867,2.703636,11.0,35.0,30.0,"everybody looses in custody battles","dwasdwasdwa","dwasdwasdwa"
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,1178.017578,0.183359,3.0,19.0,19.0,"time to go shopping","dwa","dwa"
-
-,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,1495.372681,0.216668,3.0,28.0,26.0,"three two one zero blast off","dwa","dwa"
-
-,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,580.010864,5.208749,6.0,31.2,21.6,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,46.451015,5.166733,0.0,21.0,0.0,"he called seven times","he called seven times","he called seven times"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,6.618528,39.888024,9.0,23.0,4.0,"you must be getting old","you must be gee getting old","you must be getting olddddd~~~~~~~asg old~~~~~~~~~~~~~dwa~~~e getting old~~ld"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,82.274094,4.08391,0.0,29.0,15.0,"public transit is much faster","public transit","public transit"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,50.361912,6.433433,0.0,28.0,0.0,"get your priorities in order","get your priorities in order","get your priorities in order"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,41.971085,7.433689,1.0,27.0,1.0,"all good boys deserve fudge","all good boys deserve dudge","all good boys deserve dudge"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,57.329487,7.116757,0.0,35.0,0.0,"bank transaction was not registered","bank transaction was not registered","bank transaction was not registered"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,65.158669,4.788311,0.0,27.0,0.0,"the assault took six months","the assault took six months","the assault took six months"
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,32.555607,9.583602,6.0,27.0,4.0,"this library has many books","the liibrary has many bookks","the liibrary has many bookds~~ks"
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,41.215294,9.31693,1.0,33.0,0.0,"electric cars need big fuel cells","electric cars need big fuel cells","electric cars need big fuels~ cells"
-
-,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,41.378441,10.150214,2.0,36.0,0.0,"dinosaurs have been extinct for ages","dinosaurs have been extinct for ages","dinosaui~rs hj~ave been extinct for ages"
-
-,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,47.527504,8.191163,1.8,31.6,0.8,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,18.449835,26.666905,43.0,42.0,43.0,"if you come home late the doors are locked","if you come home late the doors are lockedhhhhjjjunhtrfgjjyffcrtgvrtvfrvty8dfcrtudrt7","if you come home late the doors are lockedhhhhjjjunhtrfgjjyffcrtgvrtvfrvty8dfcrtudrt7"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,21.656759,21.055783,9.0,39.0,6.0,"pumping helps if the roads are slippery","pumping helps if the roads are slipperyaasdwp","pumping helps if the rou~ads are slippery~~~~~ppery~~ryaasdwa~p~p"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,49.869274,3.850066,0.0,17.0,1.0,"play it again Sam","play it again sam","play it again sam"
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,61.817665,3.300028,0.0,18.0,0.0,"the living is easy","the living is easy","the living is easy"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,47.989471,7.7517,0.0,32.0,7.0,"our silver anniversary is coming","our silver anniversary is","our~~~our silver anniversary is"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,29.0,28.0,"I listen to the tape everyday","i","i"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,12.404137,27.087737,0.0,29.0,11.0,"public transit is much faster","public transit is ","public transit is "
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,36.199276,8.950455,2.0,28.0,1.0,"a psychiatrist will help you","a psychiatrist will help yo","a psychu~iatrist will help t~yo"
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,38.696346,10.233525,5.0,34.0,1.0,"he underwent triple bypass surgery","he underwent triple bypass surger","he underwent tripple ~~~~le byb~pass surger"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,53.229134,8.566737,0.0,39.0,1.0,"the accident scene is a shrine for fans","the accident scene is a shrine for fan","the accident scene is a shrine for fan"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,39.927486,9.31689,4.0,32.0,1.0,"what to do when the oil runs dry","what to do when the oilsruns dry","what do~~to do when the oils ~run ~s dry"
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,31.822699,12.066859,3.0,33.0,0.0,"soon we will return from the city","soon we will return from the city","soon we will return to~~from the~e cut~~ity"
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,36.995758,8.4334,2.0,27.0,3.0,"it should be sunny tomorrow","it should be sunny tommoro","it should be sunny tommoro"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,41.141426,6.41689,0.0,23.0,1.0,"my favorite web browser","my favorite web browse","my favorite web browse"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,56.69165,6.350141,1.0,31.0,0.0,"traveling to conferences is fun","traveling to conferences is fun","traveling to conge~~ferences is fun"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,65.114655,6.450161,1.0,36.0,1.0,"questioning the wisdom of the courts","questioning the wisdom of the court","questioning the wist~dom of the court"
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,53.401024,6.516729,2.0,30.0,0.0,"if at first you do not succeed","if at first you do not succeed","if a f~~t first you do not succeed"
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,44.77343,6.700402,3.0,26.0,4.0,"Valium in the economy size","valium is the ecinomyusize","valium is the ecinomyusize"
-
-,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,63.716335,5.650042,2.0,31.0,2.0,"the king sends you to the tower","the king sends ion to the tower","the king sends ion to the tower"
-
-,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,56.739422,6.333495,1.8,30.8,1.4,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,26.0,26.0,"olympic athletes use drugs","",""
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,31.0,31.0,"quick there is someone knocking","",""
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,25.0,25.0,"on the way to the cottage","",""
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,30.0,30.0,"a lot of chlorine in the water","",""
-
-,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,22.0,22.0,"do not drink the water","",""
-
-,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,26.8,26.8,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,38.0,38.0,"gamblers eventually loose their shirts","",""
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,36.0,36.0,"questioning the wisdom of the courts","",""
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,34.0,34.0,"rejection letters are discouraging","",""
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,31.0,31.0,"the first time he tried to swim","",""
-
-,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,38.0,38.0,"that referendum asked a silly question","",""
-
-,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,35.4,35.4,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,42.926449,6.150055,1.0,23.0,1.0,"see you later alligator","see you later aliigator","see you later aliigator"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,52.682461,6.150055,0.0,28.0,28.0,"these cookies are so amazing","",""
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,56.584862,6.150055,0.0,30.0,30.0,"I can still feel your presence","",""
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,39.024044,6.150055,0.0,21.0,21.0,"the dog will bite you","",""
-
-,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,42.926449,6.150055,0.0,23.0,23.0,"a most ridiculous thing","",""
-
-,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,46.828854,6.150055,0.2,25.0,20.6,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,39.0,39.0,"the accident scene is a shrine for fans","",""
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,40.0,40.0,"knee bone is connected to the thigh bone","",""
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,39.0,39.0,"safe to walk the streets in the evening","",""
-
-,Sentence : 3
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,27.0,27.0,"luckily my wallet was found","",""
-
-,Sentence : 4
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,34.0,34.0,"one hour is allotted for questions","",""
-
-,Average
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,inf,0.0,0.0,35.8,35.8,"","",""
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,68.713165,4.016697,0.0,24.0,0.0,"you are a capitalist pig","you are a capitalist pig","you are a capitalist pig"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,35.091988,9.916794,3.0,30.0,0.0,"if at first you do not succeed","if at first you do not succeed","if a ~t first you don~ no ~t succeed"
-
-,Sentence : 2
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,77.574425,4.950085,0.0,33.0,0.0,"coming up with killer sound bites","coming up with killer sound bites","coming up with killer sound bites"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,921.592163,0.41667,2.0,33.0,32.0,"sharp cheese keeps the mind sharp","ws","ws"
-
-,Sentence : 1
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,1495.372681,0.216668,2.0,28.0,26.0,"six daughters and seven sons","as","as"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,203.89212,1.883349,2.0,33.0,28.0,"a good joke deserves a good laugh","a ggg","a ggg"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,18.556715,21.986649,3.0,35.0,2.0,"where did you get such a silly idea","where did you get suchj asilly idea","where did you get suchj asilly idea"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,50.606632,5.216708,1.0,23.0,0.0,"very reluctant to enter","very reluctant to enter","very reluctant toi~ enter"
-
-,Sentence : 0
-,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Wanted sentence, Typed sentence, Keystrokes
-,,40.122948,5.383453,0.0,19.0,0.0,"batman wears a cape","batman wears a cape","batman wears a cape"
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,56.241749,6.750256,1.2,32.0,0.6,1.776316,"","",""
 
