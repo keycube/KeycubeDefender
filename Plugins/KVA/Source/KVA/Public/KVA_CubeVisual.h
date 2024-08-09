@@ -114,10 +114,6 @@ private:
 	UFUNCTION()
 	void FillKeyMap();
 
-	//Updates the highlights of the keys
-	UFUNCTION()
-	void UpdateHighlight();
-
 	//Load the key layout of the letters matrix from a file
 	UFUNCTION()
 	void LoadKeyMatrix();

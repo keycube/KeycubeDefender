@@ -55,13 +55,13 @@ public:
 	//Visual feedback of the key release
 	UFUNCTION(BlueprintCallable)
 	void KeyReleased_Keys();
-
+	//Visual feedback of the key highlight
 	UFUNCTION(BlueprintCallable)
 	void HighlightKey();
-
+	//Remove visual feedback of the key highlight
 	UFUNCTION(BlueprintCallable)
 	void UnhighlightKey();
-
+	//Change the associated key
 	UFUNCTION(BlueprintCallable)
 	void ChangeKey(FKey NewKey);
 };

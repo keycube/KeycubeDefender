@@ -28,9 +28,11 @@ protected:
 	virtual void BeginPlay() override;
 	
 private :
+	//Checks in the saved options to find the desired cube type
 	UFUNCTION()
 	TSubclassOf<AKVA_CubeVisual> FetchCubeType();
 
+	//Spawns the new cube
 	UFUNCTION()
 	void ChangeCubeType();
 

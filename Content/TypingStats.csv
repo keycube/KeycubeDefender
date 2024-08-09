@@ -82,3 +82,11 @@
 ,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
 ,,68.457054,5.083479,0.0,30.0,0.0,0.0,"bring the offenders to justice","bring the offenders to justice","bring the offenders to justice"
 
+,Sentence : 0
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,79.999123,4.200046,28.0,29.0,25.0,86.206897,"prevailing wind from the east","dwasddasdwasdwasdwadwasdsasd","dwasddasdwasdwasdwadwasdsasd"
+
+,Sentence : 1
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,108.970818,3.083394,30.0,29.0,28.0,96.551724,"he is just like everyone else","dwasdwasdwadwasdwasdwasdwasdwa","dwasdwasdwadwasdwasdwasdwasdwa"
+

@@ -29,13 +29,7 @@ public:
 	bool ShowNextHighligh = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector NextHighlighColor;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool ShowTypeHighligh = true;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector TypeHighlighColor;
 	
 	static const FString SlotName;
 

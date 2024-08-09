@@ -2,13 +2,12 @@
 
 #include <filesystem>
 
-#include "KVA_CubeInfo.h"
 #include "KVA_KeyTranslation.h"
 #include "KVA_SaveCubeOption.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
-AKVA_CubeVisual::AKVA_CubeVisual()
+AKVA_CubeVisual::AKVA_CubeVisual(): KeyTranslationTable(nullptr), CubeOptions(nullptr)
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -161,11 +160,6 @@ void AKVA_CubeVisual::FillKeyMap()
 			}
 		}
 	}
-}
-
-void AKVA_CubeVisual::UpdateHighlight()
-{
-	return;
 }
 
 void AKVA_CubeVisual::SaveKeyMatrix()
