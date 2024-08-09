@@ -102,11 +102,6 @@ int AKCD_Ship::EditDistance()
 	return prev[n];
 }
 
-void AKCD_Ship::Targeted()
-{
-	LettersInstances[0]->Highlight();
-}
-
 void AKCD_Ship::SpawnLetters()
 {
 	//Base transform of the letters, used to spawn the letter in local position
@@ -189,13 +184,6 @@ bool AKCD_Ship::Hit(FName Letter)
 	if(!isDestroyed)
 	{
 		TotalTypeWord += Letter.ToString().ToLower();
-
-		// if(FMath::IsNearlyEqual(GetNum(TotalTypeWord), GetNum(CurrentWord), 0.5))
-		// {
-		// 	UE_LOG(LogTemp, Warning, TEXT("Wanted word : %s"), *CurrentWord);
-		// 	UE_LOG(LogTemp, Warning, TEXT("Looked at word : %s"), *TotalTypeWord);
-		// 	UE_LOG(LogTemp, Warning, TEXT("Word distance at same size : %i"), EditDistance());
-		// }
 		
 		if (LettersInstances[CurrentLetterIndex]->CurrentLetter == Letter)
 		{

@@ -15,6 +15,7 @@ void UKCD_TypingWidget::NewSentence()
 void UKCD_TypingWidget::LetterFeedback(bool wasRight)
 {
 
+	//Remove the "current letter" visual of the letter
 	RemoveTarget(SentenceInstance->GetCurrentIndex() + IndexOffset);
 	
 	if(SentenceInstance->GetCurrentIndex() >= SentenceInstance->CurrentSentence.Len())
@@ -22,10 +23,13 @@ void UKCD_TypingWidget::LetterFeedback(bool wasRight)
 		return;
 	}
 	
-	 int index = (SentenceInstance->GetCurrentIndex()) + IndexOffset;
+	int index = (SentenceInstance->GetCurrentIndex()) + IndexOffset;
 	
 	int checkedIndex = SentenceInstance->GetCurrentIndex();
 	
+	//Check if the letter we want to give to feedback to is not the 1st one
+	//and if the previous one has the same feedback state. If it is the case, we can move the end marker
+	//since the text style stays the same.
 	if(checkedIndex > 0)
 	{
 		if(wasRight == LetterAssociation[checkedIndex - 1])
@@ -41,7 +45,9 @@ void UKCD_TypingWidget::LetterFeedback(bool wasRight)
 			return;
 		}
 	}
-	
+
+	//if the style is different from the previous letter (or it is the 1st letter),
+	//we need to add a beginning marker and an end marker around the letter
 	std::string convertedString = TCHAR_TO_UTF8(*ModifiedSentence);
 	
 	FString Marker = GetMarker(wasRight);
@@ -145,6 +151,7 @@ void UKCD_TypingWidget::RemoveTarget(int index)
 {
 	auto pos = std::string(TCHAR_TO_UTF8(*ModifiedSentence)).find(TCHAR_TO_UTF8(*STYLE_CURRENT));
 
+	//Verify if we have a current target marker
 	if(pos != std::string::npos)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Found a current marker"));
@@ -153,7 +160,8 @@ void UKCD_TypingWidget::RemoveTarget(int index)
 		UE_LOG(LogTemp, Warning, TEXT("NO current marker FOUND"));
 		return;
 	}
-	
+
+	//Removes the end marker and the beginning marker for the target
 	std::string convertedString = TCHAR_TO_UTF8(*RemoveEndMarker(index + 1, ModifiedSentence));
 	
 	IndexOffset -= STYLE_END.Len();

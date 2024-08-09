@@ -44,6 +44,7 @@ protected:
 	UPROPERTY()
 	AKCD_WaveManager* SpawnerInstance;
 
+	//Effect of the destruction of the ship for the cube
 	UFUNCTION(BlueprintCallable)
 	void ShipDestroyed(AKCD_Ship* ship);
 	

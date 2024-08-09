@@ -54,14 +54,19 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	//Fills the list of lanes
 	UFUNCTION()
 	void FillLanes();
+
+	//Overlap function
 	UFUNCTION()
 	void OnOverlap(AActor* MyActor, AActor* OtherActor);
 
+	//Feedback of the city's destruction
 	UFUNCTION()
 	void CityDestroy();
 
+	//Spawns explosions
 	UFUNCTION()
 	void SpawnExplosion(FVector Location, int OffsetIndex);
 	
@@ -72,6 +77,7 @@ private:
 	UPROPERTY()
 	TArray<FTimerHandle> TimerHandles;
 
+	//Spawns the lanes according to the map width and height specified
 	UFUNCTION()
 	void SpawnLanes();
 	

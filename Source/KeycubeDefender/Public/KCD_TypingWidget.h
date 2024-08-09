@@ -34,31 +34,40 @@ protected:
 
 	UPROPERTY()
 	TMap<int, bool> LetterAssociation;
-	
+
+	//Fetches the sentence held in the sentence object
 	UFUNCTION(BlueprintCallable)
 	void NewSentence();
-	
+
+	//Feedback when a letter is typed 
 	UFUNCTION(BlueprintCallable)
 	void LetterFeedback(bool wasRight);
 
+	//Feedback of deleting the previously typed letter
 	UFUNCTION(BlueprintCallable)
 	void BackspaceFeedback();
 
+	//Removes the end marker at the specified index
 	UFUNCTION(BlueprintCallable)
 	FString RemoveEndMarker(int Index, FString Sentence);
 
+	//Removes the end marker at the specified index
 	UFUNCTION(BlueprintCallable)
 	FString RemoveBeginningMarker(int Index, FString Sentence);
-	
+
+	//Returns the modified sentence
 	UFUNCTION(BlueprintCallable)
 	FString RefreshSentence();
 
+	//Add "current target" feedback
 	UFUNCTION(BlueprintCallable)
 	void TargetLetter(int index);
 
+	//Removes "current target" feedback
 	UFUNCTION(BlueprintCallable)
 	void RemoveTarget(int index);
 
+	//Removes both beginning and ending markers
 	UFUNCTION(BlueprintCallable)
 	void RemoveMarker(int index);
 

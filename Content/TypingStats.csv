@@ -70,3 +70,15 @@
 ,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
 ,,56.241749,6.750256,1.2,32.0,0.6,1.776316,"","",""
 
+,Sentence : 0
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,49.580441,5.566711,0.0,24.0,0.0,0.0,"the children are playing","the children are playing","the children are playing"
+
+,Sentence : 1
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,57.292988,6.283491,2.0,31.0,0.0,0.0,"quick there is someone knocking","quick there is someone knocking","quick there is somepo~~one knocking"
+
+,Sentence : 0
+,,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes
+,,68.457054,5.083479,0.0,30.0,0.0,0.0,"bring the offenders to justice","bring the offenders to justice","bring the offenders to justice"
+

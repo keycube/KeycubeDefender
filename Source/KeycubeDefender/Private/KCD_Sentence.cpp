@@ -24,9 +24,6 @@ AKCD_Sentence::AKCD_Sentence()
 	
 	SentenceHolder = CreateDefaultSubobject<USceneComponent>("Sentence Holder");
 	SentenceHolder->SetupAttachment(RootComponent);
-
-	LetterMarker = CreateDefaultSubobject<UPaperSpriteComponent>("Marker");
-	LetterMarker->SetupAttachment(RootComponent);
 }
 
 void AKCD_Sentence::KeyPress(FKey KeyParam)
@@ -61,8 +58,7 @@ void AKCD_Sentence::SetSentence(FString Sentence)
 	CurrentLetterIndex = 0;
 	CurrentSentence = Sentence;
 	
-	SpawnLetters();
-	MoveMarker();
+	DivideLetters();
 	if(CubeInstance != nullptr)
 	{
 		HighlightCurrent();
@@ -74,51 +70,21 @@ void AKCD_Sentence::SetSentence(FString Sentence)
 	OnNewSentenceDelegate.Broadcast();
 }
 
-void AKCD_Sentence::SpawnLetters()
+void AKCD_Sentence::DivideLetters()
 {
-	//Base transform of the letters, used to spawn the letter in local position
-	FTransform spawnTransform{
-		FRotator{0.0f, -90.0f, 0.0f}, // Rotation
-		FVector{0.0f, 0.0f, 0.0f}, // Translation
-		FVector{1.0f, 1.0f, 1.0f} // Scale
-	};
-	//Total size of the word
-	const float WordSize = Lettersize * CurrentSentence.Len();
-
-	//We spawn a KCD_Letter BP for each letters in the word 
-	int x = 0;
-	int y = 0;
 	//For every words in the sentence
 	for (auto Element : WordsFromString())
 	{
-		//Check if the word would be too big for the screen size
-		if ((Lettersize * (x + 0.5)) + (Lettersize * (Element.Len() + 0.5)) > ScreenSize)
-		{
-			x = 0;
-			y++;
-		}
+	
 		//for every letters in the word
 		for (auto letter : UKismetStringLibrary::GetCharacterArrayFromString(Element))
 		{
-			//Position uses half the size of the word and offset that position
-			//with the leght of th eprevious letters
-			float yPosition = (ScreenSize / 2) - (Lettersize * (x + 0.5));
-			float zPosition = Lettersize * -(2 * y);
-			spawnTransform.SetLocation(FVector{0.0f, yPosition, zPosition});
-
-			LettersInstances.Add(AddChildLetter(letter, spawnTransform));
-			x++;
+			LettersInstances.Add(FName(letter));
 		}
-		//Add a space at the end of the word
-		float yPosition = (ScreenSize / 2) - (Lettersize * (x + 0.5));
-		float zPosition = Lettersize * -(2 * y);
-		spawnTransform.SetLocation(FVector{0.0f, yPosition, zPosition});
 
-		LettersInstances.Add(AddChildLetter(" ", spawnTransform));
-		x++;
+		LettersInstances.Add(FName(" "));
 	}
 	//Remove the last element, which is a stray space
-	LettersInstances.Last()->Destroy();
 	LettersInstances.Pop();
 }
 
@@ -148,15 +114,13 @@ bool AKCD_Sentence::Hit(FName Letter)
 
 	//If the HEX value of the letters match, we give positive feedback
 	//If not, we add a mistake and give negative feedback
-	if (LettersInstances[CurrentLetterIndex]->CurrentLetter == Letter)
+	if (LettersInstances[CurrentLetterIndex] == Letter)
 	{
-		LettersInstances[CurrentLetterIndex]->Hide();
 		WasGood = true;
 	}
 	else
 	{
 		Mistakes++;
-		LettersInstances[CurrentLetterIndex]->ErrorHighlight();
 		WasGood = false;
 	}
 	
@@ -171,8 +135,6 @@ void AKCD_Sentence::Backspace()
 		//Don't try to unhighlight the current letter if we are after the end
 		if(CurrentLetterIndex < LettersInstances.Num())
 		{
-			LettersInstances[CurrentLetterIndex]->Unhighlight();
-			
 			UnhighlightCurrent();
 		}
 			
@@ -181,21 +143,9 @@ void AKCD_Sentence::Backspace()
 
 		HighlightCurrent();
 		
-		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
 		TotalTypeSentence.LeftChopInline(1);
 		TotalTypeInput.Append("~");
-		MoveMarker();
 	}
-}
-
-void AKCD_Sentence::MoveMarker()
-{
-	//Get the position of the targeted letter and give is an offset
-	FVector markerLocation = LettersInstances[CurrentLetterIndex]->GetTransform().GetLocation();
-	markerLocation.Z = markerLocation.Z - (Lettersize / 1.5);
-
-	//Move the marker to the location
-	LetterMarker->SetWorldLocation(markerLocation);
 }
 
 int AKCD_Sentence::EditDistance()
@@ -259,28 +209,6 @@ TArray<FString> AKCD_Sentence::WordsFromString()
 	return wordArray;
 }
 
-AKCD_Letters* AKCD_Sentence::AddChildLetter(FString Letter, FTransform SpawnTransform)
-{
-	//Add the letter as a child component of the sentence
-	UChildActorComponent* child = NewObject<UChildActorComponent>(this);
-	child->SetupAttachment(SentenceHolder);
-	child->RegisterComponent();
-	child->SetChildActorClass(LetterBP);
-	child->SetRelativeTransform(SpawnTransform);
-	//Get a reference to the child's class and set it's letter
-	AKCD_Letters* letterObject = Cast<AKCD_Letters>(child->GetChildActor());
-	if (letterObject != nullptr)
-	{
-		letterObject->SetLetter(FName(Letter));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Letter object reference NULL"));
-	}
-
-	return letterObject;
-}
-
 void AKCD_Sentence::SentenceComplete()
 {
 	//Get the sentence completion time
@@ -308,10 +236,6 @@ void AKCD_Sentence::SentenceComplete()
 	WriteStats(("Sentence : " + FString::FromInt(SentenceNum)), CurrentStat);
 
 	//Cleans up the sentence variables
-	for (auto LettersInstance : LettersInstances)
-	{
-		LettersInstance->Destroy();
-	}
 	LettersInstances.Empty();
 	TotalTypeSentence = "";
 	TotalTypeInput = "";
@@ -428,9 +352,7 @@ void AKCD_Sentence::AdvanceIndex()
 	//If we aren't at the last letter, we target the next letter
 	if(LettersInstances.Num() > CurrentLetterIndex)
 	{
-		LettersInstances[CurrentLetterIndex]->PrimaryTargetHighlight();
 		HighlightCurrent();
-		MoveMarker();
 	}
 }
 
@@ -487,7 +409,6 @@ void AKCD_Sentence::TestOver()
 	
 	WriteStats("Average", AverageStats());
 	
-	
 	UE_LOG(LogTemp, Warning, TEXT("Test is over"));
 	this->Destroy();
 }
@@ -495,13 +416,13 @@ void AKCD_Sentence::TestOver()
 void AKCD_Sentence::HighlightCurrent()
 {
 	TArray<FKey> keys;
-	keys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
+	keys.Add(FKey(LettersInstances[CurrentLetterIndex]));
 	CubeInstance->HighlightKeys(keys);
 }
 
 void AKCD_Sentence::UnhighlightCurrent()
 {
 	TArray<FKey> unhilightKeys;
-	unhilightKeys.Add(FKey(LettersInstances[CurrentLetterIndex]->CurrentLetter));
+	unhilightKeys.Add(FKey(LettersInstances[CurrentLetterIndex]));
 	CubeInstance->UnhighlightKeys(unhilightKeys);
 }

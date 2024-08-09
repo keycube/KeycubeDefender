@@ -78,9 +78,5 @@ public:
 	//Visual feedback to hide the letter
 	UFUNCTION(BlueprintCallable)
 	void Hide();
-
-	//Visual feedback of a wrong letter typed
-	UFUNCTION(BlueprintCallable)
-	void ErrorHighlight();
-		
+	
 };

@@ -69,12 +69,16 @@ void AKCD_WaveManager::PrepareShip(int ShipTier)
 
 	//Get a random word in the list of possible ones
 	//We loop so we can find an available word if the one chosen isn't
-	int ShipWordIndex = -1;
-	for (int x = 0; x <= 20; x++)
+	int ShipWordIndex = FMath::RandRange(0, possibleWords[0].WordList.Num() - 1);;
+	for (int x = 0; x <= possibleWords->WordList.Num(); x++)
 	{
-		ShipWordIndex = FMath::RandRange(0, possibleWords[0].WordList.Num() - 1);
 		if (WordIndexUsed[ShipTier].index.Contains(ShipWordIndex))
+		{
+			ShipWordIndex++;
+			if(ShipWordIndex >= possibleWords->WordList.Num())
+				ShipWordIndex = 0;
 			continue;
+		}
 
 		wordFound = true;
 		WordIndexUsed[ShipTier].index.Add(ShipWordIndex);
@@ -181,9 +185,6 @@ AKCD_Lane* AKCD_WaveManager::FetchRandomLane()
 void AKCD_WaveManager::GameFinished()
 {
 	AverageStats();
-	AKCD_Cube* Cube = Cast<AKCD_Cube>(UGameplayStatics::GetPlayerPawn(this, 0));
-	
-	//Cube->WriteScore("Tester");
 }
 
 void AKCD_WaveManager::AverageStats()

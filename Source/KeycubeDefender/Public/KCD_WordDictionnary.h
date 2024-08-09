@@ -6,7 +6,7 @@
 #include "KCD_WordDictionnary.generated.h"
 
 /**
- * Structure containing lists of word structs and the tier they belong to
+ * Structure containing lists of words and the tier they belong to
  */
 USTRUCT(BlueprintType)
 struct FKCD_WordDictionnary : public FTableRowBase
@@ -18,8 +18,6 @@ public:
 	Tier(0),
 	WordList()
 	{}
-	
-	
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Tier;

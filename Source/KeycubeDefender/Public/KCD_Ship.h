@@ -117,13 +117,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWord(FString word);
 
-	//Set the word associated with the ship
+	//Distance between what was written and the required word
 	UFUNCTION(BlueprintCallable)
 	int EditDistance();
-
-	//Effect when the ship is targeted
-	UFUNCTION(BlueprintCallable)
-	void Targeted();
 
 	//Spawn the letters for the associated word
 	UFUNCTION(BlueprintCallable)

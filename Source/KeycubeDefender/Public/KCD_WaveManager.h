@@ -6,7 +6,6 @@
 #include "KCD_GameMode.h"
 #include "KCD_Ship.h"
 #include "KCD_TypingStats.h"
-#include "KCD_WaveData.h"
 #include "GameFramework/Actor.h"
 #include "KCD_WaveManager.generated.h"
 
@@ -58,6 +57,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Called when the game is over
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	//Ships BP used as base to instantiate new ones
@@ -93,18 +93,23 @@ private:
 	FTimerHandle SpawnTimerHandle;
 	FTimerHandle NewWaveTimerHandle;
 
+	//Removes a ship from the list of living ones and frees it's word
 	UFUNCTION()
 	void RemoveShip(AKCD_Ship* Ship);
 
+	//Returns a random lane
 	UFUNCTION()
 	AKCD_Lane* FetchRandomLane();
 
+	//Called when the game is finished
 	UFUNCTION()
 	void GameFinished();
 
+	//Makes an average of the stats of the game.
 	UFUNCTION()
 	void AverageStats();
-	
+
+	//Writes the specified stats to a file
 	UFUNCTION()
 	void WriteStats(FString RowName, FKCD_TypingStats Stat);
 	

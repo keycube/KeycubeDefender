@@ -15,6 +15,7 @@ class KEYCUBEDEFENDER_API UKCD_GameUI : public UUserWidget
 {
 	GENERATED_BODY()
 
+	//Writes the generated tag to the stats files
 	UFUNCTION(BlueprintCallable)
 	void WriteNewUser();
 

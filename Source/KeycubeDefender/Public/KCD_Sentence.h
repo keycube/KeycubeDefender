@@ -28,8 +28,6 @@ public:
 	USceneComponent* ActorCenter;
 	UPROPERTY(EditAnywhere, Category="Holder")
 	USceneComponent* SentenceHolder;
-	UPROPERTY(EditAnywhere, Category="Holder")
-	UPaperSpriteComponent* LetterMarker;
 	UPROPERTY(EditAnywhere, Category="mesh")
 	UBoxComponent* Collision;
 	
@@ -38,22 +36,13 @@ private :
 	
 	//Var for the letters to spawn
 	UPROPERTY(EditAnywhere ,Category="Variables")
-	TArray<AKCD_Letters*> LettersInstances;
-	UPROPERTY(EditAnywhere ,Category="Variables")
-	TSubclassOf<AKCD_Letters> LetterBP;
+	TArray<FName> LettersInstances;
 
 	UPROPERTY(EditAnywhere ,Category="Variables")
 	int CurrentLetterIndex = 0;
 
 	UPROPERTY(EditAnywhere, Category="Words")
 	TArray<int> SentencesIndexUsed;
-
-	//This var is used to format the words to the screen
-	UPROPERTY(EditAnywhere, Category="Words")
-	float Lettersize = 30.0;
-
-	UPROPERTY(EditAnywhere, Category="Words")
-	float ScreenSize = 500.0;
 	
 	UPROPERTY(EditAnywhere, Category="Words")
 	FString TotalTypeSentence;
@@ -80,13 +69,13 @@ private :
 	UPROPERTY()
 	TArray<FKCD_TypingStats> Stats;
 
-	//Set the word associated with the ship
+	//Set the current sentence
 	UFUNCTION(BlueprintCallable)
 	void SetSentence(FString Sentence);
 
-	//Spawn the letters for the associated word
+	//Divides the sentence in an array of letters
 	UFUNCTION(BlueprintCallable)
-	void SpawnLetters();
+	void DivideLetters();
 
 	//Tries to type the next letter. Returns if the hit was successful
 	UFUNCTION(BlueprintCallable)
@@ -95,10 +84,6 @@ private :
 	//Deletes the last character entered
 	UFUNCTION(BlueprintCallable)
 	void Backspace();
-
-	//Moves the letter indicator to the current letter
-	UFUNCTION()
-	void MoveMarker();
 	
 	//Distance between the wanted sentence and what was written
 	UFUNCTION(BlueprintCallable)
@@ -107,10 +92,6 @@ private :
 	//Divides the sentence into individual words
 	UFUNCTION(BlueprintCallable)
 	TArray<FString> WordsFromString();
-
-	//Spawns the letters sprites as child objects
-	UFUNCTION(BlueprintCallable)
-	AKCD_Letters* AddChildLetter(FString Letter, FTransform SpawnTransform);
 
 	//Confirms the completion of the sentence and cleans up variables for the next one
 	UFUNCTION(BlueprintCallable)
@@ -128,7 +109,7 @@ private :
 	UFUNCTION()
 	void TestOver();
 
-	//Finishes up the test
+	//Highlight the current letter on the cube
 	UFUNCTION()
 	void HighlightCurrent();
 
@@ -145,7 +126,8 @@ private :
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AKVA_CubeVisual* CubeInstance;
-	
+
+	//Tells the cube to send the typing feedback on the letter
 	UFUNCTION()
 	void KeyPress(FKey KeyParam);
 	// Called when the game starts or when spawned
@@ -165,12 +147,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Words", meta = (ExposeOnSpawn=true))
 	FString CurrentSentence;
 
+	//Returns an average of the test's stats
 	UFUNCTION(BlueprintCallable)
 	FKCD_TypingStats AverageStats();
 
+	//Returns the current index
 	UFUNCTION(BlueprintCallable)
 	int GetCurrentIndex(){return CurrentLetterIndex;}
 
+	//Advances the index if it can and calls the feedback functions
 	UFUNCTION(BlueprintCallable)
 	void AdvanceIndex();
 	

@@ -6,7 +6,7 @@
 #include "KCD_TypingStats.generated.h"
 
 /**
- * 
+ * Struct of the stats used in the research.
  */
 USTRUCT(BlueprintType)
 struct FKCD_TypingStats : public FTableRowBase
