@@ -80,6 +80,9 @@ private:
 	//one as the primary target
 	UFUNCTION()
 	void FindPrimaryTarget();
+
+	UFUNCTION()
+	bool VerifyCubeVisual();
 	
 	UPROPERTY(EditAnywhere, Category="Sound")
 	USoundBase* TypeSound;

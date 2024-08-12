@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "KVA_CubeVisual.h"
+#include "KVA_CubeSpawner.h"
 #include "GameFramework/GameModeBase.h"
 #include "KCD_GameMode.generated.h"
 
@@ -32,8 +32,8 @@ public:
 	AKCD_LaneHolder* GetLaneHolder();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Spawner)
-	AKVA_CubeVisual* CubeVisual;
+	AKVA_CubeSpawner* CubeSpawner;
 
 	UFUNCTION(BlueprintCallable)
-	AKVA_CubeVisual* GetCubeVisual();
+	AKVA_CubeSpawner* GetCubeSpawner();
 };

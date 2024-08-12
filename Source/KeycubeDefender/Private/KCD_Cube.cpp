@@ -53,14 +53,17 @@ void AKCD_Cube::BeginPlay()
 		}
 
 		SpawnerInstance->OnShipSpawnDelegate.AddDynamic(this, &AKCD_Cube::UpdateHighlight);
-
-		Cube = GameModeInstance->GetCubeVisual();
 	},  0.1, false);
 	
 }
 
 void AKCD_Cube::KeyPress(FKey key)
 {
+	if(!VerifyCubeVisual())
+	{
+		return;
+	}
+	
 	//Check if the key is present in the accepted key list
 	if(!Cube->Keys.Contains(key))
 	{
@@ -120,6 +123,11 @@ void AKCD_Cube::KeyPress(FKey key)
 
 void AKCD_Cube::KeyRelease(FKey key)
 {
+	if(!VerifyCubeVisual())
+	{
+		return;
+	}
+	
 	Cube->KeyReleased(key);
 }
 
@@ -174,6 +182,12 @@ TArray<FKey> AKCD_Cube::TranslateKeys(TArray<FName> KeysToTranslate)
 //possible letters and ships to check won't make it inefficient
 void AKCD_Cube::UpdateHighlight()
 {
+
+	if(!VerifyCubeVisual())
+	{
+		return;
+	}
+	
 	//We fill an array with all possible next letters to press
 	//If we already have targets, we only check them
 	//If we don't have any target, we check all alive ships
@@ -231,6 +245,21 @@ void AKCD_Cube::FindPrimaryTarget()
 		PrimaryTarget = lowestShip;
 		PrimaryTarget->SetMainTarget();
 	}
+}
+
+bool AKCD_Cube::VerifyCubeVisual()
+{
+	if(!Cube->IsValidLowLevel())
+	{
+		Cube = GameModeInstance->GetCubeSpawner()->GetCube();
+
+		if(!Cube->IsValidLowLevel())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Cube was invalid"));
+			return false;
+		}
+	}
+	return true;
 }
 
 void AKCD_Cube::ShipDestroyed(AKCD_Ship* Ship)

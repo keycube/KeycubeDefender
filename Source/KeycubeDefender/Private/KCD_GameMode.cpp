@@ -13,7 +13,15 @@ AKCD_LaneHolder* AKCD_GameMode::GetLaneHolder()
 	return LaneHolder;
 }
 
-AKVA_CubeVisual* AKCD_GameMode::GetCubeVisual()
+AKVA_CubeSpawner* AKCD_GameMode::GetCubeSpawner()
 {
-	return CubeVisual;
+	if(CubeSpawner != nullptr)
+	{
+		return  CubeSpawner;
+	}
+
+	CubeSpawner = Cast<AKVA_CubeSpawner>(UGameplayStatics::GetActorOfClass(this, AKVA_CubeSpawner::StaticClass()));
+
+	return CubeSpawner;
 }
+

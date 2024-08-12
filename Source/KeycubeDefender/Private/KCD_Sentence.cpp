@@ -59,7 +59,7 @@ void AKCD_Sentence::SetSentence(FString Sentence)
 	CurrentSentence = Sentence;
 	
 	DivideLetters();
-	if(CubeInstance != nullptr)
+	if(VerifyCubeVisual())
 	{
 		HighlightCurrent();
 	}else
@@ -415,6 +415,11 @@ void AKCD_Sentence::TestOver()
 
 void AKCD_Sentence::HighlightCurrent()
 {
+	if(!VerifyCubeVisual())
+	{
+		return;
+	}
+	
 	TArray<FKey> keys;
 	keys.Add(FKey(LettersInstances[CurrentLetterIndex]));
 	CubeInstance->HighlightKeys(keys);
@@ -422,7 +427,28 @@ void AKCD_Sentence::HighlightCurrent()
 
 void AKCD_Sentence::UnhighlightCurrent()
 {
+	if(!VerifyCubeVisual())
+	{
+		return;
+	}
+	
 	TArray<FKey> unhilightKeys;
 	unhilightKeys.Add(FKey(LettersInstances[CurrentLetterIndex]));
 	CubeInstance->UnhighlightKeys(unhilightKeys);
+}
+
+bool AKCD_Sentence::VerifyCubeVisual()
+{
+	if(!CubeInstance->IsValidLowLevel())
+	{
+		AActor* spawnerActor = UGameplayStatics::GetActorOfClass(this, AKVA_CubeSpawner::StaticClass());
+		CubeInstance = Cast<AKVA_CubeSpawner>(spawnerActor)->GetCube();
+
+		if(!CubeInstance->IsValidLowLevel())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Cube was invalid"));
+			return false;
+		}
+	}
+	return true;
 }

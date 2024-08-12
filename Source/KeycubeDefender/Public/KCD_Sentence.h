@@ -116,6 +116,10 @@ private :
 	//Finishes up the test
 	UFUNCTION()
 	void UnhighlightCurrent();
+
+	//Verifies if the cube is valid and tries to fetch it if it isn't
+	UFUNCTION()
+	bool VerifyCubeVisual();
 	
 	UPROPERTY()
 	int SentenceNum = 0;
