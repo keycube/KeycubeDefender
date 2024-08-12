@@ -26,7 +26,7 @@ TSubclassOf<AKVA_CubeVisual> AKVA_CubeSpawner::FetchCubeType()
 	{
 		return CubeSave->CubeType;
 	}
-	return nullptr;
+	return DefaultCube;
 }
 
 void AKVA_CubeSpawner::ChangeCubeType()
@@ -39,7 +39,7 @@ void AKVA_CubeSpawner::ChangeCubeType()
 	//Unreal has a bug here, making the spawn ignore the scale
 	//so we adjust it manually
 	Cube->SetActorScale3D(GetActorScale());
-
+	
 	CubeSpawnedDelegate.Broadcast();
 }
 

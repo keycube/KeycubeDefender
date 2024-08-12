@@ -20,6 +20,10 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = Cube)
 	FOnCubeSpawned CubeSpawnedDelegate;
 
+	//If no other cube types has been specified in the options (or the selected one is invalid), this will be spawned instead
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Defaults)
+	TSubclassOf<AKVA_CubeVisual> DefaultCube;
+	
 	UFUNCTION(BlueprintCallable, Category = Cube)
 	AKVA_CubeVisual* GetCube() {return Cube;};
 
