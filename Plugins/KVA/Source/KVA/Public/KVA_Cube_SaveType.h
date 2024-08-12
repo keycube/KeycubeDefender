@@ -16,14 +16,14 @@ class KVA_API UKVA_Cube_SaveType : public USaveGame
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CubeType)
 	TSubclassOf<AKVA_CubeVisual> CubeType;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CubeType)
 	FString Name;
 
 	static const FString SlotName;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = CubeType)
 	FString GetSlotName() {return SlotName;}
 };

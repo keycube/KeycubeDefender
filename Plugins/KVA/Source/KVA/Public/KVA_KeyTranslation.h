@@ -18,7 +18,7 @@ public:
  Key()
  {}
  
- UPROPERTY(EditAnywhere, BlueprintReadWrite)
+ UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Key)
  FKey Key;
 };
 

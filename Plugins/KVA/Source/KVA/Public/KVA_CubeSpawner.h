@@ -17,10 +17,10 @@ public:
 	// Sets default values for this actor's properties
 	AKVA_CubeSpawner();
 
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable, Category = Cube)
 	FOnCubeSpawned CubeSpawnedDelegate;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Cube)
 	AKVA_CubeVisual* GetCube() {return Cube;};
 
 protected:

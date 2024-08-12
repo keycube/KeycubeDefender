@@ -12,7 +12,7 @@ struct FKeyRow
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = CubeFaces)
 	TArray<AKVA_Keys*> Keys;
 
 	AKVA_Keys* operator[] (int32 i)
@@ -26,7 +26,7 @@ struct FKeyFace
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = CubeFaces)
 	TArray<FKeyRow> Face;
 
 	FKeyRow operator[] (int32 i)
@@ -46,7 +46,7 @@ public:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Name")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Name)
 	FString CubeTypeName = "Default";
 
 	//Map of association between the inputs and the
@@ -63,48 +63,48 @@ public:
 	UPROPERTY(VisibleAnywhere, Category=Keys)
 	TArray<FKey> HighlitedKeys;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Variables)
 	UDataTable* KeyTranslationTable;
 	
 	//Mark the letter as pressed
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Feedback)
 	void KeyPressed(FKey KeyToPress);
 
 	//Mark the letters who would result in a good hit
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Feedback)
 	void KeyReleased(FKey KeyToRelease);
 
 	//Mark the letters who would result in a good hit
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Feedback)
 	void HighlightKeys(TArray<FKey> keysToHighlight);
 
 	//Mark the letters who would result in a good hit
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Feedback)
 	void UnhighlightKeys(TArray<FKey> keysToHighlight);
 
 	//Fill the map of association between the inputs and the
 	//keys on the cube
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Keys)
 	void FillKeyMatrix(TArray<UChildActorComponent*> KeyActors, int Row, int Face);
 
 	//Saves the current key matrix to be loaded next time
 	// to a text file
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Keys)
 	void SaveKeyMatrix();
 
 	//Calls the change key function of the key actor and refreshes the key map
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Keys)
 	void ChangeKey(AKVA_Keys* ChangingKey, FKey NewKey);
 
 	//Returns the associated FKey of the indicated key in the matrix
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Keys)
 	FKey GetKey(int Face, int Row, int Column);
 
 protected:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Rotation)
 	FRotator FaceOneRotation = FRotator(0, 8, 0);
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Rotation)
     FRotator FaceZeroRotation = FRotator(0, -8, 0);
 
 private:

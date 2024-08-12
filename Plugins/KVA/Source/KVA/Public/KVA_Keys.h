@@ -50,18 +50,18 @@ private:
 public:
 	
 	//Visual feedback of the key press
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Feedback)
 	void KeyPressed_Keys();
 	//Visual feedback of the key release
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Feedback)
 	void KeyReleased_Keys();
 	//Visual feedback of the key highlight
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Feedback)
 	void HighlightKey();
 	//Remove visual feedback of the key highlight
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Feedback)
 	void UnhighlightKey();
 	//Change the associated key
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Feedback)
 	void ChangeKey(FKey NewKey);
 };
