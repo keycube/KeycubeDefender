@@ -248,20 +248,28 @@ void AKVA_CubeVisual::LoadKeyMatrix()
 			FString key = line.c_str();
 			UE_LOG(LogTemp, Warning, TEXT("%s"), *key);
 
-			//Find the associated key
-			KeyAssociation = KeyTranslationTable->FindRow<FKVA_KeyTranslation>(FName(key), "");
-
-			//Apply the key if it is valid
-			if(KeyAssociation->Key.IsValid())
+			//Check if the key is null
+			if(FName(key) == FName("None"))
 			{
-				KeysMatrix[x].Face[y].Keys[z]->ChangeKey(KeyAssociation->Key);
+				KeysMatrix[x].Face[y].Keys[z]->ChangeKey(FKey("None"));
 				KeysMatrix[x].Face[y].Keys[z]->UnhighlightKey();
-			}
-			else
+			} else
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Key invalid"));
-			}
+				//Find the associated key
+				KeyAssociation = KeyTranslationTable->FindRow<FKVA_KeyTranslation>(FName(key), "");
 
+				//Apply the key if it is valid
+				if(KeyAssociation->Key.IsValid())
+				{
+					KeysMatrix[x].Face[y].Keys[z]->ChangeKey(KeyAssociation->Key);
+					KeysMatrix[x].Face[y].Keys[z]->UnhighlightKey();
+				}
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Key invalid"));
+				}
+			}
+			
 			//Advance in the key matrix
 			z++;
 			if(z >= 4)
