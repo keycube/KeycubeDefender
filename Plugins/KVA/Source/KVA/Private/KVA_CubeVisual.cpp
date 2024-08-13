@@ -203,7 +203,7 @@ void AKVA_CubeVisual::SaveKeyMatrix()
 
 void AKVA_CubeVisual::ChangeKey(AKVA_Keys* ChangingKey, FKey NewKey)
 {
-	if(Keys.Contains(NewKey))
+	if(Keys.Contains(NewKey) && NewKey != FKey("None"))
 	{
 		Keys[NewKey]->ChangeKey(ChangingKey->AssociatedKey);
 	}

@@ -233,7 +233,7 @@ void AKCD_Sentence::SentenceComplete()
 	Stats.Add(CurrentStat);
 
 	//Write the current sentence's stat to the file
-	WriteStats(("Sentence : " + FString::FromInt(SentenceNum)), CurrentStat);
+	WriteStats(FString::FromInt(SentenceNum), CurrentStat);
 
 	//Cleans up the sentence variables
 	LettersInstances.Empty();
@@ -363,13 +363,34 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
 		+ std::string("TypingStats.csv")));
 
+	//Verification if the file is already created
+	std::ifstream readfile(path);
+	bool isNewFile = false;
+	//If the file
+	if(!readfile.good())
+		isNewFile = true;
+	
+	readfile.close();
+	
+	if(isNewFile)
+	{
+		std::ofstream writefile(path);
+		//Titles
+		writefile << "Sentence number,WPM,Time Taken,Mistakes,Word Size,"
+			  " Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes\n";
+		writefile.close();
+	}
+	
 	//Open the file in append mode and check if it is opened
 	std::ofstream myfile(path, std::ios::app);
+	
 	if (myfile.is_open())
 	{
+		
 		//Create an FString with all results
 		FString ResultFString;
-		ResultFString = ",," + FString::SanitizeFloat(Stat.Score) + "," +
+		ResultFString =  "," + RowName + "," +
+			FString::SanitizeFloat(Stat.Score) + "," +
 			FString::SanitizeFloat(Stat.TimeTaken) + "," +
 			FString::SanitizeFloat(Stat.Mistakes) + "," +
 			FString::SanitizeFloat(Stat.WordSize) + "," +
@@ -378,11 +399,7 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 
 		//Convert the FString into a std::string
 		std::string ResultString = std::string(TCHAR_TO_UTF8(*ResultFString));
-
-		//RowName
-		myfile << std::string(TCHAR_TO_UTF8(*("," + RowName + "\n")));
-		//Titles
-		myfile << ",,WPM,Time Taken,Mistakes,Word Size, Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes\n";
+		
 		//Data
 		myfile << ResultString + ",";
 		//Quote the sentences to avoid csv dividing them with used symbols
@@ -392,8 +409,11 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 		myfile << ",";
 		myfile << std::quoted(TCHAR_TO_UTF8(*Stat.Keystrokes));
 		//Skip lines for readability
-		myfile << "\n\n";
+		myfile << "\n";
 
+		if(SentenceNum > RequiredSentences)
+			myfile << "\n";
+		
 		//Close the file
 		myfile.close();
 	}
@@ -410,7 +430,6 @@ void AKCD_Sentence::TestOver()
 	WriteStats("Average", AverageStats());
 	
 	UE_LOG(LogTemp, Warning, TEXT("Test is over"));
-	this->Destroy();
 }
 
 void AKCD_Sentence::HighlightCurrent()

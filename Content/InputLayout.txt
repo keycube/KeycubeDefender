@@ -6,11 +6,11 @@ E
 D
 C
 LeftBracket
-W
+Q
 S
 X
 RightBracket
-Q
+W
 A
 Z
 Semicolon

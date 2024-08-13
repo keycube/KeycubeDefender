@@ -30,7 +30,23 @@ void UKCD_GameUI::WriteNewUser()
 		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for write"));
 	}
 
+	//Verification if the file is already created
+	std::ifstream readfile(typingPath);
+	bool isNewFile = false;
+	//If the file
+	if(!readfile.good())
+		isNewFile = true;
+	
+	readfile.close();
+	
 	std::ofstream myfileType (typingPath, std::ios::app);
+	//Writes the lines titles at the beginning of the file
+	if(isNewFile)
+	{
+		//Titles
+		myfileType << "User,Sentence number,WPM,Time Taken,Mistakes,Word Size,"
+			  " Word Distance,Error Rate,Wanted sentence,Typed sentence,Keystrokes\n";
+	}
 	if (myfileType.is_open())
 	{
 		myfileType << "user_" + Str + "\n";

@@ -58,6 +58,13 @@ void AKVA_Keys::UnhighlightKey()
 
 void AKVA_Keys::ChangeKey(FKey NewKey)
 {
+	if(NewKey == FKey("None"))
+	{
+		AssociatedKey = NewKey;
+		KeyText->SetText(FText::FromString(""));
+		HighlightKey();
+	}
+	
 	AssociatedKey = NewKey;
 	KeyText->SetText(NewKey.GetDisplayName(false));
 	HighlightKey();
