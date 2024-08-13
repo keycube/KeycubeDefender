@@ -5,6 +5,7 @@
 
 #include "KCD_Ship.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AKCD_LaneHolder::AKCD_LaneHolder()
@@ -17,6 +18,12 @@ AKCD_LaneHolder::AKCD_LaneHolder()
 
 	HitBox = CreateDefaultSubobject<UBoxComponent>("HitZone");
 	HitBox->SetupAttachment(SceneComponent);
+
+	ProximityBox = CreateDefaultSubobject<UBoxComponent>("ProximityZone");
+	ProximityBox->SetupAttachment(SceneComponent);
+
+	VisualBar = CreateDefaultSubobject<UStaticMeshComponent>("VisualBar");
+	VisualBar->SetupAttachment(SceneComponent);
 }
 
 void AKCD_LaneHolder::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -36,12 +43,15 @@ void AKCD_LaneHolder::BeginPlay()
 {
 	Super::BeginPlay();
 
+	DynMaterial = UMaterialInstanceDynamic::Create(Material, this);
+	VisualBar->SetMaterial(0, DynMaterial);
 	SpawnLanes();
 
 	//FillLanes();
 
-	// Bind function OnActorBeginOverlap with your class function OnOverlap
-	this->OnActorBeginOverlap.AddDynamic(this, &AKCD_LaneHolder::OnOverlap);
+	// Binding of the overlap function to the hitbox component
+	HitBox->OnComponentBeginOverlap.AddDynamic(this, &AKCD_LaneHolder::OnBoxBeginOverlap);
+	ProximityBox->OnComponentBeginOverlap.AddDynamic(this, &AKCD_LaneHolder::OnProximityBeginOverlap);
 }
 
 void AKCD_LaneHolder::SpawnLanes()
@@ -77,10 +87,68 @@ void AKCD_LaneHolder::SpawnLanes()
 	
 }
 
+AKCD_Ship* AKCD_LaneHolder::GetClosestShip()
+{
+
+	if(CloseShips.IsEmpty())
+	{
+		return nullptr;
+	}
+	
+	float distance = 10000;
+	AKCD_Ship* closestShip = nullptr;
+
+	for (auto ship : CloseShips)
+	{
+		if(ship->GetTransform().GetLocation().Z < distance)
+		{
+			distance = ship->GetTransform().GetLocation().Z;
+			closestShip = ship;
+		}
+	}
+	
+	return closestShip;
+}
+
+void AKCD_LaneHolder::UpdateVisualLine()
+{
+	AKCD_Ship* ClosestShip =  GetClosestShip();
+
+	if(ClosestShip == nullptr)
+	{
+		
+		return;
+	}
+	
+	float currentDistance = ClosestShip->GetTransform().GetLocation().Z -
+			(HitBox->GetComponentTransform().GetLocation().Z + HitBox->GetScaledBoxExtent().Z/2);
+
+	UE_LOG(LogTemp, Warning, TEXT("Distance : %s"), *FString::SanitizeFloat(currentDistance))
+	
+	double pulseSpeed = UKismetMathLibrary::Lerp(0.65, 0.5, currentDistance/300);
+	double glow = UKismetMathLibrary::Lerp(15, 0.5, currentDistance/300);
+
+	UE_LOG(LogTemp, Warning, TEXT("Pulse : %s"), *FString::SanitizeFloat(pulseSpeed))
+	UE_LOG(LogTemp, Warning, TEXT("glow : %s"), *FString::SanitizeFloat(glow))
+	
+	DynMaterial->SetScalarParameterValue("PulseSpeed", pulseSpeed);
+	DynMaterial->SetScalarParameterValue("Brightness", glow);
+}
+
 // Called every frame
 void AKCD_LaneHolder::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if(!CloseShips.IsEmpty())
+	{
+		if(!VisualBar->IsVisible())
+		{
+			VisualBar->SetVisibility(true);
+		}
+		
+		UpdateVisualLine();
+	}
 }
 
 void AKCD_LaneHolder::FillLanes()
@@ -98,13 +166,36 @@ void AKCD_LaneHolder::FillLanes()
 	}
 }
 
-void AKCD_LaneHolder::OnOverlap(AActor* MyActor, AActor* OtherActor)
+void AKCD_LaneHolder::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
+		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+		bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (Cast<AKCD_Ship>(OtherActor))
 	{
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShipCrashSound, GetTransform().GetLocation());
 		OnShipCrashedDelegate.Broadcast();
 		CityDestroy();
+	}
+}
+
+void AKCD_LaneHolder::OnProximityBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (auto ship = Cast<AKCD_Ship>(OtherActor))
+	{
+		CloseShips.AddUnique(ship);
+		ship->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_LaneHolder::ShipDestroy);
+	}
+}
+
+void AKCD_LaneHolder::ShipDestroy(AKCD_Ship* DestroyedShip)
+{
+	DestroyedShip->OnShipDestroyedDelegate.RemoveAll(this);
+	CloseShips.Remove(DestroyedShip);
+
+	if(CloseShips.IsEmpty())
+	{
+		VisualBar->SetVisibility(false);
 	}
 }
 

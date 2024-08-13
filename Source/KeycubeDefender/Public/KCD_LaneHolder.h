@@ -21,6 +21,12 @@ class KEYCUBEDEFENDER_API AKCD_LaneHolder : public AActor
 	UPROPERTY(EditAnywhere, Category="Components")
 	UBoxComponent* HitBox;
 
+	UPROPERTY(EditAnywhere, Category="Components")
+	UBoxComponent* ProximityBox;
+
+	UPROPERTY(EditAnywhere, Category="Components")
+	UStaticMeshComponent* VisualBar;
+
 
 public:	
 	// Sets default values for this actor's properties
@@ -49,18 +55,48 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variable")
 	float MapHeight;
 
+	UPROPERTY(EditAnywhere)
+	UMaterialInterface* Material;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
+	UPROPERTY(EditAnywhere, Category="Sound")
+	USoundBase* ShipCrashSound;
+
+	UPROPERTY()
+	TArray<FTimerHandle> TimerHandles;
+
+	UPROPERTY(EditAnywhere)
+	AKCD_WaveManager* WaveManager;
+
+	UPROPERTY()
+	TArray<AKCD_Ship*> CloseShips;
+
+	UPROPERTY()
+	UMaterialInstanceDynamic* DynMaterial;
+	
 	//Fills the list of lanes
 	UFUNCTION()
 	void FillLanes();
 
-	//Overlap function
+	//City overlap function
 	UFUNCTION()
-	void OnOverlap(AActor* MyActor, AActor* OtherActor);
+	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
+		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+		bool bFromSweep, const FHitResult& SweepResult);
+
+	//Proximity overlap function
+	UFUNCTION()
+	void OnProximityBeginOverlap(UPrimitiveComponent* OverlappedComp,
+		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+		bool bFromSweep, const FHitResult& SweepResult);
+
+	//Removes the ship from the proximity list
+	UFUNCTION()
+	void ShipDestroy(AKCD_Ship* DestroyedShip);
 
 	//Feedback of the city's destruction
 	UFUNCTION()
@@ -69,17 +105,18 @@ private:
 	//Spawns explosions
 	UFUNCTION()
 	void SpawnExplosion(FVector Location, int OffsetIndex);
-	
-
-	UPROPERTY(EditAnywhere, Category="Sound")
-	USoundBase* ShipCrashSound;
-
-	UPROPERTY()
-	TArray<FTimerHandle> TimerHandles;
 
 	//Spawns the lanes according to the map width and height specified
 	UFUNCTION()
 	void SpawnLanes();
+
+	//Spawns the lanes according to the map width and height specified
+	UFUNCTION()
+	AKCD_Ship* GetClosestShip();
+
+	//Spawns the lanes according to the map width and height specified
+	UFUNCTION()
+	void UpdateVisualLine();
 	
 public:	
 	// Called every frame
