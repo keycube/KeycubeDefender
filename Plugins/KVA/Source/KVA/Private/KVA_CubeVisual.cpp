@@ -92,10 +92,6 @@ void AKVA_CubeVisual::HighlightKeys(TArray<FKey> keysToHighlight)
 
 void AKVA_CubeVisual::UnhighlightKeys(TArray<FKey> KeysToUnHighlight)
 {
-
-	TargetRotation = BaseRotation;
-	NeedsRotation = true;
-	
 	if(!CubeOptions->ShowNextHighligh && !CubeOptions->ShowTypeHighligh)
 	{
 		return;
@@ -111,6 +107,15 @@ void AKVA_CubeVisual::UnhighlightKeys(TArray<FKey> KeysToUnHighlight)
 		Keys[key]->UnhighlightKey();
 
 		HighlitedKeys.Remove(key);
+	}
+
+	if(HighlitedKeys.IsEmpty())
+	{
+		TargetRotation = BaseRotation;
+		NeedsRotation = true;
+	} else
+	{
+		RotateCube(HighlitedKeys.Last());
 	}
 }
 
