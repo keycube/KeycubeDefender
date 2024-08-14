@@ -89,7 +89,7 @@ void AKCD_LaneHolder::SpawnLanes()
 
 AKCD_Ship* AKCD_LaneHolder::GetClosestShip()
 {
-
+	//Making sure there is at least one ship to be checked
 	if(CloseShips.IsEmpty())
 	{
 		return nullptr;
@@ -97,7 +97,7 @@ AKCD_Ship* AKCD_LaneHolder::GetClosestShip()
 	
 	float distance = 10000;
 	AKCD_Ship* closestShip = nullptr;
-
+	//Find the lowest ship
 	for (auto ship : CloseShips)
 	{
 		if(ship->GetTransform().GetLocation().Z < distance)
@@ -113,23 +113,19 @@ AKCD_Ship* AKCD_LaneHolder::GetClosestShip()
 void AKCD_LaneHolder::UpdateVisualLine()
 {
 	AKCD_Ship* ClosestShip =  GetClosestShip();
-
+	//Making sure we have a ship
 	if(ClosestShip == nullptr)
 	{
-		
 		return;
 	}
-	
+
+	//Getting the distance between the end line and the ship
 	float currentDistance = ClosestShip->GetTransform().GetLocation().Z -
 			(HitBox->GetComponentTransform().GetLocation().Z + HitBox->GetScaledBoxExtent().Z/2);
 
-	UE_LOG(LogTemp, Warning, TEXT("Distance : %s"), *FString::SanitizeFloat(currentDistance))
-	
+	//Strenght of both the pulse and the glow depending on the distance
 	double pulseSpeed = UKismetMathLibrary::Lerp(0.65, 0.5, currentDistance/300);
 	double glow = UKismetMathLibrary::Lerp(15, 0.5, currentDistance/300);
-
-	UE_LOG(LogTemp, Warning, TEXT("Pulse : %s"), *FString::SanitizeFloat(pulseSpeed))
-	UE_LOG(LogTemp, Warning, TEXT("glow : %s"), *FString::SanitizeFloat(glow))
 	
 	DynMaterial->SetScalarParameterValue("PulseSpeed", pulseSpeed);
 	DynMaterial->SetScalarParameterValue("Brightness", glow);
@@ -139,16 +135,6 @@ void AKCD_LaneHolder::UpdateVisualLine()
 void AKCD_LaneHolder::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if(!CloseShips.IsEmpty())
-	{
-		if(!VisualBar->IsVisible())
-		{
-			VisualBar->SetVisibility(true);
-		}
-		
-		UpdateVisualLine();
-	}
 }
 
 void AKCD_LaneHolder::FillLanes()
@@ -185,6 +171,16 @@ void AKCD_LaneHolder::OnProximityBeginOverlap(UPrimitiveComponent* OverlappedCom
 	{
 		CloseShips.AddUnique(ship);
 		ship->OnShipDestroyedDelegate.AddDynamic(this, &AKCD_LaneHolder::ShipDestroy);
+
+		if(!GetWorld()->GetTimerManager().IsTimerActive(LineUpdateHandle))
+		{
+			DynMaterial->SetScalarParameterValue("PulseSpeed", 0.5);
+			DynMaterial->SetScalarParameterValue("Brightness", 0.5);
+			VisualBar->SetVisibility(true);
+			
+			GetWorld()->GetTimerManager().SetTimer( LineUpdateHandle, this,
+			&AKCD_LaneHolder::UpdateVisualLine, 0.2, true);
+		}
 	}
 }
 
@@ -196,6 +192,7 @@ void AKCD_LaneHolder::ShipDestroy(AKCD_Ship* DestroyedShip)
 	if(CloseShips.IsEmpty())
 	{
 		VisualBar->SetVisibility(false);
+		LineUpdateHandle.Invalidate();
 	}
 }
 

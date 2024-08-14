@@ -69,6 +69,9 @@ private:
 	UPROPERTY()
 	TArray<FTimerHandle> TimerHandles;
 
+	UPROPERTY()
+	FTimerHandle LineUpdateHandle;
+
 	UPROPERTY(EditAnywhere)
 	AKCD_WaveManager* WaveManager;
 
@@ -82,19 +85,21 @@ private:
 	UFUNCTION()
 	void FillLanes();
 
-	//City overlap function
+	//City overlap function. Triggers the destruction of the city and the end of the game
 	UFUNCTION()
 	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 		bool bFromSweep, const FHitResult& SweepResult);
 
-	//Proximity overlap function
+	//Proximity overlap function. Adds the ship to the list of close ships and
+	//if the visual line isn't already showing, triggers it's update
 	UFUNCTION()
 	void OnProximityBeginOverlap(UPrimitiveComponent* OverlappedComp,
 		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 		bool bFromSweep, const FHitResult& SweepResult);
 
-	//Removes the ship from the proximity list
+	//Removes the ship from the proximity list and stops the line visual update
+	//if it was the last ship
 	UFUNCTION()
 	void ShipDestroy(AKCD_Ship* DestroyedShip);
 
@@ -110,11 +115,11 @@ private:
 	UFUNCTION()
 	void SpawnLanes();
 
-	//Spawns the lanes according to the map width and height specified
+	//Returns the ship that is the closest to the game over line
 	UFUNCTION()
 	AKCD_Ship* GetClosestShip();
 
-	//Spawns the lanes according to the map width and height specified
+	//Updates the pulse and the glow of the game over line visual
 	UFUNCTION()
 	void UpdateVisualLine();
 	
