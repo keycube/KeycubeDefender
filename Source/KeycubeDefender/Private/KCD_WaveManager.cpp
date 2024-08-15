@@ -72,6 +72,7 @@ void AKCD_WaveManager::PrepareShip(int ShipTier)
 	int ShipWordIndex = FMath::RandRange(0, possibleWords[0].WordList.Num() - 1);;
 	for (int x = 0; x <= possibleWords->WordList.Num(); x++)
 	{
+		
 		if (WordIndexUsed[ShipTier].index.Contains(ShipWordIndex))
 		{
 			ShipWordIndex++;

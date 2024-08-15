@@ -309,8 +309,6 @@ void AKVA_CubeVisual::RotateCube(FKey KeyToFace)
 		Keys[KeyToFace]->GetTransform().GetRelativeTransform(this->GetTransform()).GetLocation();
 		
 	Direction.Normalize();
-
-	UE_LOG(LogTemp, Warning, TEXT("Direction : %s"), *Direction.ToString());
 		
 	if(abs(Direction.X) > abs(Direction.Y))
 	{

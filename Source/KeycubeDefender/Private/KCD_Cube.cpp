@@ -134,7 +134,7 @@ void AKCD_Cube::KeyRelease(FKey key)
 void AKCD_Cube::RemoveTarget(AKCD_Ship* Ship)
 {
 	//We check if the remove target is the primary target
-	if(PrimaryTarget->IsValidLowLevel())
+	if(PrimaryTarget != nullptr)
 	{
 		//If he is, we check if it's destroy and remove it if it is 
 		if(Ship == PrimaryTarget)
@@ -230,7 +230,7 @@ void AKCD_Cube::FindPrimaryTarget()
 	float closestDistance = 10000;
 	AKCD_Ship* lowestShip = nullptr;
 	
-	if(!PrimaryTarget->IsValidLowLevel() && !CurrentTargets.IsEmpty())
+	if(PrimaryTarget == nullptr && !CurrentTargets.IsEmpty())
 	{
 		//Check for the lowest ship in the current targets
 		for(auto ship : CurrentTargets)
@@ -249,7 +249,7 @@ void AKCD_Cube::FindPrimaryTarget()
 
 bool AKCD_Cube::VerifyCubeVisual()
 {
-	if(!Cube->IsValidLowLevel())
+	if(Cube == nullptr)
 	{
 		Cube = GameModeInstance->GetCubeSpawner()->GetCube();
 
@@ -303,7 +303,7 @@ void AKCD_Cube::NewTargets(const TArray<AKCD_Ship*>& ShipList)
 		}
 	}
 
-	if(!PrimaryTarget->IsValidLowLevel())
+	if(PrimaryTarget == nullptr)
 	{
 		FindPrimaryTarget();
 	}
