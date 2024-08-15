@@ -59,7 +59,7 @@ void AKCD_Sentence::SetSentence(FString Sentence)
 	CurrentSentence = Sentence;
 	
 	DivideLetters();
-	if(VerifyCubeVisual())
+	if(VerifyCubeVisual() && !LettersInstances.IsEmpty())
 	{
 		HighlightCurrent();
 	}else
@@ -274,12 +274,20 @@ FString AKCD_Sentence::FetchNewSentence()
 		//Generates a random number
 		int x = 0;
 		srand(time(0));
-		int randomLine = rand() % 501;
+		//Count the number of lines
+		auto count = std::count_if(std::istreambuf_iterator<char>{myfile}, {}, [](char c) { return c == '\n'; });
+		//Return the file iterator to the beginning
+		myfile.seekg (0, myfile.beg);
+		//Transform it into an int
+		int lineNumb = count;
+		
+		int randomLine = rand() % lineNumb;
 
+		//We make sure the random number created hasn't already been used
 		while(SentencesIndexUsed.Contains(randomLine))
 		{
 			randomLine++;
-			if(randomLine >= 501)
+			if(randomLine >= lineNumb)
 			{
 				randomLine = 0;
 			}

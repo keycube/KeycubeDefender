@@ -23,6 +23,7 @@ void AKVA_CubeVisual::BeginPlay()
 
 	BaseRotation = this->GetTransform().Rotator();
 
+	//Loads the options if they were previously saved or loads the default ones if they weren't
 	if(UKVA_SaveCubeOption* CubeSave = Cast<UKVA_SaveCubeOption>(UGameplayStatics::LoadGameFromSlot(UKVA_SaveCubeOption::SlotName, 0)))
 	{
 		CubeOptions = CubeSave;
@@ -31,11 +32,11 @@ void AKVA_CubeVisual::BeginPlay()
 		CubeOptions = Cast<UKVA_SaveCubeOption>(UGameplayStatics::CreateSaveGameObject(UKVA_SaveCubeOption::StaticClass()));
 	}
 
+	//Adjusts the settings
 	if(!CubeOptions->ShowCube)
 	{
 		SetActorHiddenInGame(true);
 	}
-
 	if(CubeOptions->InvertRotation)
 	{
 		FaceOneRotation = FaceOneRotation * -1;
