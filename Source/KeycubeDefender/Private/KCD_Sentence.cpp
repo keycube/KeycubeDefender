@@ -7,6 +7,7 @@
 #include <iomanip>
 
 #include "KCD_GameMode.h"
+#include "KCD_GameUI.h"
 #include "KCD_PlayerController.h"
 #include "DSP/Filter.h"
 #include "GenericPlatform/GenericPlatformChunkInstall.h"
@@ -384,8 +385,10 @@ void AKCD_Sentence::WriteStats(FString RowName, FKCD_TypingStats Stat)
 	{
 		std::ofstream writefile(path);
 		//Titles
-		writefile << "Sentence number,WPM,Time Taken,Mistakes,Word Size,"
+		//There won't be a user written in the user section if created this way, using the "new user" button is recommended
+		writefile << "User, Sentence number,WPM,Time Taken,Mistakes,Word Size,"
 			  " Word Distance, Error Rate, Wanted sentence, Typed sentence, Keystrokes\n";
+		
 		writefile.close();
 	}
 	

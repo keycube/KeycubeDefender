@@ -109,9 +109,11 @@ private:
 	UFUNCTION()
 	void AverageStats();
 
-	//Writes the specified stats to a file
+	//Writes the specified stats to a file (only main targets)
 	UFUNCTION()
-	void WriteStats(FString RowName, FKCD_TypingStats Stat);
+	void WriteStats(FKCD_TypingStats MainStat);
+	//Writes the specified stats to a file (only main targets)
+	void WriteStats(FKCD_TypingStats MainStat, FKCD_TypingStats AltStat);
 	
 	UPROPERTY()
 	AKCD_GameMode* GameModeInstance;

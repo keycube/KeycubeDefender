@@ -9,18 +9,35 @@ void UKCD_GameUI::WriteNewUser()
 {
 	//Set the relative path where the file is saved and the name of the file
 	FString RelativePath = FPaths::ProjectContentDir();
-	std::string resultPath = (std::string((TCHAR_TO_UTF8(*RelativePath))
-		+ std::string("Result.csv")));
+	std::string ShipPath = (std::string((TCHAR_TO_UTF8(*RelativePath))
+		+ std::string("ShipStats.csv")));
 
 	std::string typingPath = (std::string((TCHAR_TO_UTF8(*RelativePath))
 	+ std::string("TypingStats.csv")));
 
 	std::string Str = std::string((TCHAR_TO_UTF8(*GenerateUser())));
+
+	bool isNewFile = false;
+
+	//Verification if the file is already created
+	std::ifstream readShipFile(ShipPath);
+	isNewFile = false;
+	//If the file
+	if(!readShipFile.good())
+		isNewFile = true;
+	
+	readShipFile.close();
 	
 	//Open the file in append mode and check if it is opened
-	std::ofstream myfile (resultPath, std::ios::app);
+	std::ofstream myfile (ShipPath, std::ios::app);
 	if (myfile.is_open())
 	{
+		if(isNewFile)
+		{
+			//Titles
+			myfile << "User,Wave,Target Type,Score,Time Taken,Mistakes,Word Size, Word Distance\n";
+		}
+		
 		myfile << "user_" + Str + "\n";
 		
 		myfile.close();
@@ -32,7 +49,7 @@ void UKCD_GameUI::WriteNewUser()
 
 	//Verification if the file is already created
 	std::ifstream readfile(typingPath);
-	bool isNewFile = false;
+	isNewFile = false;
 	//If the file
 	if(!readfile.good())
 		isNewFile = true;

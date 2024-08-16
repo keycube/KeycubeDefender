@@ -190,85 +190,126 @@ void AKCD_WaveManager::GameFinished()
 
 void AKCD_WaveManager::AverageStats()
 {
-	FKCD_TypingStats AverageStat;
+	FKCD_TypingStats MainAverageStat;
+	FKCD_TypingStats AltAverageStat;
 
 	//Makes an average of all main target stats
 	for (auto TypeStat : MainTypingStats)
 	{
-		AverageStat.Mistakes += TypeStat.Mistakes;
-		AverageStat.Score += TypeStat.Score;
-		AverageStat.TimeTaken += TypeStat.TimeTaken;
-		AverageStat.WordDistance += TypeStat.WordDistance;
-		AverageStat.WordSize += TypeStat.WordSize;
+		MainAverageStat.Mistakes += TypeStat.Mistakes;
+		MainAverageStat.Score += TypeStat.Score;
+		MainAverageStat.TimeTaken += TypeStat.TimeTaken;
+		MainAverageStat.WordDistance += TypeStat.WordDistance;
+		MainAverageStat.WordSize += TypeStat.WordSize;
 	}
 
 	int size = MainTypingStats.Num();
 	
-	AverageStat.Mistakes = AverageStat.Mistakes / size;
-	AverageStat.Score = AverageStat.Score / size;
-	AverageStat.TimeTaken = AverageStat.TimeTaken / size;
-	AverageStat.WordDistance = AverageStat.WordDistance / size;
-	AverageStat.WordSize = AverageStat.WordSize / size;
-	AverageStat.WasAltTarget = false;
+	MainAverageStat.Mistakes = MainAverageStat.Mistakes / size;
+	MainAverageStat.Score = MainAverageStat.Score / size;
+	MainAverageStat.TimeTaken = MainAverageStat.TimeTaken / size;
+	MainAverageStat.WordDistance = MainAverageStat.WordDistance / size;
+	MainAverageStat.WordSize = MainAverageStat.WordSize / size;
+	MainAverageStat.WasAltTarget = false;
 
-	WriteStats("Main target", AverageStat);
-
-	//Reset the var
-	AverageStat = FKCD_TypingStats();
-
+	//We don't write any data for the alt target if there are none to write
+	if(AltTypingStats.IsEmpty())
+	{
+		WriteStats(MainAverageStat);
+		return;
+	}
+	
 	//Makes an average of all alt target stats
 	for (auto TypeStat : AltTypingStats)
 	{
-		AverageStat.Mistakes += TypeStat.Mistakes;
-		AverageStat.Score += TypeStat.Score;
-		AverageStat.TimeTaken += TypeStat.TimeTaken;
-		AverageStat.WordDistance += TypeStat.WordDistance;
-		AverageStat.WordSize += TypeStat.WordSize;
+		AltAverageStat.Mistakes += TypeStat.Mistakes;
+		AltAverageStat.Score += TypeStat.Score;
+		AltAverageStat.TimeTaken += TypeStat.TimeTaken;
+		AltAverageStat.WordDistance += TypeStat.WordDistance;
+		AltAverageStat.WordSize += TypeStat.WordSize;
 	}
 
 	size = AltTypingStats.Num();
 	
-	AverageStat.Mistakes = AverageStat.Mistakes / size;
-	AverageStat.Score = AverageStat.Score / size;
-	AverageStat.TimeTaken = AverageStat.TimeTaken / size;
-	AverageStat.WordDistance = AverageStat.WordDistance / size;
-	AverageStat.WordSize = AverageStat.WordSize / size;
-	AverageStat.WasAltTarget = false;
+	AltAverageStat.Mistakes = AltAverageStat.Mistakes / size;
+	AltAverageStat.Score = AltAverageStat.Score / size;
+	AltAverageStat.TimeTaken = AltAverageStat.TimeTaken / size;
+	AltAverageStat.WordDistance = AltAverageStat.WordDistance / size;
+	AltAverageStat.WordSize = AltAverageStat.WordSize / size;
+	AltAverageStat.WasAltTarget = false;
 
-
-	WriteStats("Alt target", AverageStat);
+	WriteStats(MainAverageStat, AltAverageStat);
 }
 
-void AKCD_WaveManager::WriteStats(FString RowName, FKCD_TypingStats Stat)
+void AKCD_WaveManager::WriteStats(FKCD_TypingStats MainStat)
 {
 	//Set the relative path where the file is saved and the name of the file
 	FString RelativePath = FPaths::ProjectContentDir();
 	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
-		+ std::string("Result.csv")));
+		+ std::string("ShipStats.csv")));
 
 	//Open the file in append mode and check if it is opened
 	std::ofstream myfile (path, std::ios::app);
 	if (myfile.is_open())
 	{
-		//Create an FString with all results
-		FString ResultFString;
-		ResultFString = ",,," + FString::SanitizeFloat(Stat.Score) + "," +
-			FString::SanitizeFloat(Stat.TimeTaken) + "," +
-				FString::SanitizeFloat(Stat.Mistakes) + "," +
-					FString::SanitizeFloat(Stat.WordSize) + "," +
-						FString::SanitizeFloat(Stat.WordDistance) + ",";
+		//Create an FString with all main results
+		FString MainResultFString;
+		MainResultFString = "," + FString::FromInt(CurrentWaveIndex) + "," + "Main Targets," + FString::SanitizeFloat(MainStat.Score) + "," +
+			FString::SanitizeFloat(MainStat.TimeTaken) + "," +
+				FString::SanitizeFloat(MainStat.Mistakes) + "," +
+					FString::SanitizeFloat(MainStat.WordSize) + "," +
+						FString::SanitizeFloat(MainStat.WordDistance) + ",";
 
 		//Convert the FString into a std::string
-		std::string ResultString = std::string(TCHAR_TO_UTF8(*ResultFString));
-		
-		//RowName
-		myfile << std::string((TCHAR_TO_UTF8(*("," + RowName + "\n"))));
-		//Titles
-		myfile << ",,,Score,Time Taken,Mistakes,Word Size, Word Distance\n";
+		std::string MainResultString = std::string(TCHAR_TO_UTF8(*MainResultFString));
+
+		myfile << MainResultString + "\n";
+
+		//Close the file
+		myfile.close();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open file for write"));
+	}
+}
+
+void AKCD_WaveManager::WriteStats(FKCD_TypingStats MainStat, FKCD_TypingStats AltStat)
+{
+	//Set the relative path where the file is saved and the name of the file
+	FString RelativePath = FPaths::ProjectContentDir();
+	std::string path = (std::string((TCHAR_TO_UTF8(*RelativePath))
+		+ std::string("ShipStats.csv")));
+
+	//Open the file in append mode and check if it is opened
+	std::ofstream myfile (path, std::ios::app);
+	if (myfile.is_open())
+	{
+		//Create an FString with all main results
+		FString MainResultFString;
+		MainResultFString = "," + FString::FromInt(CurrentWaveIndex) + "," + "Main Targets," + FString::SanitizeFloat(MainStat.Score) + "," +
+			FString::SanitizeFloat(MainStat.TimeTaken) + "," +
+				FString::SanitizeFloat(MainStat.Mistakes) + "," +
+					FString::SanitizeFloat(MainStat.WordSize) + "," +
+						FString::SanitizeFloat(MainStat.WordDistance) + ",";
+
+		//Convert the FString into a std::string
+		std::string MainResultString = std::string(TCHAR_TO_UTF8(*MainResultFString));
 		//Data
-		myfile << ResultString + "\n";
-		//Skip lines for readability
-		myfile << "\n\n";
+		myfile << MainResultString + "\n";
+
+		//Create an FString with all alt results
+		FString AltResultFString;
+		AltResultFString = ",,Alt Targets," + FString::SanitizeFloat(AltStat.Score) + "," +
+			FString::SanitizeFloat(AltStat.TimeTaken) + "," +
+			FString::SanitizeFloat(AltStat.Mistakes) + "," +
+			FString::SanitizeFloat(AltStat.WordSize) + "," +
+			FString::SanitizeFloat(AltStat.WordDistance) + ",";
+
+		//Convert the FString into a std::string
+		std::string AltResultString = std::string(TCHAR_TO_UTF8(*AltResultFString));
+		//Data
+		myfile << AltResultString + "\n";
 		
 		//Close the file
 		myfile.close();
