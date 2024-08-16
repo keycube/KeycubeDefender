@@ -203,7 +203,6 @@ void AKCD_LaneHolder::CityDestroy()
 	TargetLocation.Z = TargetLocation.Z + 100.0f;
 	GetWorld()->SpawnActor<AActor>(ExplosionVFXFlipbook, TargetLocation, this->GetTransform().GetRotation().Rotator());
 
-		//TODO : INVALIDATE THE TIMERS BEFORE QUITTING
 		float NumbOfExplosions = (MapWidth/2)/350;
 
 		UE_LOG(LogTemp, Warning, TEXT("Numbers of explosions loop : %s"),  *FString::SanitizeFloat(NumbOfExplosions));

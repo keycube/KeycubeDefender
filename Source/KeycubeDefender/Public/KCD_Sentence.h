@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "KCD_Letters.h"
 #include "KCD_TypingStats.h"
 #include "KVA_CubeVisual.h"
 #include "GameFramework/Actor.h"

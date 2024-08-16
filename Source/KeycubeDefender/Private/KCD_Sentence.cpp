@@ -446,7 +446,7 @@ void AKCD_Sentence::HighlightCurrent()
 	{
 		return;
 	}
-	
+	//Function takes an array, so we make one with a single key
 	TArray<FKey> keys;
 	keys.Add(FKey(LettersInstances[CurrentLetterIndex]));
 	CubeInstance->HighlightKeys(keys);
@@ -458,7 +458,7 @@ void AKCD_Sentence::UnhighlightCurrent()
 	{
 		return;
 	}
-	
+	//Function takes an array, so we make one with a single key
 	TArray<FKey> unhilightKeys;
 	unhilightKeys.Add(FKey(LettersInstances[CurrentLetterIndex]));
 	CubeInstance->UnhighlightKeys(unhilightKeys);
@@ -468,6 +468,7 @@ bool AKCD_Sentence::VerifyCubeVisual()
 {
 	if(!CubeInstance->IsValidLowLevel())
 	{
+		//Try to get back the cube's reference
 		AActor* spawnerActor = UGameplayStatics::GetActorOfClass(this, AKVA_CubeSpawner::StaticClass());
 		CubeInstance = Cast<AKVA_CubeSpawner>(spawnerActor)->GetCube();
 

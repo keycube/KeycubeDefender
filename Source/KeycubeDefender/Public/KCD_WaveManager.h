@@ -154,7 +154,7 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnShipSpawn OnShipSpawnDelegate;
 
-	//Returns the closest ship available (not already in the destroy state)
+	//Returns all the ships who are available (not already in the destroy state)
 	//who's next letter to be hit is the one provided
 	UFUNCTION(BlueprintCallable)
 	TArray<AKCD_Ship*> GetValidShips(FName Letter);

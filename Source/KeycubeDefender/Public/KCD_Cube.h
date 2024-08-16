@@ -81,6 +81,7 @@ private:
 	UFUNCTION()
 	void FindPrimaryTarget();
 
+	//returns if the cube visual referenced is valid and tries to get it if it isn't
 	UFUNCTION()
 	bool VerifyCubeVisual();
 	
